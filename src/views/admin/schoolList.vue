@@ -220,7 +220,4 @@ export default {
 </script>
 
 <style scoped>
-.toolbar{
-  margin: 15px 0;
-}
 </style>

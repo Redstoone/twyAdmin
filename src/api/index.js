@@ -17,5 +17,18 @@ export default {
   },
   orgEdit (params) {
     return service(`/api/org/edit`, qs.stringify(params), 'POST')
+  },
+
+  teacherList (params) {
+    return service(`/api/org/list`, '', 'GET')
+  },
+  teacherCreate (params) {
+    return service(`/api/org/add`, qs.stringify(params), 'POST')
+  },
+  teacherDel (params) {
+    return service(`/api/org/del`, qs.stringify(params), 'POST')
+  },
+  teacherEdit (params) {
+    return service(`/api/org/edit`, qs.stringify(params), 'POST')
   }
 }

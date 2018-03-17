@@ -239,6 +239,10 @@ code {
   animation: octocat-wave 560ms ease-in-out
 }
 
+.toolbar{
+  margin: 15px 0;
+}
+
 @keyframes octocat-wave {
   0%,
   100% {

@@ -38,7 +38,9 @@ module.exports = {
       '@': resolve('src'),
       'assets': path.resolve(__dirname, '../src/assets'),
       'service': path.resolve(__dirname, '../src/fetch'),
-      'static': resolve('static')
+      'static': resolve('static'),
+      'scss_vars': '@/assets/styles/mixin/_variable.scss',
+      'api_list': '@/api/index.js'
     }
   },
   module: {

@@ -49,10 +49,22 @@ export default {
         if (valid) {
           this.loading = true
           api.login(this.loginForm).then((res) => {
-            console.log(res)
             if (res.status === 'succ') {
               this.loading = false
-              this.$router.push({ path: '/' })
+              let { message, code, data } = res
+              if (code !== 20000) {
+                this.$message({
+                  message: message,
+                  type: 'error'
+                })
+              } else {
+                sessionStorage.setItem('user', JSON.stringify(data))
+                if (data.role === 'superadmin') {
+                  this.$router.push({ path: '/school/list' })
+                } else {
+                  this.$router.push({ path: '/org/setting' })
+                }
+              }
             }
           })
         } else {

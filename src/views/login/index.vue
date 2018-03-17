@@ -4,41 +4,31 @@
       <h3 class="title">后台管理系统登录</h3>
 
       <el-form-item prop="username">
-        <span>
-          <icon name="camera"></icon>
-        </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="邮箱" />
+        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="账号" />
       </el-form-item>
 
       <el-form-item prop="password">
-        <span>
-          <icon name="camera"></icon>
-        </span>
         <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="密码" />
-        <span class='show-pwd' @click='showPwd'>
-          <!-- <icon-svg icon-class="yanjing" /> -->
-        </span>
       </el-form-item>
 
-      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
+      <el-button type="primary" class="btn-login" style="" :loading="loading" @click.native.prevent="handleLogin">登  录</el-button>
     </el-form>
   </div>
 </template>
 
 <script>
+import api from '../../api/index.js'
 export default {
   name: 'login',
   data () {
     return {
       loginForm: {
-        username: 'admin',
-        password: '123456'
+        username: '',
+        password: ''
       },
       loginRules: {
-        username: [
-          { required: true, message: '用户名不能为空', trigger: 'blur' }
-        ],
-        password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
+        username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
       },
 
       pwdType: 'password',
@@ -58,16 +48,13 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store
-            .dispatch('LoginByUsername', this.loginForm)
-            .then(() => {
+          api.login(this.loginForm).then((res) => {
+            console.log(res)
+            if (res.status === 'succ') {
               this.loading = false
               this.$router.push({ path: '/' })
-              // this.showDialog = true
-            })
-            .catch(() => {
-              this.loading = false
-            })
+            }
+          })
         } else {
           console.log('error submit!!')
           return false
@@ -100,12 +87,14 @@ export default {
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
       color: $light_gray;
-      height: 47px;
+      height: 44px;
     }
     .el-input {
       display: inline-block;
-      height: 47px;
-      width: 85%;
+      height: 44px;
+    }
+    .el-input__inner{
+      height: 44px;
     }
     .tips {
       font-size: 14px;
@@ -143,6 +132,7 @@ export default {
       background: rgba(0, 0, 0, 0.1);
       border-radius: 5px;
       color: #454545;
+      margin-bottom: 30px;
     }
     .show-pwd {
       position: absolute;
@@ -156,6 +146,11 @@ export default {
       position: absolute;
       right: 35px;
       bottom: 28px;
+    }
+    .btn-login{
+      width:100%;
+      margin-top:20px;
+      height: 48px;
     }
   }
 </style>

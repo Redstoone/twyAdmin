@@ -16,7 +16,7 @@ const service = function (url, data, method = 'GET', headers = {}) {
       'headers': headers && typeof headers === 'object' ? headers : {}
     }
     options.headers['X-Requested-Page'] = 'json'
-    if (user.accesstoken) {
+    if (user && user.accesstoken) {
       options.headers['accesstoken'] = user.accesstoken
     }
     options[method === 'GET' ? 'params' : 'data'] = data

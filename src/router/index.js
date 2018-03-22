@@ -6,6 +6,7 @@ import SchoolList from '@/views/admin/schoolList'
 // import TeacherList from '@/views/admin/teacherList'
 import ActivityList from '@/views/admin/activityList'
 import NewsList from '@/views/admin/newsList'
+import OrgSetting from '@/views/org/orgSetting'
 
 Vue.use(Router)
 const router = new Router({
@@ -24,7 +25,7 @@ const router = new Router({
       component: Home,
       name: '学校管理',
       iconCls: 'el-icon-message',
-      type: 'superAdmin',
+      type: 'superadmin',
       children: [
         { path: '/school/list', component: SchoolList, name: '学校网点管理' }
         // { path: '/school/teacher', component: TeacherList, name: '名师团队' }
@@ -35,7 +36,7 @@ const router = new Router({
       component: Home,
       name: '活动新闻公告管理',
       iconCls: 'el-icon-message',
-      type: 'superAdmin',
+      type: 'superadmin',
       children: [
         { path: '/activity',
           component: ActivityList,
@@ -49,7 +50,7 @@ const router = new Router({
       component: Home,
       name: '课程设置',
       iconCls: 'el-icon-message',
-      type: 'superAdmin',
+      type: 'superadmin',
       children: [
         { path: '/course/content', component: Login, name: '公开课内容编辑' },
         { path: '/course/intro', component: Login, name: '课程介绍编辑' }
@@ -61,36 +62,36 @@ const router = new Router({
       component: Home,
       name: '网点管理',
       iconCls: 'el-icon-message',
-      type: 'superAdmin',
+      type: 'orgadmin',
       children: [{
         path: '/org/setting',
         name: '网点设置',
-        type: 'orgAdmin',
-        component: NewsList
+        type: 'orgadmin',
+        component: OrgSetting
       }]
     },
     {
       path: '/org/teacher',
       name: '老师',
-      type: 'orgAdmin',
+      type: 'orgadmin',
       component: Login
     },
     {
       path: '/org/class',
       name: '班级',
-      type: 'orgAdmin',
+      type: 'orgadmin',
       component: Login
     },
     {
       path: '/signup',
       name: '微信报名学生处理',
-      type: 'orgAdmin',
+      type: 'orgadmin',
       component: Login
     },
     {
       path: '/',
       name: '微信预约体验学生处理',
-      type: 'orgAdmin',
+      type: 'orgadmin',
       component: Login
     }
   ]

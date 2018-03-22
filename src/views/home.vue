@@ -25,7 +25,7 @@
         <!--导航菜单-->
         <el-menu :default-active="$route.path" class="el-menu-vertical-demo" @open="handleopen" @close="handleclose" @select="handleselect"
            unique-opened router v-show="!collapsed">
-          <template v-for="(item,index) in $router.options.routes" v-if="item.type == role">
+          <template v-for="(item,index) in $router.options.routes" v-if="item.type == roleType">
             <el-submenu :index="index+''" v-if="!item.leaf" :key="index">
               <template slot="title">{{item.name}}</template>
               <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
@@ -57,11 +57,6 @@
         <div class="grid-content bg-purple-light">
           <el-col :span="24" class="breadcrumb-container">
             <strong class="title">{{$route.name}}</strong>
-            <!-- <el-breadcrumb separator="/" class="breadcrumb-inner">
-              <el-breadcrumb-item v-for="item in $route.matched" :key="item.path">
-                {{ item.name }}
-              </el-breadcrumb-item>
-            </el-breadcrumb> -->
           </el-col>
           <el-col :span="24" class="content-wrapper">
             <transition name="fade" mode="out-in">
@@ -82,7 +77,7 @@ export default {
       collapsed: false,
       sysUserName: '',
       sysUserAvatar: '',
-      role: 'superAdmin',
+      roleType: 'superadmin',
       form: {
         name: '',
         region: '',
@@ -132,6 +127,7 @@ export default {
       user = JSON.parse(user)
       this.sysUserName = user.name || ''
       this.sysUserAvatar = user.avatar || ''
+      this.roleType = user.role || 'superadmin'
     }
   }
 }

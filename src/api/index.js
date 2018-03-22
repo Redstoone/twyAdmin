@@ -70,5 +70,9 @@ export default {
   },
   newsEdit (params) {
     return service(`/api/news/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+
+  orgInfo (params) {
+    return service(`/api/org/info`, params, 'GET')
   }
 }

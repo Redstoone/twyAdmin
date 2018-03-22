@@ -30,5 +30,24 @@ export default {
   },
   teacherEdit (params) {
     return service(`/api/org/edit`, qs.stringify(params), 'POST')
+  },
+
+  activityList (params) {
+    return service(`/api/activity/list`, params, 'GET')
+  },
+  activityLinkAdd (params) {
+    return service(`/api/activity/link/add`, qs.stringify(params), 'POST')
+  },
+  activityLinkEdit (params) {
+    return service(`/api/activity/link/edit`, qs.stringify(params), 'POST')
+  },
+  activityDel (params) {
+    return service(`/api/activity/del`, qs.stringify(params), 'POST')
+  },
+  activityAdd (params) {
+    return service(`/api/activity/add`, qs.stringify(params), 'POST')
+  },
+  activityEdit (params) {
+    return service(`/api/activity/edit`, qs.stringify(params), 'POST')
   }
 }

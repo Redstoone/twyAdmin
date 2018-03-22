@@ -3,7 +3,9 @@ import Router from 'vue-router'
 import Login from '@/views/login'
 import Home from '@/views/home'
 import SchoolList from '@/views/admin/schoolList'
-import TeacherList from '@/views/admin/teacherList'
+// import TeacherList from '@/views/admin/teacherList'
+import ActivityList from '@/views/admin/activityList'
+import ActivityCreate from '@/views/admin/activityCreate'
 
 Vue.use(Router)
 const router = new Router({
@@ -35,7 +37,15 @@ const router = new Router({
       iconCls: 'el-icon-message',
       type: 'superAdmin',
       children: [
-        { path: '/news/edit', component: Login, name: '活动编辑与发布' },
+        { path: '/activity',
+          component: ActivityList,
+          name: '活动编辑与发布',
+          children: [
+            { path: 'add', component: ActivityCreate, name: '添加/编辑活动' },
+            { path: '/edit/:id', component: ActivityCreate, name: '添加/编辑活动' }
+          ]
+        },
+        // { path: '/activity/edit/:id', component: Login, name: '活动编辑与发布' },
         { path: '/news/list', component: Login, name: '新闻公告管理' }
       ]
     },
@@ -92,7 +102,6 @@ router.beforeEach((to, from, next) => {
   if (!user && to.path !== '/login') {
     next({ path: '/login' })
   } else {
-    console.log(user)
     next()
   }
 })

@@ -161,7 +161,6 @@ export default {
     // 显示新增界面
     handleAdd () {
       this.addFormVisible = true
-      console.log(this.addFormVisible)
     },
     // 编辑
     editSubmit () {

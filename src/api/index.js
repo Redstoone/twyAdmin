@@ -5,7 +5,7 @@ export const typewww = 'application/x-www-form-urlencoded'
 
 export default {
   login (params) {
-    return service(`/api/login`, qs.stringify(params), 'POST', {'Content-Type': typewww})
+    return service(`/api/login`, params, 'GET')
   },
 
   orgListPage (params) {

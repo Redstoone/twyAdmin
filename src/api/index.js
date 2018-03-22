@@ -51,5 +51,24 @@ export default {
   },
   activityEdit (params) {
     return service(`/api/activity/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+
+  newsList (params) {
+    return service(`/api/news/list`, params, 'GET')
+  },
+  newsLinkAdd (params) {
+    return service(`/api/news/link/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  newsLinkEdit (params) {
+    return service(`/api/news/link/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  newsDel (params) {
+    return service(`/api/news/del`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  newsAdd (params) {
+    return service(`/api/news/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  newsEdit (params) {
+    return service(`/api/news/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   }
 }

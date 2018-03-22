@@ -5,7 +5,7 @@ import Home from '@/views/home'
 import SchoolList from '@/views/admin/schoolList'
 // import TeacherList from '@/views/admin/teacherList'
 import ActivityList from '@/views/admin/activityList'
-import ActivityCreate from '@/views/admin/activityCreate'
+import NewsList from '@/views/admin/newsList'
 
 Vue.use(Router)
 const router = new Router({
@@ -39,14 +39,9 @@ const router = new Router({
       children: [
         { path: '/activity',
           component: ActivityList,
-          name: '活动编辑与发布',
-          children: [
-            { path: 'add', component: ActivityCreate, name: '添加/编辑活动' },
-            { path: '/edit/:id', component: ActivityCreate, name: '添加/编辑活动' }
-          ]
+          name: '活动编辑与发布'
         },
-        // { path: '/activity/edit/:id', component: Login, name: '活动编辑与发布' },
-        { path: '/news/list', component: Login, name: '新闻公告管理' }
+        { path: '/news', component: NewsList, name: '新闻公告管理' }
       ]
     },
     {
@@ -62,10 +57,17 @@ const router = new Router({
     },
 
     {
-      path: '/org/setting',
-      name: '网点设置',
-      type: 'orgAdmin',
-      component: Login
+      path: '/',
+      component: Home,
+      name: '网点管理',
+      iconCls: 'el-icon-message',
+      type: 'superAdmin',
+      children: [{
+        path: '/org/setting',
+        name: '网点设置',
+        type: 'orgAdmin',
+        component: NewsList
+      }]
     },
     {
       path: '/org/teacher',

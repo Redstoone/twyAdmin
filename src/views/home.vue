@@ -106,7 +106,6 @@ export default {
       // console.log('handleclose')
     },
     handleselect (a, b) {},
-    // 退出登录
     logout () {
       var _this = this
       this.$confirm('确认退出吗?', '提示', {
@@ -118,7 +117,6 @@ export default {
         })
         .catch(() => {})
     },
-    // 折叠导航栏
     collapse () {
       this.collapsed = !this.collapsed
     },

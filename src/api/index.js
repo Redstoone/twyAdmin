@@ -118,5 +118,18 @@ export default {
   },
   orgClazzList (params) {
     return service(`/api/clazz/list`, params, 'GET')
+  },
+
+  orgStudentAdd (params) {
+    return service(`/api/student/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  orgStudentDel (params) {
+    return service(`/api/student/del`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  orgStudentList (params) {
+    return service(`/api/student/list`, params, 'GET')
+  },
+  orgStudentExport (params) {
+    return service(`/api/student/export`, params, 'GET')
   }
 }

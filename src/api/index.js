@@ -92,5 +92,31 @@ export default {
   },
   orgCourseOrder (params) {
     return service(`/api/course/order`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+
+  orgTeacherAdd (params) {
+    return service(`/api/teacher/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  orgTeacherList (params) {
+    return service(`/api/teacher/list`, params, 'GET')
+  },
+  orgTeacherDel (params) {
+    return service(`/api/teacher/del`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  orgTeacherClazz (params) {
+    return service(`/api/teacher/clazz`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+
+  orgClazzAdd (params) {
+    return service(`/api/clazz/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  orgClazzEdit (params) {
+    return service(`/api/clazz/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  orgClazzDel (params) {
+    return service(`/api/clazz/del`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  orgClazzList (params) {
+    return service(`/api/clazz/list`, params, 'GET')
   }
 }

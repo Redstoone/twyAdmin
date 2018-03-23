@@ -266,3 +266,17 @@ code {
     animation: octocat-wave 560ms ease-in-out
   }
 }
+
+.txt-right{
+  text-align: right;
+}
+.btn-option{
+  font-size:14px;
+  color:#0086e4;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.btn-option:hover{
+  text-decoration: underline;
+  color:#0086e4;
+}

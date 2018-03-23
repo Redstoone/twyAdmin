@@ -9,6 +9,7 @@ import NewsList from '@/views/admin/newsList'
 import OrgSetting from '@/views/org/orgSetting'
 import Course from '@/views/org/orgCourse'
 import Teacher from '@/views/org/orgTeacher'
+import Clazz from '@/views/org/orgClazz'
 
 Vue.use(Router)
 const router = new Router({
@@ -95,7 +96,7 @@ const router = new Router({
           path: '/org/class',
           name: '班级',
           type: 'orgadmin',
-          component: Login
+          component: Clazz
         }
       ]
     },

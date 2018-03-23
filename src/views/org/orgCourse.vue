@@ -110,7 +110,6 @@ export default {
       api.orgCourseList({groupId: JSON.parse(sessionStorage.getItem('groupId'))}).then(res => {
         this.courseList = res.data.array
       })
-      this.courseList = ''
     },
     handleAddCourse () {
       this.courseVisible = true
@@ -141,8 +140,16 @@ export default {
       }).then(() => {
         that.listLoading = true
         api.orgCourseDel({courseId: courseId}).then((res) => {
-          that.listLoading = false
-          that.getCourseList()
+          if (res.status === 'succ') {
+            that.listLoading = false
+            that.getCourseList()
+          } else {
+            this.$notify({
+              message: res.data.message,
+              type: 'error',
+              duration: 0
+            })
+          }
         })
       })
     },
@@ -151,7 +158,6 @@ export default {
         if (valid) {
           this.addLoading = true
           let para = Object.assign({}, this.addCourse)
-          console.log(para)
           if (this.addCourse.CourseId) {
             api.courseEdit(para).then(res => {
               if (res.data.status === 'succ') {

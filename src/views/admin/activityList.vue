@@ -205,7 +205,6 @@ export default {
         if (valid) {
           this.addLoading = true
           let para = Object.assign({}, this.addActivity)
-          console.log(para)
           if (this.addActivity.activityId) {
             api.activityEdit(para).then(res => {
               this.addLoading = false

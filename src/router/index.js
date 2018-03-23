@@ -10,6 +10,7 @@ import OrgSetting from '@/views/org/orgSetting'
 import Course from '@/views/org/orgCourse'
 import Teacher from '@/views/org/orgTeacher'
 import Clazz from '@/views/org/orgClazz'
+import Baoming from '@/views/org/orgBaoming'
 
 Vue.use(Router)
 const router = new Router({
@@ -108,13 +109,13 @@ const router = new Router({
       type: 'orgadmin',
       children: [
         {
-          path: '/signup',
+          path: '/org/signup',
           name: '微信报名学生处理',
           type: 'orgadmin',
-          component: Login
+          component: Baoming
         },
         {
-          path: '/',
+          path: '/org/order',
           name: '微信预约体验学生处理',
           type: 'orgadmin',
           component: Login

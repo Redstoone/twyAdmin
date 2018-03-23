@@ -65,6 +65,13 @@ export default {
                   this.$router.push({ path: '/org/setting' })
                 }
               }
+            } else {
+              this.loading = false
+              this.$notify({
+                message: res.message,
+                type: 'error',
+                duration: 0
+              })
             }
           })
         } else {

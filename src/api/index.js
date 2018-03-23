@@ -74,5 +74,23 @@ export default {
 
   orgInfo (params) {
     return service(`/api/org/info`, params, 'GET')
+  },
+  orgCourseAdd (params) {
+    return service(`/api/course/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  orgCourseList (params) {
+    return service(`/api/course/list`, params, 'GET')
+  },
+  orgCourseDel (params) {
+    return service(`/api/course/del`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  orgCourseEdit (params) {
+    return service(`/api/course/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  orgCourseRelease (params) {
+    return service(`/api/course/release`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  orgCourseOrder (params) {
+    return service(`/api/course/order`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   }
 }

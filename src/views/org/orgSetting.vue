@@ -22,7 +22,8 @@
           <el-input v-model="editForm.telphone"></el-input>
         </el-form-item>
         <el-form-item label="管理员账号" prop="adminname">
-          <el-input v-model="editForm.adminname" auto-complete="off"></el-input>
+          <!-- <el-input v-model="editForm.adminname" auto-complete="off"></el-input> -->
+          <span>{{editForm.adminname}}</span>
         </el-form-item>
         <el-form-item label="管理员密码" prop="password">
           <el-input type="password" v-model="editForm.password" auto-complete="off"></el-input>
@@ -77,9 +78,10 @@ export default {
             password: res.data.name,
             groupId: res.data.groupId
           }
+          sessionStorage.setItem('groupId', JSON.stringify(res.data.groupId))
         } else {
           this.$notify({
-            message: res.data.message,
+            message: res.message,
             type: 'error',
             duration: 0
           })

@@ -68,16 +68,25 @@ export default {
   methods: {
     getOrgInfo () {
       api.orgInfo().then(res => {
-        this.editForm = {
-          name: res.data.name,
-          address: res.data.address,
-          telphone: res.data.telphone,
-          adminname: res.data.adminName,
-          password: res.data.name,
-          groupId: res.data.groupId
+        if (res.status === 'succ') {
+          this.editForm = {
+            name: res.data.name,
+            address: res.data.address,
+            telphone: res.data.telphone,
+            adminname: res.data.adminName,
+            password: res.data.name,
+            groupId: res.data.groupId
+          }
+        } else {
+          this.$notify({
+            message: res.data.message,
+            type: 'error',
+            duration: 0
+          })
         }
       })
     },
+
     // 编辑
     editSubmit () {
       this.$refs.editForm.validate(valid => {

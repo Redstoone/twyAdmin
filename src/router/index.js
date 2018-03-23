@@ -7,6 +7,8 @@ import SchoolList from '@/views/admin/schoolList'
 import ActivityList from '@/views/admin/activityList'
 import NewsList from '@/views/admin/newsList'
 import OrgSetting from '@/views/org/orgSetting'
+import Course from '@/views/org/orgCourse'
+import Teacher from '@/views/org/orgTeacher'
 
 Vue.use(Router)
 const router = new Router({
@@ -71,28 +73,52 @@ const router = new Router({
       }]
     },
     {
-      path: '/org/teacher',
-      name: '老师',
+      path: '/',
+      component: Home,
+      name: '教学管理',
+      iconCls: 'el-icon-message',
       type: 'orgadmin',
-      component: Login
-    },
-    {
-      path: '/org/class',
-      name: '班级',
-      type: 'orgadmin',
-      component: Login
-    },
-    {
-      path: '/signup',
-      name: '微信报名学生处理',
-      type: 'orgadmin',
-      component: Login
+      children: [
+        {
+          path: '/org/course',
+          name: '课程',
+          type: 'orgadmin',
+          component: Course
+        },
+        {
+          path: '/org/teacher',
+          name: '老师',
+          type: 'orgadmin',
+          component: Teacher
+        },
+        {
+          path: '/org/class',
+          name: '班级',
+          type: 'orgadmin',
+          component: Login
+        }
+      ]
     },
     {
       path: '/',
-      name: '微信预约体验学生处理',
+      component: Home,
+      name: '报名管理',
+      iconCls: 'el-icon-message',
       type: 'orgadmin',
-      component: Login
+      children: [
+        {
+          path: '/signup',
+          name: '微信报名学生处理',
+          type: 'orgadmin',
+          component: Login
+        },
+        {
+          path: '/',
+          name: '微信预约体验学生处理',
+          type: 'orgadmin',
+          component: Login
+        }
+      ]
     }
   ]
 })

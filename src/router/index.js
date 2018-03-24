@@ -11,6 +11,7 @@ import Course from '@/views/org/orgCourse'
 import Teacher from '@/views/org/orgTeacher'
 import Clazz from '@/views/org/orgClazz'
 import Baoming from '@/views/org/orgBaoming'
+import TacherClazz from '@/views/teacher/tacherClazz'
 
 Vue.use(Router)
 const router = new Router({
@@ -28,7 +29,6 @@ const router = new Router({
       path: '/',
       component: Home,
       name: '学校管理',
-      iconCls: 'el-icon-message',
       type: 'superadmin',
       children: [
         { path: '/school/list', component: SchoolList, name: '学校网点管理' }
@@ -39,7 +39,6 @@ const router = new Router({
       path: '/',
       component: Home,
       name: '活动新闻公告管理',
-      iconCls: 'el-icon-message',
       type: 'superadmin',
       children: [
         { path: '/activity',
@@ -53,7 +52,6 @@ const router = new Router({
       path: '/course',
       component: Home,
       name: '课程设置',
-      iconCls: 'el-icon-message',
       type: 'superadmin',
       children: [
         { path: '/course/content', component: Login, name: '公开课内容编辑' },
@@ -65,7 +63,6 @@ const router = new Router({
       path: '/',
       component: Home,
       name: '网点管理',
-      iconCls: 'el-icon-message',
       type: 'orgadmin',
       children: [{
         path: '/org/setting',
@@ -78,7 +75,6 @@ const router = new Router({
       path: '/',
       component: Home,
       name: '教学管理',
-      iconCls: 'el-icon-message',
       type: 'orgadmin',
       children: [
         {
@@ -105,7 +101,6 @@ const router = new Router({
       path: '/',
       component: Home,
       name: '报名管理',
-      iconCls: 'el-icon-message',
       type: 'orgadmin',
       children: [
         {
@@ -119,6 +114,26 @@ const router = new Router({
           name: '微信预约体验学生处理',
           type: 'orgadmin',
           component: Login
+        }
+      ]
+    },
+    {
+      path: '/',
+      component: Home,
+      name: '班级管理',
+      type: 'orgadmin',
+      children: [
+        {
+          path: '/clazz/1',
+          name: '芭蕾A班',
+          type: 'orgadmin',
+          component: TacherClazz
+        },
+        {
+          path: '/clazz/2',
+          name: '芭蕾B班',
+          type: 'orgadmin',
+          component: TacherClazz
         }
       ]
     }

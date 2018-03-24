@@ -47,7 +47,8 @@
           <el-input v-model="addActivity.address" auto-complete="off" placeholder="请输入活动地点"></el-input>
         </el-form-item>
         <el-form-item label="活动内容" prop="content">
-          <el-input v-model="addActivity.content" auto-complete="off" placeholder="请输入活动内容"></el-input>
+          <!-- <el-input v-model="addActivity.content" auto-complete="off" placeholder="请输入活动内容"></el-input> -->
+          <script id="ueditor" type="text/plain"></script>
         </el-form-item>
         <el-form-item label="活动视频" prop="videoUrl">
           <el-input v-model="addActivity.videoUrl" auto-complete="off" placeholder="请输入活动视频"></el-input>
@@ -80,6 +81,7 @@ import api from '../../api/index.js'
 export default {
   data () {
     return {
+      editor: null,
       activityLinkVisible: false,
       addActivityLink: {
         name: null,
@@ -110,6 +112,18 @@ export default {
   },
   created () {
     this.getActivityList()
+  },
+  mounted () {
+    // window.UE.delEditor('ueditor')
+    // this.editor = window.UE.getEditor('ueditor')
+    const _this = this
+    this.editor = UE.getEditor('editor', this.config)
+    this.editor.addListener('ready', function () {
+      _this.editor.setContent(_this.defaultMsg)
+    })
+  },
+  destroyed () {
+    this.editor.destroy()
   },
   methods: {
     getActivityList () {
@@ -184,10 +198,11 @@ export default {
         name: activity.name,
         time: activity.time,
         address: activity.address,
-        content: activity.content,
+        // content: activity.content,
         videoUrl: activity.vodeoUrl
       }
       this.activityType = 'edit'
+      this.editor.setContent(activity.content)
     },
 
     goBack () {
@@ -205,6 +220,7 @@ export default {
         if (valid) {
           this.addLoading = true
           let para = Object.assign({}, this.addActivity)
+          para.content = this.editor.getContent()
           if (this.addActivity.activityId) {
             api.activityEdit(para).then(res => {
               this.addLoading = false

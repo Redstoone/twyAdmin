@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-col> 
+    <el-col>
       <el-select v-model="course" placeholder="请选择课程">
         <el-option
           v-for="item in courseOptions"

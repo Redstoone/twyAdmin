@@ -11,7 +11,7 @@ import Course from '@/views/org/orgCourse'
 import Teacher from '@/views/org/orgTeacher'
 import Clazz from '@/views/org/orgClazz'
 import Baoming from '@/views/org/orgBaoming'
-import TacherClazz from '@/views/teacher/tacherClazz'
+// import TeacherClazz from '@/views/teacher/teacherClazz'
 
 Vue.use(Router)
 const router = new Router({
@@ -49,7 +49,7 @@ const router = new Router({
       ]
     },
     {
-      path: '/course',
+      path: '/',
       component: Home,
       name: '课程设置',
       type: 'superadmin',
@@ -121,26 +121,32 @@ const router = new Router({
       path: '/',
       component: Home,
       name: '班级管理',
-      type: 'orgadmin',
+      type: 'teacher',
       children: [
-        {
-          path: '/clazz/1',
-          name: '芭蕾A班',
-          type: 'orgadmin',
-          component: TacherClazz
-        },
-        {
-          path: '/clazz/2',
-          name: '芭蕾B班',
-          type: 'orgadmin',
-          component: TacherClazz
-        }
+        // {
+        //   path: '/clazz/1',
+        //   name: '芭蕾A班',
+        //   type: 'teacher',
+        //   component: TacherClazz
+        // },
+        // {
+        //   path: '/clazz/2',
+        //   name: '芭蕾B班',
+        //   type: 'teacher',
+        //   component: TacherClazz
+        // }
       ]
     }
   ]
 })
 
+// let registerRouteFresh = true
 router.beforeEach((to, from, next) => {
+  // if (registerRouteFresh) {
+  //   router.addRoutes(routes)
+  //   store.commit('setRuleRoutes', _routes)
+  //   registerRouteFresh = false
+  // }
   if (to.path === '/login') {
     sessionStorage.removeItem('user')
   }

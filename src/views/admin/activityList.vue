@@ -48,7 +48,7 @@
         </el-form-item>
         <el-form-item label="活动内容" prop="content">
           <!-- <el-input v-model="addActivity.content" auto-complete="off" placeholder="请输入活动内容"></el-input> -->
-          <script id="ueditor" type="text/plain"></script>
+          <script id="ueditor" name="ueditor" type="text/plain"></script>
         </el-form-item>
         <el-form-item label="活动视频" prop="videoUrl">
           <el-input v-model="addActivity.videoUrl" auto-complete="off" placeholder="请输入活动视频"></el-input>
@@ -115,10 +115,10 @@ export default {
   },
   mounted () {
     // window.UE.delEditor('ueditor')
-    // this.editor = window.UE.getEditor('ueditor')
     const _this = this
-    this.editor = UE.getEditor('editor', this.config)
-    this.editor.addListener('ready', function () {
+    _this.editor = window.UE.getEditor('ueditor')
+    // this.editor = UE.getEditor('ueditor', this.config)
+    _this.editor.addListener('ready', function () {
       _this.editor.setContent(_this.defaultMsg)
     })
   },

@@ -74,7 +74,7 @@
 import api from '../../api/index.js'
 
 export default {
-  name: 'Baoming',
+  name: 'Clazz',
   data () {
     return {
       studentList: [],

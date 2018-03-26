@@ -18,6 +18,7 @@
 
 <script>
 import api from '../../api/index.js'
+
 export default {
   name: 'login',
   data () {
@@ -61,8 +62,24 @@ export default {
                 sessionStorage.setItem('user', JSON.stringify(data))
                 if (data.role === 'superadmin') {
                   this.$router.push({ path: '/school/list' })
-                } else {
+                } else if (data.role === 'orgadmin') {
                   this.$router.push({ path: '/org/setting' })
+                } else if (data.role === 'teacher') {
+                  let _children = []
+                  if (data.clazzs.length > 0) {
+                    data.clazzs.forEach((item, index) => {
+                      _children.push({
+                        path: '/clazz/' + item.courseId,
+                        name: item.name,
+                        type: 'teacher',
+                        component: require('../teacher/teacherClazz.vue').default
+                      })
+                    })
+                    this.$router.options.routes[7].children = _children
+                    this.$router.addRoutes(this.$router.options.routes)
+                    console.log(this.$router)
+                    this.$router.push({ path: '/clazz/1' })
+                  }
                 }
               }
             } else {

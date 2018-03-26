@@ -144,5 +144,11 @@ export default {
   },
   orgCourseStudentDel (params) {
     return service(`/api/course/student/del`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  studentReportSend (params) {
+    return service(`/api/student/report/send`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  studentArrive (params) {
+    return service(`/api/student/arrive `, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   }
 }

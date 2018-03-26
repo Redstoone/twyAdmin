@@ -5,20 +5,9 @@
         {{collapsed?'':sysName}}
       </el-col>
       <el-col :span="4">
-        <!-- <div class="tools" @click.prevent="collapse">
-          <i class="fa fa-align-justify"></i>
-        </div> -->
       </el-col>
       <el-col :span="10" class="userinfo">
         {{sysUserName}} <div @click="logout" class="logout">退出登录</div>
-        <!-- <el-dropdown trigger="hover">
-          <span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>我的消息</el-dropdown-item>
-            <el-dropdown-item>设置</el-dropdown-item>
-            <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown> -->
       </el-col>
     </el-col>
     <el-col :span="24" class="main">
@@ -95,23 +84,13 @@ export default {
     onSubmit () {
       console.log('submit!')
     },
-    handleopen () {
-      // console.log('handleopen')
-    },
-    handleclose () {
-      // console.log('handleclose')
-    },
     handleselect (a, b) {},
     logout () {
       var _this = this
-      this.$confirm('确认退出吗?', '提示', {
-        // type: 'warning'
-      })
-        .then(() => {
-          sessionStorage.removeItem('user')
-          _this.$router.push('/login')
-        })
-        .catch(() => {})
+      this.$confirm('确认退出吗?', '提示', {}).then(() => {
+        sessionStorage.removeItem('user')
+        _this.$router.push('/login')
+      }).catch(() => {})
     },
     collapse () {
       this.collapsed = !this.collapsed

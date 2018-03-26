@@ -69,7 +69,7 @@ export default {
                   if (data.clazzs.length > 0) {
                     data.clazzs.forEach((item, index) => {
                       _children.push({
-                        path: '/clazz/' + item.courseId,
+                        path: '/clazz/' + item.id,
                         name: item.name,
                         type: 'teacher',
                         component: require('../teacher/teacherClazz.vue').default
@@ -77,7 +77,6 @@ export default {
                     })
                     this.$router.options.routes[7].children = _children
                     this.$router.addRoutes(this.$router.options.routes)
-                    console.log(this.$router)
                     this.$router.push({ path: '/clazz/1' })
                   }
                 }

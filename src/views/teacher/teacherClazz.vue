@@ -1,72 +1,35 @@
 <template>
   <section>
     <el-col :span="24" class="toolbar txt-right">
-      <el-button size="small" type="primary" @click="goBack">查看课程设置</el-button>
-      <el-button size="small" type="primary" @click="exportStudent">点到</el-button>
-      <el-button size="small" type="primary" @click="reportCardVisible = true">发布成绩单</el-button>
+      <el-button size="small" type="primary" @click="pointTo">点到</el-button>
+      <el-button size="small" type="primary" @click="reportSend">发布成绩单</el-button>
     </el-col>
 
     <el-col>
       <div class="">
         <el-table class="ctable" :data="studentList" stripe border highlight-current-row v-loading="listLoading" style="width: 100%">
-          <el-table-column prop="name" label="学号"></el-table-column>
+          <el-table-column prop="number" label="学号"></el-table-column>
           <el-table-column prop="name" label="姓名"></el-table-column>
           <el-table-column label="年龄/性别">
             <template slot-scope="scope">
               {{scope.row.age}} / {{scope.row.sex}}
             </template>
           </el-table-column>
-          <el-table-column label="父母名字/手机" sortable>
+          <el-table-column label="父母名字/手机">
             <template slot-scope="scope">
               {{scope.row.momname}} ({{scope.row.momphone}}) <br />
               {{scope.row.dadname}} ({{scope.row.dadphone}})
             </template>
           </el-table-column>
-          <el-table-column prop="cellphone" label="点到次数" sortable>
-            <template slot-scope="scope">
-              {{scope.row.time}},{{scope.row.duration}}
-            </template>
-          </el-table-column>
+          <el-table-column prop="arrive" label="点到次数"></el-table-column>
           <el-table-column label="成绩单">
             <template slot-scope="scope">
-              <span>已完成</span> <a hrefr="javascript:;" class="btn-option" size="mini" @click="handledistribution">查看/填写</a>
+              <span>{{scope.row.reportStatus}}</span> <a hrefr="javascript:;" class="btn-option" size="mini" @click="handledistribution">查看/填写</a>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </el-col>
-
-    <el-col class="sign-wrap">
-      <div class=""></div>
-      <el-table class="ctable" >
-        <el-table-column prop="name" label="学号"></el-table-column>
-        <el-table-column prop="name" label="姓名"></el-table-column>
-         <el-table-column prop="name" label="操作">
-           <template slot-scope="scope">
-              <div class="" v-for="(item, index) in [0, 2, 1]" :key="index">
-                <div @click="btnSing(item, scope.row)" class="sign-item" :class="['item'+item]"></div>
-              </div>
-            </template>
-         </el-table-column>
-      </el-table>
-    </el-col>
-
-    <el-dialog title="发布成绩单" :visible.sync="reportCardVisible" :close-on-click-modal="false" width="480px">
-      <div class="report-title">*芭蕾舞A班-成绩单</div>
-      <el-form :model="addDist" label-width="100px" ref="addDist">
-        <el-form-item label="发送时间：">
-          <el-date-picker
-            v-model="reportTime"
-            type="datetime"
-            placeholder="选择日期时间">
-          </el-date-picker>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click.native="reportCardVisible = false">取消</el-button>
-        <el-button type="primary" @click.native="reportCardSubmit" :loading="courseLoading">提交</el-button>
-      </div>
-    </el-dialog>
   </section>
 </template>
 
@@ -77,6 +40,7 @@ export default {
   name: 'Clazz',
   data () {
     return {
+      clazzId: null,
       studentList: [],
       distVisible: false,
       listLoading: false,
@@ -86,7 +50,6 @@ export default {
         name: [{ required: true, message: '请输入课程名称', trigger: 'blur' }]
       },
       name: 1,
-      reportCardVisible: false,
       reportTime: null,
       ctable: [
         {
@@ -96,7 +59,17 @@ export default {
       ]
     }
   },
+  created () {
+    this.clazzId = this.$route.path.split('/')[2]
+    this.getStudentList(this.clazzId)
+  },
   methods: {
+    getStudentList (clazzId) {
+      api.orgStudentList({clazzId: clazzId}).then(res => {
+        this.studentList = res.data.array
+      })
+    },
+
     handleDel (idx, row) {
       this.$confirm('确认删除该记录吗?', '提示', {
         type: 'warning'
@@ -119,9 +92,29 @@ export default {
     handledistribution () {
       this.distVisible = true
     },
-    reportCardSubmit () {
-      console.log(this.reportTime)
-      this.reportCardVisible = false
+    pointTo () {
+      window.open('/student/arrive?clazz=' + this.clazzId)
+    },
+    reportSend () {
+      this.$confirm('确认要发送成绩单吗?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        api.studentReportSend({clazzId: this.clazzId}).then(res => {
+          console.log(res)
+          if (res.status === 'succ') {
+            this.$notify({
+              message: '发送成绩单成功',
+              type: 'success'
+            })
+          } else {
+            this.$notify({
+              message: res.message,
+              type: 'error',
+              duration: 0
+            })
+          }
+        })
+      })
     }
   }
 }

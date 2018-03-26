@@ -38,7 +38,7 @@
           <el-input v-model="editForm.adminname" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="管理员密码" prop="password">
-          <el-input type="password" v-model="editForm.password" auto-complete="off"></el-input>
+          <el-input v-model="editForm.password" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -155,7 +155,7 @@ export default {
         address: this.orgList[index].address,
         telphone: this.orgList[index].telphone,
         adminname: this.orgList[index].adminName,
-        password: this.orgList[index].password
+        password: this.orgList[index].adminPwd
       }
     },
     // 显示新增界面

@@ -113,7 +113,7 @@ const router = new Router({
           path: '/org/order',
           name: '微信预约体验学生处理',
           type: 'orgadmin',
-          component: Login
+          component: Baoming
         }
       ]
     },

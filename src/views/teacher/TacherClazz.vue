@@ -91,7 +91,7 @@ export default {
       ctable: [
         {
           name: '123',
-          number: '123456',
+          number: '123456'
         }
       ]
     }
@@ -121,7 +121,7 @@ export default {
     },
     reportCardSubmit () {
       console.log(this.reportTime)
-      thsi.reportCardVisible = false
+      this.reportCardVisible = false
     }
   }
 }

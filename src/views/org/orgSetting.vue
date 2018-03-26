@@ -121,6 +121,7 @@ export default {
   color:#000;
   border:1px solid #e1e1e1;
   position: relative;
+  margin-top: 20px;
 }
 .org-wrap p{
   margin: 20px 0;

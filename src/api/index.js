@@ -131,5 +131,18 @@ export default {
   },
   orgStudentExport (params) {
     return service(`/api/student/export`, params, 'GET')
+  },
+
+  orgCourseStudentList (params) {
+    return service(`/api/course/student/list`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  orgCourseClazz (params) {
+    return service(`/api/course/clazzs`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  orgCourseAddClazz (params) {
+    return service(`/api/course/add/clazz`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  orgCourseStudentDel (params) {
+    return service(`/api/course/student/del`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   }
 }

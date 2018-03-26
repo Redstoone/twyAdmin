@@ -11,8 +11,8 @@ const service = function (url, data, method = 'GET', headers = {}) {
   return new Promise((resolve, reject) => {
     let options = {
       'method': method,
-      // 'url': 'http://121.196.208.151:9100' + process.env.BASE_API + url,
-      'url': process.env.BASE_API + url,
+      'url': 'http://121.196.208.151:9100' + process.env.BASE_API + url,
+      // 'url': process.env.BASE_API + url,
       'headers': headers && typeof headers === 'object' ? headers : {}
     }
     options.headers['X-Requested-Page'] = 'json'

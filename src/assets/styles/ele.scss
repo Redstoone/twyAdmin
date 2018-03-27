@@ -22,3 +22,21 @@
 .el-dialog__footer{
   text-align: center;
 }
+.sgtable th.is-leaf{
+  background:#283040;
+  color:#fff;
+  border-color: #283040;
+}
+.sgtable th.is-leaf:nth-child(3){
+  color:#f5a623; 
+  font-size: 12px;
+}
+.el-upload--picture-card{
+  width: 96px;
+  height: 96px;
+  line-height: 96px;
+}
+.el-upload-list--picture-card .el-upload-list__item{
+  height: 96px;
+  width: 96px
+}

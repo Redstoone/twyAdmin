@@ -13,9 +13,9 @@
     <el-col :span="24" class="main">
       <aside :class="collapsed?'menu-collapsed':'menu-expanded'">
         <!--导航菜单-->
-        <el-menu :default-active="$route.path" class="el-menu-vertical-demo" @open="handleopen" @close="handleclose" @select="handleselect"
+        <el-menu :default-active="$route.path" class="el-menu-vertical-demo" @select="handleselect"
            unique-opened router v-show="!collapsed">
-          <template v-for="(item,index) in $router.options.routes" v-if="item.type == roleType">
+          <template v-for="(item,index) in $router.options.routes" v-if="item.type == roleType && !item.hidden">
             <el-submenu :index="index+''" v-if="!item.leaf" :key="index">
               <template slot="title">{{item.name}}</template>
               <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>

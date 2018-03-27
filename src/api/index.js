@@ -150,5 +150,11 @@ export default {
   },
   studentArrive (params) {
     return service(`/api/student/arrive `, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  studentReport (params) {
+    return service(`/api/student/report`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  studentReportEdit (params) {
+    return service(`/api/student/report/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   }
 }

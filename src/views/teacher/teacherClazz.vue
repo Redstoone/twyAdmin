@@ -24,7 +24,7 @@
           <el-table-column prop="arrive" label="点到次数"></el-table-column>
           <el-table-column label="成绩单">
             <template slot-scope="scope">
-              <span>{{scope.row.reportStatus}}</span> <a hrefr="javascript:;" class="btn-option" size="mini" @click="handledistribution">查看/填写</a>
+              <span>{{scope.row.reportStatus}}</span> <a hrefr="javascript:;" class="btn-option" size="mini" @click="handleReoprt(scope.row)">查看/填写</a>
             </template>
           </el-table-column>
         </el-table>
@@ -89,18 +89,18 @@ export default {
         })
       })
     },
-    handledistribution () {
+    handleReoprt (row) {
       this.distVisible = true
+      window.open('/student/report?sid=' + row.studentId)
     },
     pointTo () {
-      window.open('/student/arrive?clazz=' + this.clazzId)
+      window.open('/student/arrive?clazz=' + this.clazzId + '&name=' + document.querySelector('.title').innerText)
     },
     reportSend () {
       this.$confirm('确认要发送成绩单吗?', '提示', {
         type: 'warning'
       }).then(() => {
         api.studentReportSend({clazzId: this.clazzId}).then(res => {
-          console.log(res)
           if (res.status === 'succ') {
             this.$notify({
               message: '发送成绩单成功',

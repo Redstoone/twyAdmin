@@ -128,19 +128,19 @@
         </el-form-item>
         <el-form-item label="课时安排" prop="num">
           <el-col :span="8">
-            <el-col :span="6"> 次数：</el-col>
+            <span style="float: left;"> 次数：</span>
             <el-col :span="17">
               <el-input  v-model="addClass.num" auto-complete="off" placeholder="请输入课时安排"></el-input>
             </el-col>
           </el-col>
           <el-col :span="8">
-             <el-col :span="6"> 时间：</el-col>
+             <span style="float: left;"> 时间：</span>
             <el-col :span="17">
               <el-input v-model="addClass.time" auto-complete="off" placeholder="请输入课时安排"></el-input>
             </el-col>
           </el-col>
           <el-col :span="8">
-            <el-col :span="10"> 几点到几点：</el-col>
+            <span style="float: left;"> 几点到几点：</span>
             <el-col :span="14">
               <el-input v-model="addClass.duration" auto-complete="off" placeholder="请输入课时安排"></el-input>
             </el-col>

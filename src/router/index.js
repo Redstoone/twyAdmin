@@ -13,6 +13,7 @@ import Clazz from '@/views/org/orgClazz'
 import Baoming from '@/views/org/orgBaoming'
 // import TeacherClazz from '@/views/teacher/teacherClazz'
 import StudentArrive from '@/views/teacher/studentArrive'
+import SchoolReport from '@/views/teacher/schoolReport'
 
 Vue.use(Router)
 const router = new Router({
@@ -141,8 +142,16 @@ const router = new Router({
     {
       path: '/student/arrive',
       name: '点到',
+      hidden: true,
       type: 'teacher',
       component: StudentArrive
+    },
+    {
+      path: '/student/report',
+      name: '成绩单',
+      hidden: true,
+      type: 'teacher',
+      component: SchoolReport
     }
   ]
 })

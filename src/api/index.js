@@ -156,5 +156,12 @@ export default {
   },
   studentReportEdit (params) {
     return service(`/api/student/report/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+
+  studentPayStatus (params) {
+    return service(`/api/course/student/paystatus`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  studentContantStatus (params) {
+    return service(`/api/course/student/contactstatus`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   }
 }

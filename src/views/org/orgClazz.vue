@@ -6,7 +6,7 @@
     <el-col :span="24" class="toolbar txt-right" v-else-if="classType == 'studentList'">
       <el-button size="small" type="primary" @click="goBack">取消返回</el-button>
       <el-button size="small" type="primary" @click="exportStudent">导出学生</el-button>
-      <el-button size="small" type="primary" @click="handleAddStudent(clazzId)">添加学生</el-button>
+      <el-button size="small" type="primary" @click="handleAddStudent(clazzId)">保存</el-button>
     </el-col>
     <el-col :span="24" class="toolbar txt-right" v-else>
       <el-button size="small" type="primary" @click="goBack">取消返回</el-button>

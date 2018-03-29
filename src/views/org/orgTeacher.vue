@@ -39,13 +39,10 @@
         <el-form-item label="头像" prop="name">
           <el-upload
             class="avatar-uploader"
-            action="http://oss.iclass.cn/formFile"
-            :headers="{'Content-Type': 'application/x-www-form-urlencoded'}"
+            action="/localapi/api/upload"
             :show-file-list="false"
-            name="qqfile"
             :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-            :data="{bucketName:'smallfiles', source: 'SOOC'}">
+            :before-upload="beforeAvatarUpload">
             <img v-if="imageUrl" :src="imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -87,7 +84,7 @@ export default {
         cellphone: [{ required: true, message: '请选手机', trigger: 'blur' }],
         IDcard: [{ required: true, message: '请输入身份证', trigger: 'blur' }]
       },
-      imageUrl: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
+      imageUrl: '',
       courseLoading: false
     }
   },
@@ -114,7 +111,8 @@ export default {
       this.courseVisible = true
     },
     handleAvatarSuccess (res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
+      console.log(res, file)
+      this.imageUrl = file.response
     },
     beforeAvatarUpload (file) {
       const isJPG = file.type === 'image/jpeg'
@@ -182,33 +180,10 @@ export default {
 </script>
 
 <style scoped>
-.avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 150px;
-    height: 150px;
-    line-height: 150px;
-    text-align: center;
-  }
-  .avatar {
-    width: 150px;
-    height: 150px;
-    display: block;
-  }
-  .touxiang{
-    border:1px solid #979797;
-    width:36px;
-    height:36px;
-    border-radius:100%;
-  }
+.touxiang{
+  border:1px solid #979797;
+  width:36px;
+  height:36px;
+  border-radius:100%;
+}
 </style>

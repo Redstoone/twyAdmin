@@ -25,13 +25,14 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="danger" size="mini" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+            <a hrefr="javascript:;" class="btn-option" size="mini" @click="handleEdit(scope.row)">编辑</a>
+            <a hrefr="javascript:;" class="btn-option" size="mini" @click="handleDel(scope.$index, scope.row)">删除</a>
           </template>
         </el-table-column>
       </el-table>
     </el-col>
 
-    <el-dialog title="添加老师" :visible.sync="courseVisible" :close-on-click-modal="false" width="480px">
+    <el-dialog title="添加/编辑教师" :visible.sync="courseVisible" :close-on-click-modal="false" width="480px">
       <el-form :model="addCourse" label-width="100px" :rules="addCourseRules" ref="addCourse">
         <el-form-item label="姓名" prop="name">
           <el-input v-model="addCourse.name" auto-complete="off" placeholder="请输入姓名"></el-input>
@@ -85,7 +86,8 @@ export default {
         IDcard: [{ required: true, message: '请输入身份证', trigger: 'blur' }]
       },
       imageUrl: '',
-      courseLoading: false
+      courseLoading: false,
+      teacherId: null
     }
   },
   created () {
@@ -109,9 +111,9 @@ export default {
     },
     handleAddTeacher  () {
       this.courseVisible = true
+      this.teacherId = null
     },
     handleAvatarSuccess (res, file) {
-      console.log(res, file)
       this.imageUrl = file.response
     },
     beforeAvatarUpload (file) {
@@ -132,24 +134,46 @@ export default {
           this.courseLoading = true
           let para = Object.assign({}, this.addCourse)
           para.imgUrl = this.imageUrl
-          api.orgTeacherAdd(para).then((res) => {
-            if (res.status === 'succ') {
-              this.courseLoading = false
-              this.$notify({
-                message: '添加教师成功',
-                type: 'success'
-              })
-              this.$refs['addCourse'].resetFields()
-              this.courseVisible = false
-              this.getTeacherList()
-            } else {
-              this.$notify({
-                message: res.message,
-                type: 'error',
-                duration: 0
-              })
-            }
-          })
+          if (this.teacherId) {
+            para.teacherId = this.teacherId
+            api.orgTeacherEdit(para).then((res) => {
+              if (res.status === 'succ') {
+                this.courseLoading = false
+                this.$notify({
+                  message: '编辑教师成功',
+                  type: 'success'
+                })
+                this.$refs['addCourse'].resetFields()
+                this.courseVisible = false
+                this.getTeacherList()
+              } else {
+                this.$notify({
+                  message: res.message,
+                  type: 'error',
+                  duration: 0
+                })
+              }
+            })
+          } else {
+            api.orgTeacherAdd(para).then((res) => {
+              if (res.status === 'succ') {
+                this.courseLoading = false
+                this.$notify({
+                  message: '添加教师成功',
+                  type: 'success'
+                })
+                this.$refs['addCourse'].resetFields()
+                this.courseVisible = false
+                this.getTeacherList()
+              } else {
+                this.$notify({
+                  message: res.message,
+                  type: 'error',
+                  duration: 0
+                })
+              }
+            })
+          }
         }
       })
     },
@@ -171,6 +195,16 @@ export default {
           }
         })
       })
+    },
+    handleEdit (row) {
+      console.log(row)
+      this.courseVisible = true
+      this.addCourse.name = row.name
+      this.addCourse.cellphone = row.cellphone
+      this.addCourse.IDcard = row.IDcard
+      this.addCourse.imgUrl = row.imgUrl
+      this.imageUrl = row.imgUrl
+      this.teacherId = row.teacherId
     },
     studentView (teacherId) {
       console.log('查看学生')

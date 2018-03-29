@@ -97,6 +97,9 @@ export default {
   orgTeacherAdd (params) {
     return service(`/api/teacher/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   },
+  orgTeacherEdit (params) {
+    return service(`/api/teacher/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
   orgTeacherList (params) {
     return service(`/api/teacher/list`, params, 'GET')
   },

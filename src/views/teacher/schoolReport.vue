@@ -37,19 +37,23 @@
         <p class="p2">成长足迹</p>
         <div class="report-img">
           <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="/localapi/api/upload"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
-            :file-list="imgList">
+            :before-upload="beforeUpload"
+            :on-success="handlePictureSuccess"
+            :on-change="handleChange"
+            :file-list="fileList">
             <i class="el-icon-plus"></i>
           </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="">
-          </el-dialog>
         </div>
       </div>
     </div>
+    <div class="report-bg"></div>
+    <el-dialog :visible.sync="dialogVisible">
+      <img width="100%" :src="dialogImageUrl">
+    </el-dialog>
   </section>
 </template>
 
@@ -72,7 +76,9 @@ export default {
       dialogImageUrl: '',
       dialogVisible: false,
       checked: false,
-      imgList: []
+      imgList: [],
+      imageList: [],
+      fileList: []
     }
   },
   created () {
@@ -94,7 +100,13 @@ export default {
           } else {
             this.checked = false
           }
-          this.imgList = res.data.imgUrls ? res.data.imgUrls.split(',') : []
+          this.imageList = res.data.imgUrls ? res.data.imgUrls.split(',') : []
+          this.imageList.forEach(item => {
+            this.fileList.push({url: item})
+          })
+          if (this.imageList.length >= 4) {
+            document.querySelector('.el-upload--picture-card').style.display = 'none'
+          }
         }
       })
     },
@@ -103,7 +115,7 @@ export default {
         studentId: this.sId,
         comment: this.comment,
         starComment: this.starComment,
-        imgUrls: this.imgList.join(','),
+        imgUrls: this.imageList.join(','),
         status: this.checked ? '已完成' : '已填写未完成'
       }).then(res => {
         if (res.status === 'succ') {
@@ -123,34 +135,77 @@ export default {
     goback () {
       window.close()
     },
+    // 上传图片
+    beforeUpload (file) {
+      const isLt2M = file.size / 1024 / 1024 < 1
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 1MB!')
+      }
+      return isLt2M
+    },
     handleRemove (file, fileList) {
-      console.log(file, fileList)
+      this.imageList = []
+      fileList.forEach(item => {
+        if (file && file.response) {
+          this.imageList.push(item.response)
+        } else {
+          this.imageList.push(item.url)
+        }
+      })
+      this.fileList = fileList
+      if (this.imageList.length < 4) {
+        document.querySelector('.el-upload--picture-card').style.display = 'inline-block'
+      }
+    },
+    handlePictureSuccess (res, file) {
+      this.imageList.push(file.response)
+      this.fileList.push(file)
     },
     handlePictureCardPreview (file) {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
+    },
+    handleChange (file, fileList) {
+      if (fileList.length >= 4) {
+        document.querySelector('.el-upload--picture-card').style.display = 'none'
+      } else {
+        this.fileList = fileList
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+.report-bg{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: #bfcbd1;
+  z-index: 0;
+}
 .cheader{
-  height: 50px;
+  height: 70px;
   border-bottom: 1px solid #e1e1e1;
   line-height: 50px;
   font-size: 20px;
   position: relative;
-  width: 94%;
-  margin: 20px auto 0;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 3% 0;
+  box-sizing: border-box;
   text-align: center;
+  z-index: 11;
+  background-color: #fff;
 }
 .cheader .goback{
   position: absolute;
   font-size:14px;
   color:#4a4a4a;
-  left: 15px;
-  top: 0;
+  left: 3%;
+  top: 20px;
   cursor: pointer;
 }
 .cheader .goback:hover{
@@ -158,9 +213,9 @@ export default {
   color: blue;
 }
 .report-wrap{
-  background-color: #bfcbd1;
   padding: 10px 0;
   position: relative;
+  z-index: 10;
 }
 .report-wrap .report-cont{
   background:#fff;

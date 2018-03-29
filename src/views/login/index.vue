@@ -77,7 +77,7 @@ export default {
                     })
                     this.$router.options.routes[7].children = _children
                     this.$router.addRoutes(this.$router.options.routes)
-                    this.$router.push({ path: '/clazz/1' })
+                    this.$router.push({ path: '/clazz/' + data.clazzs[0].id })
                   }
                 }
               }

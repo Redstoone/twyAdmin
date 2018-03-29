@@ -89,7 +89,11 @@ export default {
           this.studentNum = res.data.studentNum
           this.comment = res.data.comment
           this.starComment = res.data.starComment
-          this.checked = res.data.status === '已完成' ? true : false
+          if (res.data.status === '已完成') {
+            this.checked = true
+          } else {
+            this.checked = false
+          }
           this.imgList = res.data.imgUrls ? res.data.imgUrls.split(',') : []
         }
       })

@@ -50,16 +50,16 @@ const router = new Router({
         { path: '/news', component: NewsList, name: '新闻公告管理' }
       ]
     },
-    {
-      path: '/',
-      component: Home,
-      name: '课程设置',
-      type: 'superadmin',
-      children: [
-        { path: '/course/content', component: Login, name: '公开课内容编辑' },
-        { path: '/course/intro', component: Login, name: '课程介绍编辑' }
-      ]
-    },
+    // {
+    //   path: '/',
+    //   component: Home,
+    //   name: '课程设置',
+    //   type: 'superadmin',
+    //   children: [
+    //     { path: '/course/content', component: Login, name: '公开课内容编辑' },
+    //     { path: '/course/intro', component: Login, name: '课程介绍编辑' }
+    //   ]
+    // },
 
     {
       path: '/',

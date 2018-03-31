@@ -167,5 +167,8 @@ export default {
   },
   studentContantStatus (params) {
     return service(`/api/course/student/contactstatus`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  teacherClazz (params) {
+    return service(`/api/teacher/clazz`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   }
 }

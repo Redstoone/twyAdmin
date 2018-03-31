@@ -6,43 +6,46 @@
     <el-col :span="24" class="toolbar txt-right" v-else-if="classType == 'studentList'">
       <el-button size="small" type="primary" @click="goBack">取消返回</el-button>
       <el-button size="small" type="primary" @click="exportStudent">导出学生</el-button>
-      <el-button size="small" type="primary" @click="handleAddStudent(clazzId)">保存</el-button>
+      <el-button size="small" type="primary" @click="handleAddStudent(clazzId, 1)">添加学生</el-button>
     </el-col>
     <el-col :span="24" class="toolbar txt-right" v-else>
       <el-button size="small" type="primary" @click="goBack">取消返回</el-button>
-      <el-button size="small" type="primary" @click="createClass">添加学生</el-button>
+      <el-button size="small" type="primary" @click="createClass">保存</el-button>
     </el-col>
 
     <el-col class="" v-if="classType == 'list'">
-      <div class="" v-for="(item, index) in clazzList" :key="index">
-        <div class="clazz-name">{{item.name}} ({{item.clazzs.length}})</div>
-        <el-table class="ctable" :data="item.clazzs" stripe border highlight-current-row v-loading="listLoading" style="width: 100%" v-if="item.clazzs.length > 0">
-        <el-table-column prop="name" label="班级">
-        </el-table-column>
-        <el-table-column label="老师">
-          <template slot-scope="scope">
-            {{scope.row.teacherAName}} / {{scope.row.teacherBName}}
-          </template>
-        </el-table-column>
-        <el-table-column label="学生人数" sortable>
-          <template slot-scope="scope">
-            {{scope.row.studentNum}} <a hrefr="javascript:;" class="btn-option" @click="viewStudent(scope.row.id)">查看点到/成绩</a>
-          </template>
-        </el-table-column>
-        <el-table-column prop="cellphone" label="上课时间" sortable>
-          <template slot-scope="scope">
-            {{scope.row.time}},{{scope.row.duration}}
-          </template>
-        </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <a hrefr="javascript:;" class="btn-option" size="mini" @click="handleDel(scope.$index, scope.row)">删除</a>
-            <a hrefr="javascript:;" class="btn-option" size="mini" @click="handleEdit(scope.row)">编辑</a>
-            <a hrefr="javascript:;" class="btn-option" size="mini" @click="handleAddStudent(scope.row.id)">添加学生</a>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div v-if="clazzList.length > 0">
+        <div class="" v-for="(item, index) in clazzList" :key="index" >
+          <div class="clazz-name">{{item.name}} ({{item.clazzs.length}})</div>
+          <el-table class="ctable" :data="item.clazzs" stripe border highlight-current-row v-loading="listLoading" style="width: 100%" v-if="item.clazzs.length > 0">
+          <el-table-column prop="name" label="班级">
+          </el-table-column>
+          <el-table-column label="老师">
+            <template slot-scope="scope">
+              {{scope.row.teacherAName}} / {{scope.row.teacherBName}}
+            </template>
+          </el-table-column>
+          <el-table-column label="学生人数" sortable>
+            <template slot-scope="scope">
+              {{scope.row.studentNum}}人&nbsp;<a hrefr="javascript:;" class="btn-option" @click="viewStudent(scope.row.id)">查看点到/成绩</a>
+            </template>
+          </el-table-column>
+          <el-table-column prop="cellphone" label="上课时间" sortable>
+            <template slot-scope="scope">
+              {{scope.row.time}},&nbsp;{{scope.row.duration}}
+            </template>
+          </el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <a hrefr="javascript:;" class="btn-option" size="mini" @click="handleDel(scope.$index, scope.row)">删除</a>
+              <a hrefr="javascript:;" class="btn-option" size="mini" @click="handleEdit(scope.row)">编辑</a>
+              <a hrefr="javascript:;" class="btn-option" size="mini" @click="handleAddStudent(scope.row.id, 2)">添加学生</a>
+            </template>
+          </el-table-column>
+        </el-table>
+        </div>
       </div>
+      <div class="no-data" v-else>没有数据</div>
     </el-col>
     <el-col class="" v-else-if="classType == 'studentList'">
       <el-table class="ctable" :data="studentList" stripe border highlight-current-row v-loading="listLoading" style="width: 100%">
@@ -65,7 +68,7 @@
             {{scope.row.momname}}<br/>{{scope.row.momphone}}
           </template>
         </el-table-column>
-        <el-table-column prop="cellphone" label="现就读学校/住址">
+        <el-table-column prop="cellphone" label="就读学校/住址">
           <template slot-scope="scope">
             {{scope.row.dadname}}<br/>{{scope.row.dadphone}}
           </template>
@@ -73,7 +76,7 @@
         <el-table-column prop="arrive" label="点到次数"></el-table-column>
         <el-table-column prop="cellphone" label="成绩">
           <template slot-scope="scope">
-            <a hrefr="javascript:;" class="btn-option" size="mini" @click="handleAddStudent(scope.row.id)">查看</a>
+            <a hrefr="javascript:;" class="btn-option" size="mini" @click="viewReport(scope.row)">查看</a>
           </template>
         </el-table-column>
         <el-table-column prop="cellphone" label="删除">
@@ -253,7 +256,8 @@ export default {
         address: [{ required: true, message: '请输入家庭住址', trigger: 'blur' }]
       },
       clazzId: null,
-      studentList: []
+      studentList: [],
+      addStudentType: 2
     }
   },
   created () {
@@ -304,6 +308,7 @@ export default {
         time: null,
         duration: null
       }
+      this.getClazzList()
     },
     createClass () {
       this.$refs.addClass.validate(valid => {
@@ -377,7 +382,7 @@ export default {
       this.classType = 'studentList'
       this.getStudentList()
     },
-    handleAddStudent (clazzId) {
+    handleAddStudent (clazzId, type) {
       this.clazzVisible = true
       this.addStudent = {
         clazzId: clazzId,
@@ -393,6 +398,7 @@ export default {
         nursery: null,
         address: null
       }
+      this.addStudentType = type
     },
     studentSubmit () {
       this.$refs.addStudent.validate(valid => {
@@ -408,7 +414,11 @@ export default {
               })
               this.$refs['addStudent'].resetFields()
               this.clazzVisible = false
-              this.getStudentList()
+              if (this.addStudentType === 2) {
+                this.getClazzList()
+              } else {
+                this.getStudentList()
+              }
             } else {
               this.$notify({
                 message: res.message,
@@ -422,9 +432,16 @@ export default {
     },
     exportStudent () {
       api.orgStudentExport({clazzId: this.clazzId}).then(res => {
-        console.log(res)
+        if (res.status === 'succ') {
+          window.open(res.data.value)
+        } else {
+          this.$notify({
+            message: res.message,
+            type: 'error',
+            duration: 0
+          })
+        }
       })
-      // window.open('/api/student/export?clazzId=' + this.clazzId)
     },
     getStudentList () {
       api.orgStudentList({clazzId: this.clazzId}).then(res => {
@@ -449,6 +466,9 @@ export default {
           }
         })
       })
+    },
+    viewReport (row) {
+
     }
   }
 }

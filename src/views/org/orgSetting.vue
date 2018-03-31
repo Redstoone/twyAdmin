@@ -4,9 +4,9 @@
       <div class="edit-wrap">
         <span @click="editFormVisible = true">修改编辑</span>
       </div>
-      <p>* 网点名称：{{editForm.name}}</p>
-      <p>* 网点地址：{{editForm.address}}</p>
-      <p>* 联系电话：{{editForm.telphone}}</p>
+      <p><span class="require">*</span> 网点名称：{{editForm.name}}</p>
+      <p><span class="require">*</span> 网点地址：{{editForm.address}}</p>
+      <p><span class="require">*</span> 联系电话：{{editForm.telphone}}</p>
     </div>
 
     <!--编辑界面-->
@@ -26,7 +26,7 @@
           <span>{{editForm.adminname}}</span>
         </el-form-item>
         <el-form-item label="管理员密码" prop="password">
-          <el-input type="password" v-model="editForm.password" auto-complete="off"></el-input>
+          <el-input v-model="editForm.password" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

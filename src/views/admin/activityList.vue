@@ -48,7 +48,7 @@
         </el-form-item>
         <el-form-item label="活动内容" prop="content">
           <!-- <el-input v-model="addActivity.content" auto-complete="off" placeholder="请输入活动内容"></el-input> -->
-          <script id="ueditor" name="ueditor" type="text/plain"></script>
+          <script id="ueditor" name="ueditor" type="text/plain" class="ue-content"></script>
         </el-form-item>
         <el-form-item label="活动视频" prop="videoUrl">
           <el-input v-model="addActivity.videoUrl" auto-complete="off" placeholder="请输入活动视频"></el-input>
@@ -128,8 +128,6 @@ export default {
       this.activityType = 'add'
       if (!this.editor) {
         this.editor = window.UE.getEditor('ueditor')
-        // console.log(this.editor)
-        // this.editor.setContent('')
       } else {
         this.editor.setContent('')
       }

@@ -10,7 +10,7 @@
       <el-button size="small" type="primary" @click="createActivity">发布</el-button>
     </el-col>
 
-    <el-col class="" :loading="listLoading" v-if="activityType == 'list'">
+    <el-col class="" :loading="listLoading" v-show="activityType == 'list'">
       <ul class="activity-list">
         <li v-for="(item, index) in activityList" :key="index">
           <div v-if="item.type == 2">
@@ -35,13 +35,14 @@
       </ul>
     </el-col>
 
-    <el-col class="" :loading="listLoading" v-else>
+    <el-col class="" :loading="listLoading" v-show="activityType != 'list'">
       <el-form :model="addActivity" label-width="100px" :rules="addActivityRules" ref="addActivity">
         <el-form-item label="名称" prop="name">
           <el-input v-model="addActivity.name" auto-complete="off" placeholder="请输入活动名称"></el-input>
         </el-form-item>
         <el-form-item label="内容" prop="content">
-          <el-input v-model="addActivity.content" auto-complete="off" placeholder="请输入活动内容"></el-input>
+          <!-- <el-input v-model="addActivity.content" auto-complete="off" placeholder="请输入活动内容"></el-input> -->
+          <script id="ueditor" name="ueditor" type="text/plain" class="ue-content"></script>
         </el-form-item>
         <el-form-item label="视频" prop="videoUrl">
           <el-input v-model="addActivity.videoUrl" auto-complete="off" placeholder="请输入活动视频"></el-input>
@@ -111,6 +112,12 @@ export default {
     },
     handleAddActivity () {
       this.activityType = 'add'
+      if (!this.editor) {
+        this.editor = window.UE.getEditor('ueditor')
+      } else {
+        this.editor.setContent('')
+      }
+      this.$refs['addActivity'].resetFields()
       this.getActivityList()
     },
     handleAddActivityLink () {
@@ -166,6 +173,7 @@ export default {
         link: activity.link
       }
       this.activityLinkVisible = true
+      this.editor.setContent(activity.content)
     },
 
     editActivity (activity) {
@@ -189,11 +197,11 @@ export default {
       }
     },
     createActivity () {
+      this.addActivity.content = this.editor.getContent()
       this.$refs.addActivity.validate(valid => {
         if (valid) {
           this.addLoading = true
           let para = Object.assign({}, this.addActivity)
-          console.log(para)
           if (this.addActivity.newsId) {
             api.newsEdit(para).then(res => {
               this.addLoading = false

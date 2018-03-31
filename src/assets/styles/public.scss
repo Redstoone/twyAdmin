@@ -285,3 +285,17 @@ html{
   min-height: 100%;
   position: relative;
 }
+
+.edui-editor,
+.edui-editor-iframeholder{
+  width: 100% !important;
+}
+.edui-box{
+  line-height: 20px;
+}
+.edui-toolbar>div{
+  float: left;
+}
+.ue-content{
+  min-height: 250px;
+}

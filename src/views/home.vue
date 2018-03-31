@@ -1,10 +1,11 @@
 <template>
   <el-row class="container">
     <el-col :span="24" class="header">
-      <el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
+      <el-col :span="14" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
+        <img src="../assets/imgs/logo.png">
         {{collapsed?'':sysName}}
-      </el-col>
-      <el-col :span="4">
+
+        <span class="role-name">{{roleName}}</span>
       </el-col>
       <el-col :span="10" class="userinfo">
         {{sysUserName}} <div @click="logout" class="logout">退出登录</div>
@@ -63,7 +64,8 @@
 export default {
   data () {
     return {
-      sysName: '后台管理',
+      sysName: '宁波天唯艺星教育',
+      roleName: '',
       collapsed: false,
       sysUserName: '',
       sysUserAvatar: '',
@@ -88,7 +90,7 @@ export default {
     logout () {
       var _this = this
       this.$confirm('确认退出吗?', '提示', {}).then(() => {
-        sessionStorage.removeItem('user')
+        localStorage.removeItem('user')
         _this.$router.push('/login')
       }).catch(() => {})
     },
@@ -102,12 +104,21 @@ export default {
     }
   },
   mounted () {
-    var user = sessionStorage.getItem('user')
+    var user = localStorage.getItem('user')
+    console.log(user)
     if (user) {
       user = JSON.parse(user)
       this.sysUserName = user.name || ''
       this.sysUserAvatar = user.avatar || ''
       this.roleType = user.role || 'superadmin'
+
+      if (user.role === 'superadmin') {
+        this.roleName = '全站管理'
+      } else if (user.role === 'orgadmin') {
+        this.roleName = '网点管理员'
+      } else if (user.role === 'teacher') {
+        this.roleName = '普通老师'
+      }
     }
   }
 }
@@ -146,23 +157,24 @@ export default {
       height: 60px;
       font-size: 18px;
       padding-left: 20px;
-      text-align: center;
+      text-align: left;
       padding-right: 20px;
-      border-color: rgba(238, 241, 146, 0.3);
-      border-right-width: 1px;
-      border-right-style: solid;
+      .role-name{
+        font-size: 14px;
+        margin-left: 50px;
+      }
       img {
         width: 40px;
         float: left;
-        margin: 10px 10px 10px 18px;
+        margin: 10px 10px 10px 0;
       }
       .txt {
         color: #fff;
       }
     }
-    .logo-width {
-      width: 230px;
-    }
+    // .logo-width {
+    //   width: 230px;
+    // }
     .logo-collapse-width {
       width: 60px;
     }

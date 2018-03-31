@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-form class="card-box login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-      <h3 class="title">后台管理系统登录</h3>
+      <h3 class="title">宁波天唯艺星教育<br />后台管理系统</h3>
 
       <el-form-item prop="username">
         <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="账号" />
@@ -59,7 +59,7 @@ export default {
                   type: 'error'
                 })
               } else {
-                sessionStorage.setItem('user', JSON.stringify(data))
+                localStorage.setItem('user', JSON.stringify(data))
                 if (data.role === 'superadmin') {
                   this.$router.push({ path: '/school/list' })
                 } else if (data.role === 'orgadmin') {
@@ -151,7 +151,8 @@ export default {
       color: $light_gray;
       margin: 0px auto 40px auto;
       text-align: center;
-      font-weight: bold;
+      font-weight: 400;
+      line-height: 36px;
     }
     .login-form {
       position: absolute;

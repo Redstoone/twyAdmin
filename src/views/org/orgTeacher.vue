@@ -73,7 +73,7 @@ export default {
       teacherList: [],
       courseVisible: false,
       addCourse: {
-        groupId: JSON.parse(sessionStorage.getItem('groupId')),
+        groupId: JSON.parse(localStorage.getItem('groupId')),
         name: null,
         cellphone: null,
         IDcard: null,
@@ -95,14 +95,14 @@ export default {
   },
   methods: {
     getTeacherList () {
-      api.orgTeacherList({groupId: JSON.parse(sessionStorage.getItem('groupId'))}).then(res => {
+      api.orgTeacherList({groupId: JSON.parse(localStorage.getItem('groupId'))}).then(res => {
         this.teacherList = res.data.array
       })
     },
     selsChange (sels) {
       this.sels = sels
       this.addCourse = {
-        groupId: JSON.parse(sessionStorage.getItem('groupId')),
+        groupId: JSON.parse(localStorage.getItem('groupId')),
         name: null,
         cellphone: null,
         IDcard: null,

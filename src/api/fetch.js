@@ -3,7 +3,7 @@ import { Message } from 'element-ui'
 // import store from '@/store'
 // import { getToken } from '@/utils/auth'
 
-let user = sessionStorage.getItem('user')
+let user = localStorage.getItem('user')
 if (user) {
   user = JSON.parse(user)
 }

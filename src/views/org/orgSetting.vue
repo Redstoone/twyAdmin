@@ -78,7 +78,7 @@ export default {
             password: res.data.name,
             groupId: res.data.groupId
           }
-          sessionStorage.setItem('groupId', JSON.stringify(res.data.groupId))
+          localStorage.setItem('groupId', JSON.stringify(res.data.groupId))
         } else {
           this.$notify({
             message: res.message,

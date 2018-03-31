@@ -105,7 +105,6 @@ export default {
   },
   mounted () {
     var user = localStorage.getItem('user')
-    console.log(user)
     if (user) {
       user = JSON.parse(user)
       this.sysUserName = user.name || ''

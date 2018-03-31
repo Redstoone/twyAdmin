@@ -10,7 +10,7 @@
       <el-button size="small" type="primary" @click="createActivity">发布</el-button>
     </el-col>
 
-    <el-col class="" :loading="listLoading" v-if="activityType == 'list'">
+    <el-col class="" :loading="listLoading" v-show="activityType == 'list'">
       <ul class="activity-list">
         <li v-for="(item, index) in activityList" :key="index">
           <div v-if="item.type == 2">
@@ -35,7 +35,7 @@
       </ul>
     </el-col>
 
-    <el-col class="" :loading="listLoading" v-else>
+    <el-col class="" :loading="listLoading" v-show="activityType !== 'list'">
       <el-form :model="addActivity" label-width="100px" :rules="addActivityRules" ref="addActivity">
         <el-form-item label="活动名称" prop="name">
           <el-input v-model="addActivity.name" auto-complete="off" placeholder="请输入活动名称"></el-input>
@@ -113,15 +113,6 @@ export default {
   created () {
     this.getActivityList()
   },
-  mounted () {
-    // window.UE.delEditor('ueditor')
-    const _this = this
-    _this.editor = window.UE.getEditor('ueditor')
-    // this.editor = UE.getEditor('ueditor', this.config)
-    _this.editor.addListener('ready', function () {
-      _this.editor.setContent(_this.defaultMsg)
-    })
-  },
   destroyed () {
     this.editor.destroy()
   },
@@ -135,37 +126,62 @@ export default {
     },
     handleAddActivity () {
       this.activityType = 'add'
+      if (!this.editor) {
+        this.editor = window.UE.getEditor('ueditor')
+        // console.log(this.editor)
+        // this.editor.setContent('')
+      } else {
+        this.editor.setContent('')
+      }
+      this.$refs['addActivity'].resetFields()
       this.getActivityList()
     },
     handleAddActivityLink () {
       this.activityLinkVisible = true
     },
     addActivityLinkSubmit () {
+      // this.editor.setContent(activity.content)
       this.$refs.activityLink.validate(valid => {
         if (valid) {
           this.addLoading = true
           let para = Object.assign({}, this.addActivityLink)
           if (this.addActivityLink.activityId) {
             api.activityLinkEdit(para).then(res => {
-              this.addLoading = false
-              this.$notify({
-                message: '修改活动链接成功',
-                type: 'success'
-              })
-              this.$refs['activityLink'].resetFields()
-              this.activityLinkVisible = false
-              this.getActivityList()
+              if (res.status === 'succ') {
+                this.addLoading = false
+                this.$notify({
+                  message: '修改活动链接成功',
+                  type: 'success'
+                })
+                this.$refs['activityLink'].resetFields()
+                this.activityLinkVisible = false
+                this.getActivityList()
+              } else {
+                this.$notify({
+                  message: res.message,
+                  type: 'error',
+                  duration: 0
+                })
+              }
             })
           } else {
             api.activityLinkAdd(para).then(res => {
-              this.addLoading = false
-              this.$notify({
-                message: '添加活动链接成功',
-                type: 'success'
-              })
-              this.$refs['activityLink'].resetFields()
-              this.activityLinkVisible = false
-              this.getActivityList()
+              if (res.status === 'succ') {
+                this.addLoading = false
+                this.$notify({
+                  message: '添加活动链接成功',
+                  type: 'success'
+                })
+                this.$refs['activityLink'].resetFields()
+                this.activityLinkVisible = false
+                this.getActivityList()
+              } else {
+                this.$notify({
+                  message: res.message,
+                  type: 'error',
+                  duration: 0
+                })
+              }
             })
           }
         }
@@ -198,7 +214,7 @@ export default {
         name: activity.name,
         time: activity.time,
         address: activity.address,
-        // content: activity.content,
+        content: activity.content,
         videoUrl: activity.vodeoUrl
       }
       this.activityType = 'edit'
@@ -216,11 +232,13 @@ export default {
       }
     },
     createActivity () {
+      this.addActivity.content = this.editor.getContent()
       this.$refs.addActivity.validate(valid => {
         if (valid) {
+          console.log(valid)
           this.addLoading = true
           let para = Object.assign({}, this.addActivity)
-          para.content = this.editor.getContent()
+          // para.content = this.editor.getContent()
           if (this.addActivity.activityId) {
             api.activityEdit(para).then(res => {
               this.addLoading = false

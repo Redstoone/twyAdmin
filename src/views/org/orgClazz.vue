@@ -468,7 +468,7 @@ export default {
       })
     },
     viewReport (row) {
-
+      window.open('/org/report?sid=' + row.studentId)
     }
   }
 }

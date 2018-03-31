@@ -11,6 +11,7 @@ import Course from '@/views/org/orgCourse'
 import Teacher from '@/views/org/orgTeacher'
 import Clazz from '@/views/org/orgClazz'
 import Baoming from '@/views/org/orgBaoming'
+import OrgReport from '@/views/org/orgReport'
 // import TeacherClazz from '@/views/teacher/teacherClazz'
 import StudentArrive from '@/views/teacher/studentArrive'
 import SchoolReport from '@/views/teacher/schoolReport'
@@ -99,6 +100,13 @@ const router = new Router({
           component: Clazz
         }
       ]
+    },
+    {
+      path: '/org/report',
+      name: '成功单',
+      hidden: true,
+      type: 'orgadmin',
+      component: OrgReport
     },
     {
       path: '/',

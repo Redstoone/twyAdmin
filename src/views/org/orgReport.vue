@@ -5,10 +5,6 @@
       <div class="">{{clazzName}}</div>
     </div>
     <div class="report-wrap">
-      <div class="report-opt">
-        <el-checkbox v-model="checked">填写完成</el-checkbox>
-        <a href="javascript:;" class="btn-save" @click="studentReportEdit">保存</a>
-      </div>
       <div class="report-cont">
         <div class="reprot-header">
           <p class="title">天唯印记<br/>艺星素养发展评价报告</p>
@@ -17,43 +13,18 @@
           <p class="p1">学号：{{studentNum}}</p>
         </div>
         <p class="p2">老师寄语</p>
-        <div class="report-commont">
-          <el-input
-            type="textarea"
-            :rows="5"
-            placeholder="请老师填写孩子的综合评语"
-            v-model="comment">
-          </el-input>
-        </div>
+        <div class="report-commont">{{comment?comment:'老师未写寄语'}}</div>
         <p class="p2">评价</p>
-        <div class="report-star">
-          <el-input
-            type="textarea"
-            :rows="5"
-            placeholder="请老师填写孩子的评价"
-            v-model="starComment">
-          </el-input>
-        </div>
+        <div class="report-star">{{starComment?comment:'老师未写评价'}}</div>
         <p class="p2">成长足迹</p>
-        <div class="report-img">
-          <el-upload
-            action="/localapi/api/upload"
-            list-type="picture-card"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove"
-            :before-upload="beforeUpload"
-            :on-success="handlePictureSuccess"
-            :on-change="handleChange"
-            :file-list="fileList">
-            <i class="el-icon-plus"></i>
-          </el-upload>
+        <div class='img-list'>
+          <div class="img" v-for="(item, index) in imageList" :key="index">
+            <img :src="item">
+          </div>
         </div>
       </div>
     </div>
     <div class="report-bg"></div>
-    <el-dialog :visible.sync="dialogVisible">
-      <img width="100%" :src="dialogImageUrl">
-    </el-dialog>
   </section>
 </template>
 
@@ -101,76 +72,11 @@ export default {
             this.checked = false
           }
           this.imageList = res.data.imgUrls ? res.data.imgUrls.split(',') : []
-          this.imageList.forEach(item => {
-            this.fileList.push({url: item})
-          })
-          if (this.imageList.length >= 4) {
-            document.querySelector('.el-upload--picture-card').style.display = 'none'
-          }
-        }
-      })
-    },
-    studentReportEdit () {
-      api.studentReportEdit({
-        studentId: this.sId,
-        comment: this.comment,
-        starComment: this.starComment,
-        imgUrls: this.imageList.join(','),
-        status: this.checked ? '已完成' : '已填写未完成'
-      }).then(res => {
-        if (res.status === 'succ') {
-          this.$notify({
-            message: '编辑成绩单成功',
-            type: 'success'
-          })
-        } else {
-          this.$notify({
-            message: res.message,
-            type: 'error',
-            duration: 0
-          })
         }
       })
     },
     goback () {
       window.close()
-    },
-    // 上传图片
-    beforeUpload (file) {
-      const isLt2M = file.size / 1024 / 1024 < 1
-      if (!isLt2M) {
-        this.$message.error('上传图片大小不能超过 1MB!')
-      }
-      return isLt2M
-    },
-    handleRemove (file, fileList) {
-      this.imageList = []
-      fileList.forEach(item => {
-        if (file && file.response) {
-          this.imageList.push(item.response)
-        } else {
-          this.imageList.push(item.url)
-        }
-      })
-      this.fileList = fileList
-      if (this.imageList.length < 4) {
-        document.querySelector('.el-upload--picture-card').style.display = 'inline-block'
-      }
-    },
-    handlePictureSuccess (res, file) {
-      this.imageList.push(file.response)
-      this.fileList.push(file)
-    },
-    handlePictureCardPreview (file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
-    },
-    handleChange (file, fileList) {
-      if (fileList.length >= 4) {
-        document.querySelector('.el-upload--picture-card').style.display = 'none'
-      } else {
-        this.fileList = fileList
-      }
     }
   }
 }
@@ -268,5 +174,29 @@ export default {
   position: absolute;
   right: 15px;
   top: 15px;
+}
+.report-commont,
+.report-star{
+  min-height: 100px;
+  margin-bottom: 20px;
+}
+.img-list{
+  width: 350px;
+  margin: 0 auto;
+}
+.img-list .img{
+  width: 110px;
+  height: 110px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+.img-list .img:nth-child(3n){
+  margin-right: 0;
+}
+.img-list img{
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
 }
 </style>

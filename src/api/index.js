@@ -73,7 +73,8 @@ export default {
   },
 
   orgInfo (params) {
-    return service(`/api/org/info`, params, 'GET')
+    let user = JSON.parse(localStorage.getItem('user'))
+    return service(`/api/org/info`, params, 'GET', { 'accesstoken': user.accesstoken })
   },
   orgCourseAdd (params) {
     return service(`/api/course/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })

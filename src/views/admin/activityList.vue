@@ -114,7 +114,7 @@ export default {
     this.getActivityList()
   },
   destroyed () {
-    this.editor.destroy()
+    // this.editor.destroy()
   },
   methods: {
     getActivityList () {

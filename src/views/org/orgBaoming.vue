@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-col>
+    <el-col style="text-align: right;">
       <el-select v-model="course" placeholder="请选择课程">
         <el-option
           v-for="item in courseOptions"
@@ -10,7 +10,7 @@
         </el-option>
       </el-select>
 
-      <el-select v-model="course" placeholder="请选择支付状态">
+      <el-select v-model="payment" placeholder="请选择支付状态">
         <el-option
           v-for="item in payOptions"
           :key="item.value"
@@ -19,7 +19,7 @@
         </el-option>
       </el-select>
 
-      <el-select v-model="course" placeholder="请选择年龄">
+      <el-select v-model="age" placeholder="请选择年龄">
         <el-option
           v-for="item in ageOptions"
           :key="item.value"
@@ -118,10 +118,12 @@ export default {
           value: '未支付'
         },
         {
-          label: '未支付',
+          label: '已支付',
           value: '已支付'
         }
       ],
+      payment: null,
+      age: null,
       ageOptions: [
         {
           label: '3-5岁',
@@ -147,8 +149,8 @@ export default {
     this.getCourseList()
   },
   methods: {
-    getStudentList (type) {
-      api.orgCourseStudentList({ groupId: JSON.parse(localStorage.getItem('groupId')), type: 1 }).then(res => {
+    getStudentList (type = 1) {
+      api.orgCourseStudentList({ groupId: JSON.parse(localStorage.getItem('groupId')), type: 0 }).then(res => {
         this.studentList = res.data.array
       })
     },

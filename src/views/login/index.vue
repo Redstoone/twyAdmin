@@ -13,6 +13,11 @@
 
       <el-button type="primary" class="btn-login" style="" :loading="loading" @click.native.prevent="handleLogin">登  录</el-button>
     </el-form>
+
+    <div class="bg-img">
+      <img src="../../assets/imgs/bg_top.png" alt="">
+    </div>
+    <div class="bg-marsk"></div>
   </div>
 </template>
 
@@ -109,7 +114,28 @@ export default {
   .login-container {
     @include relative;
     height: 100vh;
-    background-color: $bg;
+    // background-color: $bg;
+    background-image: linear-gradient(90deg, #141414 0%, #4d4d4f 100%);
+    overflow: hidden;
+    .bg-img{
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+    .bg-img img{
+      width: 100%;
+    }
+    .bg-marsk{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      background: url('../../assets/imgs/bg_index.png') repeat center center;
+    }
     input:-webkit-autofill {
       box-shadow: 0 0 0px 1000px #293444 inset !important;
       -webkit-text-fill-color: #fff !important;
@@ -161,6 +187,7 @@ export default {
       width: 400px;
       padding: 35px 35px 15px 35px;
       margin: 120px auto;
+      z-index: 20;
     }
     .el-form-item {
       border: 1px solid rgba(255, 255, 255, 0.1);

@@ -41,14 +41,22 @@ const router = new Router({
     {
       path: '/',
       component: Home,
-      name: '活动新闻公告管理',
+      name: '活动公告管理',
       type: 'superadmin',
       children: [
         { path: '/activity',
           component: ActivityList,
-          name: '活动编辑与发布'
-        },
-        { path: '/news', component: NewsList, name: '新闻公告管理' }
+          name: '活动公告'
+        }
+      ]
+    },
+    {
+      path: '/',
+      component: Home,
+      name: '艺星之路管理',
+      type: 'superadmin',
+      children: [
+        { path: '/news', component: NewsList, name: '艺星之路' }
       ]
     },
     {

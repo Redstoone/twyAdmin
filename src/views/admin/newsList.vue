@@ -2,8 +2,8 @@
   <section>
     <!--工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px" v-if="activityType == 'list'">
-      <el-button size="small" type="primary" @click="handleAddActivity">添加新闻公告</el-button>
-      <el-button size="small" type="primary" @click="handleAddActivityLink">添加新闻公告链接</el-button>
+      <el-button size="small" type="primary" @click="handleAddActivity">添加艺星之路</el-button>
+      <el-button size="small" type="primary" @click="handleAddActivityLink">添加艺星之路链接</el-button>
     </el-col>
     <el-col :span="24" class="toolbar txt-right" style="padding-bottom: 0px" v-else>
       <el-button size="small" type="primary" @click="goBack">取消返回</el-button>
@@ -20,7 +20,7 @@
             </div>
             <p class="name">{{item.name}}</p>
             <p>发布时间{{item.createTime}}</p>
-            <p>新闻链接: <a :href="item.link" target="view_window">{{item.link}}</a></p>
+            <p>链接: <a :href="item.link" target="view_window">{{item.link}}</a></p>
           </div>
           <div class="" v-else>
             <div class="edit-wrap">
@@ -29,7 +29,7 @@
             </div>
             <p class="name">{{item.name}}</p>
             <p>发布时间{{item.createTime}}</p>
-            <p class="desc">新闻内容：{{item.remark}}</p>
+            <p class="desc">内容：{{item.remark}}</p>
           </div>
         </li>
       </ul>
@@ -81,8 +81,8 @@ export default {
         link: null
       },
       addActivityLinkRules: {
-        name: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
-        link: [{ required: true, message: '请输入活动链接', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        link: [{ required: true, message: '请输入链接', trigger: 'blur' }]
       },
       addLoading: false,
       activityList: [],
@@ -95,8 +95,8 @@ export default {
         remark: null
       },
       addActivityRules: {
-        name: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
-        content: [{ required: true, message: '请输入活动内容', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        content: [{ required: true, message: '请输入内容', trigger: 'blur' }]
       }
     }
   },
@@ -133,7 +133,7 @@ export default {
             api.newsLinkEdit(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '修改新闻公告链接成功',
+                message: '修改艺星之路链接成功',
                 type: 'success'
               })
               this.$refs['activityLink'].resetFields()
@@ -144,7 +144,7 @@ export default {
             api.newsLinkAdd(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '添加新闻公告链接成功',
+                message: '添加艺星之路链接成功',
                 type: 'success'
               })
               this.$refs['activityLink'].resetFields()
@@ -210,7 +210,7 @@ export default {
             api.newsEdit(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '修改新闻公告成功',
+                message: '修改艺星之路成功',
                 type: 'success'
               })
               this.$refs['addActivity'].resetFields()
@@ -221,7 +221,7 @@ export default {
             api.newsAdd(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '添加新闻公告成功',
+                message: '添加艺星之路成功',
                 type: 'success'
               })
               this.$refs['addActivity'].resetFields()

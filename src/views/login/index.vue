@@ -80,7 +80,7 @@ export default {
                         component: require('../teacher/teacherClazz.vue').default
                       })
                     })
-                    this.$router.options.routes[8].children = _children
+                    this.$router.options.routes[9].children = _children
                     this.$router.addRoutes(this.$router.options.routes)
                     this.$router.push({ path: '/clazz/' + data.clazzs[0].id })
                   }
@@ -134,7 +134,8 @@ export default {
       top: 0;
       left: 0;
       z-index: 1;
-      background: url('../../assets/imgs/bg_index.png') repeat center center;
+      background: url('../../assets/imgs/bg_index.png') repeat 70% center;
+      background-size: contain;
     }
     input:-webkit-autofill {
       box-shadow: 0 0 0px 1000px #293444 inset !important;

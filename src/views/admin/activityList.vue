@@ -29,7 +29,7 @@
             <p class="name">{{item.name}}</p>
             <p>发布时间：{{item.time}}</p>
             <p>活动地点：{{item.address}}</p>
-            <p>活动内容：{{item.content}}</p>
+            <p class="desc">活动内容：{{item.remark}}</p>
           </div>
         </li>
       </ul>
@@ -100,7 +100,8 @@ export default {
         time: null,
         address: null,
         content: null,
-        videoUrl: null
+        videoUrl: null,
+        remark: null
       },
       addActivityRules: {
         name: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
@@ -213,7 +214,8 @@ export default {
         time: activity.time,
         address: activity.address,
         content: activity.content,
-        videoUrl: activity.vodeoUrl
+        videoUrl: activity.vodeoUrl,
+        remark: activity.remark
       }
       this.activityType = 'edit'
       this.editor.setContent(activity.content)
@@ -226,14 +228,15 @@ export default {
         time: null,
         address: null,
         content: null,
-        videoUrl: null
+        videoUrl: null,
+        remark: null
       }
     },
     createActivity () {
       this.addActivity.content = this.editor.getContent()
+      this.addActivity.remark = this.editor.getContentTxt()
       this.$refs.addActivity.validate(valid => {
         if (valid) {
-          console.log(valid)
           this.addLoading = true
           let para = Object.assign({}, this.addActivity)
           // para.content = this.editor.getContent()
@@ -311,5 +314,14 @@ export default {
 }
 .txt-right{
   text-align: right;
+}
+.desc{
+  line-height: 26px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  height: 52px;
 }
 </style>

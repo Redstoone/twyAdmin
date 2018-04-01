@@ -29,7 +29,7 @@
             </div>
             <p class="name">{{item.name}}</p>
             <p>发布时间{{item.createTime}}</p>
-            <p>新闻内容：{{item.content}}</p>
+            <p class="desc">新闻内容：{{item.remark}}</p>
           </div>
         </li>
       </ul>
@@ -91,7 +91,8 @@ export default {
       addActivity: {
         name: null,
         content: null,
-        videoUrl: null
+        videoUrl: null,
+        remark: null
       },
       addActivityRules: {
         name: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
@@ -181,7 +182,8 @@ export default {
         newsId: activity.id,
         name: activity.name,
         content: activity.content,
-        videoUrl: activity.vodeoUrl
+        videoUrl: activity.vodeoUrl,
+        remark: activity.remark
       }
       this.activityType = 'edit'
     },
@@ -193,11 +195,13 @@ export default {
         time: null,
         address: null,
         content: null,
-        videoUrl: null
+        videoUrl: null,
+        remark: null
       }
     },
     createActivity () {
       this.addActivity.content = this.editor.getContent()
+      this.addActivity.remark = this.editor.getContentTxt()
       this.$refs.addActivity.validate(valid => {
         if (valid) {
           this.addLoading = true
@@ -276,5 +280,14 @@ export default {
 }
 .txt-right{
   text-align: right;
+}
+.desc{
+  line-height: 26px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  height: 52px;
 }
 </style>

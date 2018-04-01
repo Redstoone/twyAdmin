@@ -37,7 +37,7 @@
         <p class="p2">成长足迹</p>
         <div class="report-img">
           <el-upload
-            action="/localapi/api/upload"
+            action="http://121.196.208.151:9001/api/upload"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"

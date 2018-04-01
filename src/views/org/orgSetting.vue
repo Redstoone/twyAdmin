@@ -75,7 +75,7 @@ export default {
             address: res.data.address,
             telphone: res.data.telphone,
             adminname: res.data.adminName,
-            password: res.data.name,
+            password: res.data.password,
             groupId: res.data.groupId
           }
           localStorage.setItem('groupId', JSON.stringify(res.data.groupId))

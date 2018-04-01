@@ -44,7 +44,7 @@
         <el-form-item label="头像" prop="name">
           <el-upload
             class="avatar-uploader"
-            action="/localapi/api/upload"
+            action="http://121.196.208.151:9001/api/upload"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
@@ -144,9 +144,6 @@ export default {
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
 
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
-      }
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }

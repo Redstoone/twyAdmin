@@ -7,8 +7,7 @@
 
     <!--列表-->
     <el-table class="ctable" :data="orgList" stripe border highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%">
-      <el-table-column prop="indexOrder" label="序号" width="50
-      ">
+      <el-table-column prop="indexOrder" label="序号" width="100">
       </el-table-column>
       <el-table-column prop="name" label="网点" sortable>
       </el-table-column>
@@ -63,7 +62,7 @@
           <el-input v-model="addForm.adminname" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="管理员密码" prop="password">
-          <el-input type="password" v-model="addForm.password" auto-complete="off"></el-input>
+          <el-input v-model="addForm.password" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

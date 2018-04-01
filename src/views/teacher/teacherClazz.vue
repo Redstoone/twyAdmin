@@ -61,7 +61,16 @@ export default {
   },
   created () {
     this.clazzId = this.$route.path.split('/')[2]
+    console.log(this.clazzId)
     this.getStudentList(this.clazzId)
+  },
+  mounted () {
+    console.log('123123')
+    this.clazzId = this.$route.path.split('/')[2]
+    console.log(this.clazzId)
+  },
+  beforeDestory () {
+    console.log('destory')
   },
   methods: {
     getStudentList (clazzId) {

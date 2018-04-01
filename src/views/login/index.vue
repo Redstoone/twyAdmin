@@ -75,7 +75,7 @@ export default {
                         component: require('../teacher/teacherClazz.vue').default
                       })
                     })
-                    this.$router.options.routes[7].children = _children
+                    this.$router.options.routes[8].children = _children
                     this.$router.addRoutes(this.$router.options.routes)
                     this.$router.push({ path: '/clazz/' + data.clazzs[0].id })
                   }

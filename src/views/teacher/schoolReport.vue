@@ -37,7 +37,7 @@
         <p class="p2">成长足迹</p>
         <div class="report-img">
           <el-upload
-            action="http://121.196.208.151:9100/api/upload"
+            action="http://api.twyxedu.com//api/upload"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"

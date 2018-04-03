@@ -41,13 +41,13 @@ const router = new Router({
     {
       path: '/',
       component: Home,
-      name: '新闻公告管理',
+      name: '活动公告管理',
       type: 'superadmin',
       children: [
         {
           path: '/news',
           component: NewsList,
-          name: '新闻公告'
+          name: '活动公告'
         }
       ]
     },

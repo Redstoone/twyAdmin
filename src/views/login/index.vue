@@ -15,9 +15,9 @@
     </el-form>
 
     <div class="bg-img">
-      <img src="../../assets/imgs/bg_top.png" alt="">
+      <!-- <img src="../../assets/imgs/bg_top.png" alt=""> -->
     </div>
-    <div class="bg-marsk"></div>
+    <!-- <div class="bg-marsk"></div> -->
   </div>
 </template>
 
@@ -119,24 +119,29 @@ export default {
     overflow: hidden;
     .bg-img{
       width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-    .bg-img img{
-      width: 100%;
-    }
-    .bg-marsk{
-      width: 100%;
       height: 100%;
       position: absolute;
       top: 0;
       left: 0;
-      z-index: 1;
-      background: url('../../assets/imgs/bg_index.png') repeat 70% center;
-      background-size: contain;
+      z-index: 0;
+      background-image: url('../../assets/imgs/login_bg.jpg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
+    .bg-img img{
+      width: 100%;
+    }
+    // .bg-marsk{
+    //   width: 100%;
+    //   height: 100%;
+    //   position: absolute;
+    //   top: 0;
+    //   left: 0;
+    //   z-index: 1;
+    //   background: url('../../assets/imgs/bg_index.png') repeat 70% center;
+    //   background-size: contain;
+    // }
     input:-webkit-autofill {
       box-shadow: 0 0 0px 1000px #293444 inset !important;
       -webkit-text-fill-color: #fff !important;

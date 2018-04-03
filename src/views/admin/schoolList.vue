@@ -15,8 +15,9 @@
       </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="danger" size="mini" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">信息编辑</el-button>
+          <el-checkbox v-model="scope.row.ispublic" @change="changeOrgStatus(scope.row)">公开</el-checkbox>
+          <a hrefr="javascript:;" class="btn-option"  @click="handleDel(scope.$index, scope.row)">删除</a>
+          <a hrefr="javascript:;" class="btn-option"  @click="handleEdit(scope.$index, scope.row)">信息编辑</a>
         </template>
       </el-table-column>
     </el-table>
@@ -123,6 +124,24 @@ export default {
     }
   },
   methods: {
+    changeOrgStatus (row) {
+      api.orgPub({groupId: row.groupId, status: row.ispublic}).then(res => {
+        console.log(res)
+        if (res.status === 'succ') {
+          this.$notify({
+            message: '设置网点状态成功',
+            type: 'success'
+          })
+        } else {
+          this.$notify({
+            message: res.message,
+            type: 'error',
+            duration: 0
+          })
+        }
+      })
+    },
+
     // 获取列表
     getOrgList () {
       this.listLoading = true

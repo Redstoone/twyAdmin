@@ -36,7 +36,7 @@
       </el-table>
     </el-col>
 
-    <el-dialog title="添加/编辑教师" :visible.sync="courseVisible" :close-on-click-modal="false" width="480px">
+    <el-dialog title="添加/编辑教师" :visible.sync="courseVisible" :close-on-click-modal="false" width="480px" @before-close="beforeClose">
       <el-form :model="addCourse" label-width="70px" :rules="addCourseRules" ref="addCourse">
         <el-form-item label="姓名" prop="name">
           <el-input v-model="addCourse.name" auto-complete="off" placeholder="请输入姓名"></el-input>
@@ -135,7 +135,6 @@ export default {
         imgUrl: null
       }
       this.imageUrl = null
-      this.$refs['addCourse'].resetFields()
     },
     handleAvatarSuccess (res, file) {
       this.imageUrl = file.response
@@ -148,12 +147,16 @@ export default {
       }
       return isLt2M
     },
+    beforeClose () {
+      this.$refs['addCourse'].resetFields()
+    },
     courseSubmit () {
       this.$refs.addCourse.validate(valid => {
         if (valid) {
           this.courseLoading = true
           let para = Object.assign({}, this.addCourse)
           para.imgUrl = this.imageUrl
+          para.groupId = JSON.parse(localStorage.getItem('groupId'))
           if (this.teacherId) {
             para.teacherId = this.teacherId
             api.orgTeacherEdit(para).then((res) => {
@@ -205,7 +208,7 @@ export default {
         api.orgTeacherDel({teacherId: row.teacherId}).then((res) => {
           if (res.status === 'succ') {
             this.listLoading = false
-            this.getOrgList()
+            this.getTeacherList()
           } else {
             this.$notify({
               message: res.message,

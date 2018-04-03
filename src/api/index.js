@@ -11,6 +11,9 @@ export default {
   orgListPage (params) {
     return service(`/api/org/list`, '', 'GET')
   },
+  orgPub (params) {
+    return service(`/api/org/pub`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
   orgCreate (params) {
     return service(`/api/org/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   },

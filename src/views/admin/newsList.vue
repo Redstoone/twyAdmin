@@ -2,8 +2,8 @@
   <section>
     <!--工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px" v-if="activityType == 'list'">
-      <el-button size="small" type="primary" @click="handleAddActivity">添加新闻公告</el-button>
-      <el-button size="small" type="primary" @click="handleAddActivityLink">添加新闻公告链接</el-button>
+      <el-button size="small" type="primary" @click="handleAddActivity">添加活动公告</el-button>
+      <el-button size="small" type="primary" @click="handleAddActivityLink">添加活动公告链接</el-button>
     </el-col>
     <el-col :span="24" class="toolbar txt-right" style="padding-bottom: 0px" v-else>
       <el-button size="small" type="primary" @click="goBack">取消返回</el-button>
@@ -63,7 +63,7 @@
       </el-form>
     </el-col>
 
-    <el-dialog title="添加新闻公告链接" :visible.sync="activityLinkVisible" :close-on-click-modal="false" width="480px">
+    <el-dialog title="添加活动公告链接" :visible.sync="activityLinkVisible" :close-on-click-modal="false" width="480px">
       <el-form :model="addActivityLink" label-width="100px" :rules="addActivityLinkRules" ref="activityLink">
         <el-form-item label="名称" prop="name">
           <el-input v-model="addActivityLink.name" auto-complete="off" placeholder="请输入"></el-input>
@@ -185,7 +185,7 @@ export default {
             api.newsLinkEdit(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '修改新闻公告链接成功',
+                message: '修改活动公告链接成功',
                 type: 'success'
               })
               this.$refs['activityLink'].resetFields()
@@ -196,7 +196,7 @@ export default {
             api.newsLinkAdd(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '添加新闻公告链接成功',
+                message: '添加活动公告链接成功',
                 type: 'success'
               })
               this.$refs['activityLink'].resetFields()
@@ -294,7 +294,7 @@ export default {
             api.newsEdit(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '修改新闻公告成功',
+                message: '修改活动公告成功',
                 type: 'success'
               })
               this.$refs['addActivity'].resetFields()
@@ -305,7 +305,7 @@ export default {
             api.newsAdd(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '添加新闻公告成功',
+                message: '添加活动公告成功',
                 type: 'success'
               })
               this.$refs['addActivity'].resetFields()

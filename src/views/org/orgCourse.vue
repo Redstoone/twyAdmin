@@ -23,6 +23,7 @@
           <!-- <p>课时安排：{{item.time}}</p> -->
           <!-- <p>介绍：{{item.desc}}</p> -->
           <p v-if="item.feeType == 1">价格：{{item.fee}}元/学期</p>
+          <p v-else-if="item.feeType == 2">价格：预约面试才可录取（比如合唱团）</p>
           <p v-else>价格：按课时计算（只适用于钢琴课，当面询价付款）</p>
           <p><el-checkbox v-model="item.order" @change="changeOrder(item)">允许预约体验</el-checkbox></p>
         </li>
@@ -68,7 +69,11 @@
             </div>
             <div class="radio-item">
               <el-radio :label="1">按学期算</el-radio>
-              <div class="radio-inline" v-if="addCourse.feeType == 1"><span class="radio-tip">每学期金额：</span><el-input style="width:100px;" v-model="addCourse.fee" auto-complete="off" placeholder="请输入"></el-input></div>
+              <div class="radio-inline"><span class="radio-tip">每学期金额：</span><el-input style="width:100px;" v-model="addCourse.fee" auto-complete="off" placeholder="请输入"></el-input></div>
+            </div>
+            <div class="radio-item">
+              <el-radio :label="2">预约面试才可录取</el-radio>
+              <div class="radio-inline"><span class="radio-tip">(比如合唱团)</span></div>
             </div>
           </el-radio-group>
         </el-form-item>

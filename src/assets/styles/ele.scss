@@ -63,3 +63,19 @@
   height: 150px;
   display: block;
 }
+
+.el-button--primary,
+.el-button--primary:focus
+{
+  color: #fff;
+  background-color: #5BBFD7;
+  border-color: #5BBFD7;
+}
+.el-button--primary:hover{
+  background-color: rgba(91,191,215, .6);
+  border-color: #5BBFD7;
+}
+
+.el-menu-item.is-active{
+  color: #5BBFD7;
+}

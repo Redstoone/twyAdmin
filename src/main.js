@@ -8,8 +8,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // import * as filters from './filters' // 全局vue filter
 // import Icon from 'vue-awesome'
+import _global from './utils/global'
 
 Vue.config.productionTip = false
+Vue.prototype.GLOBAL = _global
 
 // 注册全局 filter
 // Object.keys(filters).forEach(key => {

@@ -2,8 +2,8 @@
   <section>
     <!--工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px" v-if="activityType == 'list'">
-      <el-button size="small" type="primary" @click="handleAddActivity">添加艺星之路</el-button>
-      <el-button size="small" type="primary" @click="handleAddActivityLink">添加艺星之路链接</el-button>
+      <el-button size="small" type="primary" @click="handleAddActivity">添加新闻公告</el-button>
+      <el-button size="small" type="primary" @click="handleAddActivityLink">添加新闻公告链接</el-button>
     </el-col>
     <el-col :span="24" class="toolbar txt-right" style="padding-bottom: 0px" v-else>
       <el-button size="small" type="primary" @click="goBack">取消返回</el-button>
@@ -40,6 +40,17 @@
         <el-form-item label="名称" prop="name">
           <el-input v-model="addActivity.name" auto-complete="off" placeholder="请输入活动名称"></el-input>
         </el-form-item>
+        <el-form-item label="封面图" prop="imgUrl">
+          <el-upload
+            class="avatar-uploader"
+            :action="uploadUrl"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="imgUrl" :src="imgUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
         <el-form-item label="内容" prop="content">
           <!-- <el-input v-model="addActivity.content" auto-complete="off" placeholder="请输入活动内容"></el-input> -->
           <script id="ueditor" name="ueditor" type="text/plain" class="ue-content"></script>
@@ -56,6 +67,17 @@
       <el-form :model="addActivityLink" label-width="100px" :rules="addActivityLinkRules" ref="activityLink">
         <el-form-item label="名称" prop="name">
           <el-input v-model="addActivityLink.name" auto-complete="off" placeholder="请输入"></el-input>
+        </el-form-item>
+        <el-form-item label="封面图" prop="imgUrl">
+          <el-upload
+            class="avatar-uploader"
+            :action="uploadUrl"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="imgUrl" :src="imgUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
         </el-form-item>
         <el-form-item label="链接" prop="link">
           <el-input v-model="addActivityLink.link" auto-complete="off" placeholder="请输入链接"></el-input>
@@ -76,12 +98,15 @@ export default {
   data () {
     return {
       activityLinkVisible: false,
+      imgUrl: null,
       addActivityLink: {
         name: null,
+        imgUrl: null,
         link: null
       },
       addActivityLinkRules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        imgUrl: [{ required: true, message: '请添加封面图', trigger: 'blur' }],
         link: [{ required: true, message: '请输入链接', trigger: 'blur' }]
       },
       addLoading: false,
@@ -90,14 +115,17 @@ export default {
       activityType: 'list',
       addActivity: {
         name: null,
+        imgUrl: null,
         content: null,
         videoUrl: null,
         remark: null
       },
       addActivityRules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        imgUrl: [{ required: true, message: '请添加封面图', trigger: 'blur' }],
         content: [{ required: true, message: '请输入内容', trigger: 'blur' }]
-      }
+      },
+      uploadUrl: global.UPLOADURL
     }
   },
   created () {
@@ -124,7 +152,19 @@ export default {
     handleAddActivityLink () {
       this.activityLinkVisible = true
     },
+    handleAvatarSuccess (res, file) {
+      this.imgUrl = file.response
+    },
+    beforeAvatarUpload (file) {
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isLt2M
+    },
     addActivityLinkSubmit () {
+      this.addActivityLink.imgUrl = this.imgUrl
       this.$refs.activityLink.validate(valid => {
         if (valid) {
           this.addLoading = true
@@ -133,7 +173,7 @@ export default {
             api.newsLinkEdit(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '修改艺星之路链接成功',
+                message: '修改新闻公告链接成功',
                 type: 'success'
               })
               this.$refs['activityLink'].resetFields()
@@ -144,7 +184,7 @@ export default {
             api.newsLinkAdd(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '添加艺星之路链接成功',
+                message: '添加新闻公告链接成功',
                 type: 'success'
               })
               this.$refs['activityLink'].resetFields()
@@ -181,6 +221,7 @@ export default {
       this.addActivity = {
         newsId: activity.id,
         name: activity.name,
+        imgUrl: activity.imgUrl,
         content: activity.content,
         videoUrl: activity.vodeoUrl,
         remark: activity.remark
@@ -190,9 +231,11 @@ export default {
 
     goBack () {
       this.activityType = 'list'
+      this.imgUrl = null
       this.addActivity = {
         name: null,
         time: null,
+        imgUrl: null,
         address: null,
         content: null,
         videoUrl: null,
@@ -200,6 +243,7 @@ export default {
       }
     },
     createActivity () {
+      this.addActivityLink.imgUrl = this.imgUrl
       this.addActivity.content = this.editor.getContent()
       this.addActivity.remark = this.editor.getContentTxt()
       this.$refs.addActivity.validate(valid => {
@@ -210,7 +254,7 @@ export default {
             api.newsEdit(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '修改艺星之路成功',
+                message: '修改新闻公告成功',
                 type: 'success'
               })
               this.$refs['addActivity'].resetFields()
@@ -221,7 +265,7 @@ export default {
             api.newsAdd(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '添加艺星之路成功',
+                message: '添加新闻公告成功',
                 type: 'success'
               })
               this.$refs['addActivity'].resetFields()

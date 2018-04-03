@@ -2,8 +2,8 @@
   <section>
     <!--工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px" v-if="activityType == 'list'">
-      <el-button size="small" type="primary" @click="handleAddActivity">添加活动</el-button>
-      <el-button size="small" type="primary" @click="handleAddActivityLink">添加活动链接</el-button>
+      <el-button size="small" type="primary" @click="handleAddActivity">添加艺星之路</el-button>
+      <el-button size="small" type="primary" @click="handleAddActivityLink">添加艺星之路链接</el-button>
     </el-col>
     <el-col :span="24" class="toolbar txt-right" style="padding-bottom: 0px" v-else>
       <el-button size="small" type="primary" @click="goBack">取消返回</el-button>
@@ -19,7 +19,7 @@
               <span @click="editActivityLink(item)">编辑查看</span>
             </div>
             <p class="name">{{item.name}}</p>
-            <p>活动链接: <a :href="item.link" target="view_window">{{item.link}}</a></p>
+            <p>链接: <a :href="item.link" target="view_window">{{item.link}}</a></p>
           </div>
           <div class="" v-else>
             <div class="edit-wrap">
@@ -28,8 +28,8 @@
             </div>
             <p class="name">{{item.name}}</p>
             <p>发布时间：{{item.time}}</p>
-            <p>活动地点：{{item.address}}</p>
-            <p class="desc">活动内容：{{item.remark}}</p>
+            <p>地点：{{item.address}}</p>
+            <p class="desc">内容：{{item.remark}}</p>
           </div>
         </li>
       </ul>
@@ -37,33 +37,33 @@
 
     <el-col class="" :loading="listLoading" v-show="activityType !== 'list'">
       <el-form :model="addActivity" label-width="100px" :rules="addActivityRules" ref="addActivity">
-        <el-form-item label="活动名称" prop="name">
-          <el-input v-model="addActivity.name" auto-complete="off" placeholder="请输入活动名称"></el-input>
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="addActivity.name" auto-complete="off" placeholder="请输入名称"></el-input>
         </el-form-item>
-        <el-form-item label="活动时间" prop="time">
-          <el-input v-model="addActivity.time" auto-complete="off" placeholder="请输入活动时间"></el-input>
+        <el-form-item label="时间" prop="time">
+          <el-input v-model="addActivity.time" auto-complete="off" placeholder="请输入时间"></el-input>
         </el-form-item>
-        <el-form-item label="活动地点" prop="address">
-          <el-input v-model="addActivity.address" auto-complete="off" placeholder="请输入活动地点"></el-input>
+        <el-form-item label="地点" prop="address">
+          <el-input v-model="addActivity.address" auto-complete="off" placeholder="请输入地点"></el-input>
         </el-form-item>
-        <el-form-item label="活动内容" prop="content">
-          <!-- <el-input v-model="addActivity.content" auto-complete="off" placeholder="请输入活动内容"></el-input> -->
+        <el-form-item label="内容" prop="content">
+          <!-- <el-input v-model="addActivity.content" auto-complete="off" placeholder="请输入内容"></el-input> -->
           <script id="ueditor" name="ueditor" type="text/plain" class="ue-content"></script>
         </el-form-item>
-        <el-form-item label="活动视频" prop="videoUrl">
-          <el-input v-model="addActivity.videoUrl" auto-complete="off" placeholder="请输入活动视频"></el-input>
+        <el-form-item label="视频" prop="videoUrl">
+          <el-input v-model="addActivity.videoUrl" auto-complete="off" placeholder="请输入视频"></el-input>
         </el-form-item>
         <p class="add-tip">提示：视频请先上传到优酷等平台，然后把通用代码复制拷贝到上方</p>
         <img src="../../assets/imgs/url_help.jpg" style="width:213px;height:241px;margin-left: 100px;"/>
       </el-form>
     </el-col>
 
-    <el-dialog title="添加活动链接" :visible.sync="activityLinkVisible" :close-on-click-modal="false" width="480px">
+    <el-dialog title="添加链接" :visible.sync="activityLinkVisible" :close-on-click-modal="false" width="480px">
       <el-form :model="addActivityLink" label-width="100px" :rules="addActivityLinkRules" ref="activityLink">
-        <el-form-item label="活动名称" prop="name">
+        <el-form-item label="名称" prop="name">
           <el-input v-model="addActivityLink.name" auto-complete="off" placeholder="请输入"></el-input>
         </el-form-item>
-        <el-form-item label="活动链接" prop="link">
+        <el-form-item label="链接" prop="link">
           <el-input v-model="addActivityLink.link" auto-complete="off" placeholder="请输入链接"></el-input>
         </el-form-item>
       </el-form>
@@ -88,8 +88,8 @@ export default {
         link: null
       },
       addActivityLinkRules: {
-        name: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
-        link: [{ required: true, message: '请输入活动链接', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        link: [{ required: true, message: '请输入链接', trigger: 'blur' }]
       },
       addLoading: false,
       activityList: [],
@@ -104,10 +104,10 @@ export default {
         remark: null
       },
       addActivityRules: {
-        name: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
-        time: [{ required: true, message: '请输入活动时间', trigger: 'blur' }],
-        address: [{ required: true, message: '请输入活动地点', trigger: 'blur' }],
-        content: [{ required: true, message: '请输入活动内容', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        time: [{ required: true, message: '请输入时间', trigger: 'blur' }],
+        address: [{ required: true, message: '请输入地点', trigger: 'blur' }],
+        content: [{ required: true, message: '请输入内容', trigger: 'blur' }]
       }
     }
   },
@@ -149,7 +149,7 @@ export default {
               if (res.status === 'succ') {
                 this.addLoading = false
                 this.$notify({
-                  message: '修改活动链接成功',
+                  message: '修改艺星之路链接成功',
                   type: 'success'
                 })
                 this.$refs['activityLink'].resetFields()
@@ -168,7 +168,7 @@ export default {
               if (res.status === 'succ') {
                 this.addLoading = false
                 this.$notify({
-                  message: '添加活动链接成功',
+                  message: '添加艺星之路链接成功',
                   type: 'success'
                 })
                 this.$refs['activityLink'].resetFields()
@@ -244,7 +244,7 @@ export default {
             api.activityEdit(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '修改活动成功',
+                message: '修改艺星之路成功',
                 type: 'success'
               })
               this.$refs['addActivity'].resetFields()
@@ -255,7 +255,7 @@ export default {
             api.activityAdd(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '添加活动成功',
+                message: '添加艺星之路成功',
                 type: 'success'
               })
               this.$refs['addActivity'].resetFields()

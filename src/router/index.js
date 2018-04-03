@@ -11,6 +11,7 @@ import Course from '@/views/org/orgCourse'
 import Teacher from '@/views/org/orgTeacher'
 import Clazz from '@/views/org/orgClazz'
 import Baoming from '@/views/org/orgBaoming'
+import Yuyue from '@/views/org/orgYuyue'
 import OrgReport from '@/views/org/orgReport'
 // import TeacherClazz from '@/views/teacher/teacherClazz'
 import StudentArrive from '@/views/teacher/studentArrive'
@@ -133,7 +134,7 @@ const router = new Router({
           path: '/org/order',
           name: '微信预约体验学生处理',
           type: 'orgadmin',
-          component: Baoming
+          component: Yuyue
         }
       ]
     },

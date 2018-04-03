@@ -251,9 +251,7 @@ export default {
         momname: [{ required: true, message: '请输入妈妈姓名', trigger: 'blur' }],
         momphone: [{ required: true, message: '请输入手机', trigger: 'blur' }],
         dadname: [{ required: true, message: '请输入爸爸姓名', trigger: 'blur' }],
-        dadphone: [{ required: true, message: '请输入手机', trigger: 'blur' }],
-        nursery: [{ required: true, message: '请输入就读幼儿园', trigger: 'blur' }],
-        address: [{ required: true, message: '请输入家庭住址', trigger: 'blur' }]
+        dadphone: [{ required: true, message: '请输入手机', trigger: 'blur' }]
       },
       clazzId: null,
       studentList: [],

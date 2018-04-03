@@ -149,7 +149,7 @@ export default {
     this.getCourseList()
   },
   methods: {
-    getStudentList (type = 1) {
+    getStudentList (type = 2) {
       api.orgCourseStudentList({ groupId: JSON.parse(localStorage.getItem('groupId')), type: type }).then(res => {
         this.studentList = res.data.array
       })

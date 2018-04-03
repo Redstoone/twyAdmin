@@ -19,8 +19,8 @@
               <span @click="editActivityLink(item)">编辑查看</span>
             </div>
             <p class="name">{{item.name}}</p>
-            <p>发布时间{{item.createTime}}</p>
-            <p>链接: <a :href="item.link" target="view_window">{{item.link}}</a></p>
+            <p>发布时间：{{item.createTime}}</p>
+            <p>链接：<a :href="item.link" target="view_window">{{item.link}}</a></p>
           </div>
           <div class="" v-else>
             <div class="edit-wrap">
@@ -28,7 +28,7 @@
               <span @click="editActivity(item)">编辑查看</span>
             </div>
             <p class="name">{{item.name}}</p>
-            <p>发布时间{{item.createTime}}</p>
+            <p>发布时间：{{item.createTime}}</p>
             <p class="desc">内容：{{item.remark}}</p>
           </div>
         </li>
@@ -42,13 +42,13 @@
         </el-form-item>
         <el-form-item label="封面图" prop="imgUrl">
           <el-upload
-            class="avatar-uploader"
+            class="avatar-uploader cover-uploader"
             :action="uploadUrl"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
             <img v-if="imgUrl" :src="imgUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <i v-else class="el-icon-plus avatar-uploader-icon cover-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         <el-form-item label="内容" prop="content">
@@ -70,13 +70,13 @@
         </el-form-item>
         <el-form-item label="封面图" prop="imgUrl">
           <el-upload
-            class="avatar-uploader"
+            class="avatar-uploader cover-uploader"
             :action="uploadUrl"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
             <img v-if="imgUrl" :src="imgUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <i v-else class="el-icon-plus avatar-uploader-icon cover-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         <el-form-item label="链接" prop="link">
@@ -144,16 +144,28 @@ export default {
       if (!this.editor) {
         this.editor = window.UE.getEditor('ueditor')
       } else {
-        this.editor.setContent('')
+        let that = this
+        this.editor = window.UE.getEditor('ueditor')
+        this.editor.ready(() => {
+          that.editor.setContent('')
+        })
       }
       this.$refs['addActivity'].resetFields()
       this.getActivityList()
     },
     handleAddActivityLink () {
+      this.imgUrl = null
+      this.addActivityLink = {
+        name: null,
+        imgUrl: null,
+        link: null
+      }
       this.activityLinkVisible = true
     },
     handleAvatarSuccess (res, file) {
       this.imgUrl = file.response
+      this.addActivity.imgUrl = file.response
+      this.addActivityLink.imgUrl = file.response
     },
     beforeAvatarUpload (file) {
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -213,20 +225,48 @@ export default {
         name: activity.name,
         link: activity.link
       }
+      this.imgUrl = activity.imgUrl
+      this.addActivityLink.imgUrl = activity.imgUrl
+      this.addActivity.imgUrl = activity.imgUrl
       this.activityLinkVisible = true
-      this.editor.setContent(activity.content)
     },
 
     editActivity (activity) {
-      this.addActivity = {
-        newsId: activity.id,
-        name: activity.name,
-        imgUrl: activity.imgUrl,
-        content: activity.content,
-        videoUrl: activity.vodeoUrl,
-        remark: activity.remark
-      }
-      this.activityType = 'edit'
+      api.newsDetail({newsId: activity.id}).then(res => {
+        if (res.status === 'succ') {
+          this.addActivity = {
+            newsId: res.data.id,
+            name: res.data.name,
+            imgUrl: res.data.imgUrl,
+            content: res.data.content,
+            videoUrl: res.data.videoUrl,
+            remark: res.data.remark
+          }
+          this.imgUrl = activity.imgUrl
+          this.addActivityLink.imgUrl = res.data.imgUrl
+          this.addActivity.imgUrl = res.data.imgUrl
+          this.activityType = 'edit'
+          if (!this.editor) {
+            let that = this
+            this.editor = window.UE.getEditor('ueditor')
+            this.editor.ready(() => {
+              that.editor.setContent(res.data.content)
+            })
+          } else {
+            let that = this
+            this.editor = window.UE.getEditor('ueditor')
+            this.editor.ready(() => {
+              that.editor.setContent(res.data.content)
+            })
+          }
+        } else {
+          this.$notify({
+            message: res.message,
+            type: 'error',
+            duration: 0
+          })
+        }
+      })
     },
 
     goBack () {

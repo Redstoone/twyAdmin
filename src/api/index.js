@@ -37,6 +37,9 @@ export default {
   activityList (params) {
     return service(`/api/activity/list`, params, 'GET')
   },
+  activityDetail (params) {
+    return service(`/api/activity/detail`, params, 'GET')
+  },
   activityLinkAdd (params) {
     return service(`/api/activity/link/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   },
@@ -55,6 +58,9 @@ export default {
 
   newsList (params) {
     return service(`/api/news/list`, params, 'GET')
+  },
+  newsDetail (params) {
+    return service(`/api/news/detail`, params, 'GET')
   },
   newsLinkAdd (params) {
     return service(`/api/news/link/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })

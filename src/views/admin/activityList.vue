@@ -40,6 +40,17 @@
         <el-form-item label="名称" prop="name">
           <el-input v-model="addActivity.name" auto-complete="off" placeholder="请输入名称"></el-input>
         </el-form-item>
+        <el-form-item label="封面图" prop="imgUrl">
+          <el-upload
+            class="avatar-uploader cover-uploader"
+            :action="uploadUrl"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="imgUrl" :src="imgUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon cover-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
         <el-form-item label="时间" prop="time">
           <el-input v-model="addActivity.time" auto-complete="off" placeholder="请输入时间"></el-input>
         </el-form-item>
@@ -63,6 +74,17 @@
         <el-form-item label="名称" prop="name">
           <el-input v-model="addActivityLink.name" auto-complete="off" placeholder="请输入"></el-input>
         </el-form-item>
+        <el-form-item label="封面图" prop="imgUrl">
+          <el-upload
+            class="avatar-uploader cover-uploader"
+            :action="uploadUrl"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="imgUrl" :src="imgUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon cover-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
         <el-form-item label="链接" prop="link">
           <el-input v-model="addActivityLink.link" auto-complete="off" placeholder="请输入链接"></el-input>
         </el-form-item>
@@ -82,10 +104,12 @@ export default {
   data () {
     return {
       editor: null,
+      imgUrl: null,
       activityLinkVisible: false,
       addActivityLink: {
         name: null,
-        link: null
+        link: null,
+        imgUrl: null
       },
       addActivityLinkRules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
@@ -108,7 +132,8 @@ export default {
         time: [{ required: true, message: '请输入时间', trigger: 'blur' }],
         address: [{ required: true, message: '请输入地点', trigger: 'blur' }],
         content: [{ required: true, message: '请输入内容', trigger: 'blur' }]
-      }
+      },
+      uploadUrl: global.UPLOADURL
     }
   },
   created () {
@@ -130,16 +155,27 @@ export default {
       if (!this.editor) {
         this.editor = window.UE.getEditor('ueditor')
       } else {
-        this.editor.setContent('')
+        let that = this
+        this.editor = window.UE.getEditor('ueditor')
+        this.editor.ready(() => {
+          that.editor.setContent('')
+        })
       }
       this.$refs['addActivity'].resetFields()
       this.getActivityList()
     },
     handleAddActivityLink () {
+      this.imgUrl = null
+      this.addActivityLink = {
+        name: null,
+        link: null,
+        imgUrl: null
+      }
       this.activityLinkVisible = true
     },
     addActivityLinkSubmit () {
       // this.editor.setContent(activity.content)
+      this.addActivityLink.imgUrl = this.imgUrl
       this.$refs.activityLink.validate(valid => {
         if (valid) {
           this.addLoading = true
@@ -202,23 +238,50 @@ export default {
       this.addActivityLink = {
         activityId: activity.id,
         name: activity.name,
-        link: activity.link
+        link: activity.link,
+        imgUrl: activity.imgUrl
       }
+      this.imgUrl = activity.imgUrl
       this.activityLinkVisible = true
     },
 
     editActivity (activity) {
-      this.addActivity = {
-        activityId: activity.id,
-        name: activity.name,
-        time: activity.time,
-        address: activity.address,
-        content: activity.content,
-        videoUrl: activity.vodeoUrl,
-        remark: activity.remark
-      }
-      this.activityType = 'edit'
-      this.editor.setContent(activity.content)
+      api.activityDetail({activityId: activity.id}).then(res => {
+        if (res.status === 'succ') {
+          this.addActivity = {
+            activityId: res.data.id,
+            name: res.data.name,
+            time: res.data.time,
+            address: res.data.address,
+            content: res.data.content,
+            videoUrl: res.data.videoUrl,
+            remark: res.data.remark
+          }
+          this.imgUrl = activity.imgUrl
+          this.addActivityLink.imgUrl = activity.imgUrl
+          this.addActivity.imgUrl = activity.imgUrl
+          this.activityType = 'edit'
+          if (!this.editor) {
+            let that = this
+            this.editor = window.UE.getEditor('ueditor')
+            this.editor.ready(() => {
+              that.editor.setContent(res.data.content)
+            })
+          } else {
+            let that = this
+            this.editor = window.UE.getEditor('ueditor')
+            this.editor.ready(() => {
+              that.editor.setContent(res.data.content)
+            })
+          }
+        } else {
+          this.$notify({
+            message: res.message,
+            type: 'error',
+            duration: 0
+          })
+        }
+      })
     },
 
     goBack () {
@@ -232,9 +295,21 @@ export default {
         remark: null
       }
     },
+    handleAvatarSuccess (res, file) {
+      this.imgUrl = file.response
+    },
+    beforeAvatarUpload (file) {
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isLt2M
+    },
     createActivity () {
       this.addActivity.content = this.editor.getContent()
       this.addActivity.remark = this.editor.getContentTxt()
+      this.addActivity.imgUrl = this.imgUrl
       this.$refs.addActivity.validate(valid => {
         if (valid) {
           this.addLoading = true

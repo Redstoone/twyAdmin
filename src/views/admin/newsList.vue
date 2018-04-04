@@ -82,6 +82,9 @@
         <el-form-item label="链接" prop="link">
           <el-input v-model="addActivityLink.link" auto-complete="off" placeholder="请输入链接"></el-input>
         </el-form-item>
+        <el-form-item label="描述" prop="remark">
+          <el-input  type="textarea" :rows="3" v-model="addActivityLink.remark" auto-complete="off" placeholder="请输入描述"></el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click.native="activityLinkVisible = false">取消</el-button>
@@ -102,12 +105,14 @@ export default {
       addActivityLink: {
         name: null,
         imgUrl: null,
-        link: null
+        link: null,
+        remark: null
       },
       addActivityLinkRules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
         imgUrl: [{ required: true, message: '请添加封面图', trigger: 'blur' }],
-        link: [{ required: true, message: '请输入链接', trigger: 'blur' }]
+        link: [{ required: true, message: '请输入链接', trigger: 'blur' }],
+        remark: [{ required: true, message: '请输入描述', trigger: 'blur' }]
       },
       addLoading: false,
       activityList: [],
@@ -158,7 +163,8 @@ export default {
       this.addActivityLink = {
         name: null,
         imgUrl: null,
-        link: null
+        link: null,
+        remark: null
       }
       this.activityLinkVisible = true
     },
@@ -223,7 +229,9 @@ export default {
       this.addActivityLink = {
         newsId: activity.id,
         name: activity.name,
-        link: activity.link
+        link: activity.link,
+        imgUrl: activity.imgUrl,
+        remark: activity.remark
       }
       this.imgUrl = activity.imgUrl
       this.addActivityLink.imgUrl = activity.imgUrl

@@ -8080,14 +8080,16 @@ UE.Editor.defaultOptions = function(editor){
                 me.options.imageUrl && me.setOpt('serverUrl', me.options.imageUrl.replace(/^(.*[\/]).+([\.].+)$/, '$1controller$2'));
 
                 var configUrl = me.getActionUrl('config'),
-                    isJsonp = utils.isCrossDomainUrl(configUrl);
+                    // isJsonp = utils.isCrossDomainUrl(configUrl);
+                    isJsonp = false;
 
                 /* 发出ajax请求 */
                 me._serverConfigLoaded = false;
 
                 configUrl && UE.ajax.request(configUrl,{
                     'method': 'GET',
-                    'dataType': isJsonp ? 'jsonp':'',
+                    // 'dataType': isJsonp ? 'jsonp':'',
+                    'dataType': '',
                     'onsuccess':function(r){
                         try {
                             var config = isJsonp ? r:eval("("+r.responseText+")");
@@ -11165,7 +11167,7 @@ UE.commands['insertimage'] = {
                 unhtmlData(ci);
 
                 str = '<img src="' + ci.src + '" ' + (ci._src ? ' _src="' + ci._src + '" ' : '') +
-                    (ci.width ? 'width="' + ci.width + '" ' : '') +
+                    (ci.width ? 'style="max-width:100%;"' : 'style="max-width:100%;"') +
                     (ci.height ? ' height="' + ci.height + '" ' : '') +
                     (ci['floatStyle'] == 'left' || ci['floatStyle'] == 'right' ? ' style="float:' + ci['floatStyle'] + ';"' : '') +
                     (ci.title && ci.title != "" ? ' title="' + ci.title + '"' : '') +
@@ -24513,7 +24515,7 @@ UE.plugin.register('simpleupload', function (){
                 var allowFiles = me.getOpt('imageAllowFiles');
 
                 me.focus();
-                me.execCommand('inserthtml', '<img class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme +'/images/spacer.gif" title="' + (me.getLang('simpleupload.loading') || '') + '" >');
+                me.execCommand('inserthtml', '<img style="max-width:100%;" class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme +'/images/spacer.gif" title="' + (me.getLang('simpleupload.loading') || '') + '" >');
 
                 function callback(){
                     try{

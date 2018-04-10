@@ -2,8 +2,8 @@
   <section>
     <!--工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px" v-if="activityType == 'list'">
-      <el-button size="small" type="primary" @click="handleAddActivity">添加艺星之路</el-button>
-      <el-button size="small" type="primary" @click="handleAddActivityLink">添加艺星之路链接</el-button>
+      <el-button size="small" type="primary" @click="handleAddActivity">添加公开课</el-button>
+      <el-button size="small" type="primary" @click="handleAddActivityLink">添加公开课链接</el-button>
     </el-col>
     <el-col :span="24" class="toolbar txt-right" style="padding-bottom: 0px" v-else>
       <el-button size="small" type="primary" @click="goBack">取消返回</el-button>
@@ -28,7 +28,7 @@
             </div>
             <p class="name">{{item.name}}</p>
             <p>发布时间：{{item.time}}</p>
-            <p>地点：{{item.address}}</p>
+            <!-- <p>地点：{{item.address}}</p> -->
             <p class="desc">内容：{{item.remark}}</p>
           </div>
         </li>
@@ -38,7 +38,7 @@
 
     <el-col class="" :loading="listLoading" v-show="activityType !== 'list'">
       <el-form :model="addActivity" label-width="100px" :rules="addActivityRules" ref="addActivity">
-        <el-form-item label="名称" prop="name">
+        <el-form-item label="课程名称" prop="name">
           <el-input v-model="addActivity.name" auto-complete="off" placeholder="请输入名称"></el-input>
         </el-form-item>
         <el-form-item label="封面图" prop="imgUrl">
@@ -52,12 +52,12 @@
             <i v-else class="el-icon-plus avatar-uploader-icon cover-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <el-form-item label="时间" prop="time">
+        <!-- <el-form-item label="时间" prop="time">
           <el-input v-model="addActivity.time" auto-complete="off" placeholder="请输入时间"></el-input>
         </el-form-item>
         <el-form-item label="地点" prop="address">
           <el-input v-model="addActivity.address" auto-complete="off" placeholder="请输入地点"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="内容" prop="content">
           <!-- <el-input v-model="addActivity.content" auto-complete="off" placeholder="请输入内容"></el-input> -->
           <script id="ueditor" name="ueditor" type="text/plain" class="ue-content"></script>
@@ -193,7 +193,7 @@ export default {
               if (res.status === 'succ') {
                 this.addLoading = false
                 this.$notify({
-                  message: '修改艺星之路链接成功',
+                  message: '修改公开课链接成功',
                   type: 'success'
                 })
                 this.$refs['activityLink'].resetFields()
@@ -212,7 +212,7 @@ export default {
               if (res.status === 'succ') {
                 this.addLoading = false
                 this.$notify({
-                  message: '添加艺星之路链接成功',
+                  message: '添加公开课链接成功',
                   type: 'success'
                 })
                 this.$refs['activityLink'].resetFields()
@@ -330,7 +330,7 @@ export default {
             api.activityEdit(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '修改艺星之路成功',
+                message: '修改公开课成功',
                 type: 'success'
               })
               this.$refs['addActivity'].resetFields()
@@ -341,7 +341,7 @@ export default {
             api.activityAdd(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '添加艺星之路成功',
+                message: '添加公开课成功',
                 type: 'success'
               })
               this.$refs['addActivity'].resetFields()

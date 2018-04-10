@@ -6,6 +6,7 @@ import SchoolList from '@/views/admin/schoolList'
 // import TeacherList from '@/views/admin/teacherList'
 import ActivityList from '@/views/admin/activityList'
 import NewsList from '@/views/admin/newsList'
+import OpenList from '@/views/admin/OpenList'
 import OrgSetting from '@/views/org/orgSetting'
 import Course from '@/views/org/orgCourse'
 import Teacher from '@/views/org/orgTeacher'
@@ -65,10 +66,9 @@ const router = new Router({
       path: '/',
       component: Home,
       name: '课程设置',
-      hidden: true,
       type: 'superadmin',
       children: [
-        { path: '/course/content', component: Login, name: '公开课内容编辑' },
+        { path: '/course/open', component: OpenList, name: '公开课内容编辑' },
         { path: '/course/intro', component: Login, name: '课程介绍编辑' }
       ]
     },
@@ -144,18 +144,6 @@ const router = new Router({
       name: '班级管理',
       type: 'teacher',
       children: [
-        // {
-        //   path: '/clazz/1',
-        //   name: '芭蕾A班',
-        //   type: 'teacher',
-        //   component: TacherClazz
-        // },
-        // {
-        //   path: '/clazz/2',
-        //   name: '芭蕾B班',
-        //   type: 'teacher',
-        //   component: TacherClazz
-        // }
       ]
     },
     {

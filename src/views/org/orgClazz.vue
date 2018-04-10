@@ -259,13 +259,13 @@ export default {
     }
   },
   created () {
-    api.orgCourseList({groupId: JSON.parse(localStorage.getItem('groupId'))}).then(res => {
+    api.orgCourseList({groupId: JSON.parse(sessionStorage.getItem('groupId'))}).then(res => {
       res.data.array.forEach(item => {
         this.courseList.push({label: item.name, value: item.id})
       })
     })
 
-    api.orgTeacherList({groupId: JSON.parse(localStorage.getItem('groupId'))}).then(res => {
+    api.orgTeacherList({groupId: JSON.parse(sessionStorage.getItem('groupId'))}).then(res => {
       res.data.array.forEach(item => {
         this.teacherList.push({label: item.name, value: item.teacherId})
       })
@@ -275,7 +275,7 @@ export default {
   },
   methods: {
     getClazzList () {
-      api.orgClazzList({groupId: JSON.parse(localStorage.getItem('groupId'))}).then(res => {
+      api.orgClazzList({groupId: JSON.parse(sessionStorage.getItem('groupId'))}).then(res => {
         this.clazzList = res.data.array
       })
     },

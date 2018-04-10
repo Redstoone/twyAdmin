@@ -3,7 +3,7 @@ import { Message } from 'element-ui'
 // import store from '@/store'
 // import { getToken } from '@/utils/auth'
 
-let user = localStorage.getItem('user')
+let user = sessionStorage.getItem('user')
 if (user) {
   user = JSON.parse(user)
 }
@@ -11,8 +11,8 @@ const service = function (url, data, method = 'GET', headers = {}) {
   return new Promise((resolve, reject) => {
     let options = {
       'method': method,
-      'url': 'http://api.twyxedu.com' + process.env.BASE_API + url,
-      // 'url': process.env.BASE_API + url,
+      // 'url': 'http://api.twyxedu.com' + process.env.BASE_API + url,
+      'url': process.env.BASE_API + url,
       'headers': headers && typeof headers === 'object' ? headers : {}
     }
     options.headers['X-Requested-Page'] = 'json'

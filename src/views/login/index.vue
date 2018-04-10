@@ -64,7 +64,7 @@ export default {
                   type: 'error'
                 })
               } else {
-                localStorage.setItem('user', JSON.stringify(data))
+                sessionStorage.setItem('user', JSON.stringify(data))
                 if (data.role === 'superadmin') {
                   this.$router.push({ path: '/school/list' })
                 } else if (data.role === 'orgadmin') {

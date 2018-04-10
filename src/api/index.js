@@ -82,7 +82,7 @@ export default {
   },
 
   orgInfo (params) {
-    let user = JSON.parse(localStorage.getItem('user'))
+    let user = JSON.parse(sessionStorage.getItem('user'))
     return service(`/api/org/info`, params, 'GET', { 'accesstoken': user.accesstoken })
   },
   orgCourseAdd (params) {

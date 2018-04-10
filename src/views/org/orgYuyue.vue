@@ -150,12 +150,12 @@ export default {
   },
   methods: {
     getStudentList (type = 2) {
-      api.orgCourseStudentList({ groupId: JSON.parse(localStorage.getItem('groupId')), type: type }).then(res => {
+      api.orgCourseStudentList({ groupId: JSON.parse(sessionStorage.getItem('groupId')), type: type }).then(res => {
         this.studentList = res.data.array
       })
     },
     getCourseList () {
-      api.orgCourseList({groupId: JSON.parse(localStorage.getItem('groupId'))}).then(res => {
+      api.orgCourseList({groupId: JSON.parse(sessionStorage.getItem('groupId'))}).then(res => {
         res.data.array.forEach((item, index) => {
           this.courseOptions.push({ 'value': item.id, 'label': item.name })
         })

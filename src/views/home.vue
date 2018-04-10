@@ -90,7 +90,7 @@ export default {
     logout () {
       var _this = this
       this.$confirm('确认退出吗?', '提示', {}).then(() => {
-        localStorage.removeItem('user')
+        sessionStorage.removeItem('user')
         _this.$router.push('/login')
       }).catch(() => {})
     },
@@ -104,7 +104,7 @@ export default {
     }
   },
   mounted () {
-    var user = localStorage.getItem('user')
+    var user = sessionStorage.getItem('user')
     if (user) {
       user = JSON.parse(user)
       this.sysUserName = user.name || ''

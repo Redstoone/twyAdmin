@@ -112,14 +112,14 @@ export default {
   },
   methods: {
     getCourseList () {
-      api.orgCourseList({groupId: JSON.parse(localStorage.getItem('groupId'))}).then(res => {
+      api.orgCourseList({groupId: JSON.parse(sessionStorage.getItem('groupId'))}).then(res => {
         this.courseList = res.data.array
       })
     },
     handleAddCourse () {
       this.courseVisible = true
       this.addCourse = {
-        groupId: JSON.parse(localStorage.getItem('groupId')),
+        groupId: JSON.parse(sessionStorage.getItem('groupId')),
         name: null,
         feeType: 1,
         fee: 3500
@@ -131,7 +131,7 @@ export default {
         name: item.name,
         feeType: parseInt(item.feeType),
         fee: item.fee,
-        groupId: JSON.parse(localStorage.getItem('groupId'))
+        groupId: JSON.parse(sessionStorage.getItem('groupId'))
       }
       this.courseVisible = true
     },

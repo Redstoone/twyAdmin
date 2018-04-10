@@ -86,7 +86,7 @@ export default {
       teacherList: [],
       courseVisible: false,
       addCourse: {
-        groupId: JSON.parse(localStorage.getItem('groupId')),
+        groupId: JSON.parse(sessionStorage.getItem('groupId')),
         name: null,
         cellphone: null,
         IDcard: null,
@@ -110,14 +110,14 @@ export default {
   },
   methods: {
     getTeacherList () {
-      api.orgTeacherList({groupId: JSON.parse(localStorage.getItem('groupId'))}).then(res => {
+      api.orgTeacherList({groupId: JSON.parse(sessionStorage.getItem('groupId'))}).then(res => {
         this.teacherList = res.data.array
       })
     },
     selsChange (sels) {
       this.sels = sels
       this.addCourse = {
-        groupId: JSON.parse(localStorage.getItem('groupId')),
+        groupId: JSON.parse(sessionStorage.getItem('groupId')),
         name: null,
         cellphone: null,
         IDcard: null,
@@ -156,7 +156,7 @@ export default {
           this.courseLoading = true
           let para = Object.assign({}, this.addCourse)
           para.imgUrl = this.imageUrl
-          para.groupId = JSON.parse(localStorage.getItem('groupId'))
+          para.groupId = JSON.parse(sessionStorage.getItem('groupId'))
           if (this.teacherId) {
             para.teacherId = this.teacherId
             api.orgTeacherEdit(para).then((res) => {

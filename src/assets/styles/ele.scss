@@ -67,15 +67,15 @@
 .el-button--primary,
 .el-button--primary:focus
 {
-  color: #fff;
-  background-color: #5BBFD7;
-  border-color: #5BBFD7;
+  color: #fff !important;
+  background-color: #5BBFD7 !important;
+  border-color: #5BBFD7 !important;
 }
 .el-button--primary:hover{
-  background-color: rgba(91,191,215, .6);
-  border-color: #5BBFD7;
+  background-color: rgba(91, 191, 215, .6) !important;
+  border-color: #5BBFD7 !important;
 }
 
 .el-menu-item.is-active{
-  color: #5BBFD7;
+  color: #5BBFD7 !important;
 }

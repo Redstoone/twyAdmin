@@ -52,12 +52,12 @@
             <i v-else class="el-icon-plus avatar-uploader-icon cover-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <!-- <el-form-item label="时间" prop="time">
+        <el-form-item label="时间" prop="time">
           <el-input v-model="addActivity.time" auto-complete="off" placeholder="请输入时间"></el-input>
         </el-form-item>
         <el-form-item label="地点" prop="address">
           <el-input v-model="addActivity.address" auto-complete="off" placeholder="请输入地点"></el-input>
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item label="内容" prop="content">
           <!-- <el-input v-model="addActivity.content" auto-complete="off" placeholder="请输入内容"></el-input> -->
           <script id="ueditor" name="ueditor" type="text/plain" class="ue-content"></script>
@@ -152,7 +152,7 @@ export default {
   methods: {
     getActivityList () {
       this.listLoading = true
-      api.activityList().then(res => {
+      api.openCalzzList().then(res => {
         this.activityList = res.data.array
         this.listLoading = false
       })
@@ -189,7 +189,7 @@ export default {
           this.addLoading = true
           let para = Object.assign({}, this.addActivityLink)
           if (this.addActivityLink.activityId) {
-            api.activityLinkEdit(para).then(res => {
+            api.openCalzzLinkEdit(para).then(res => {
               if (res.status === 'succ') {
                 this.addLoading = false
                 this.$notify({
@@ -208,7 +208,7 @@ export default {
               }
             })
           } else {
-            api.activityLinkAdd(para).then(res => {
+            api.openCalzzLinkAdd(para).then(res => {
               if (res.status === 'succ') {
                 this.addLoading = false
                 this.$notify({
@@ -236,7 +236,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.listLoading = true
-        api.activityDel({activityId: activityId}).then((res) => {
+        api.openCalzzDel({activityId: activityId}).then((res) => {
           this.listLoading = false
           this.getActivityList()
         })
@@ -257,7 +257,7 @@ export default {
     },
 
     editActivity (activity) {
-      api.activityDetail({activityId: activity.id}).then(res => {
+      api.openCalzzDetail({activityId: activity.id}).then(res => {
         if (res.status === 'succ') {
           this.addActivity = {
             activityId: res.data.id,
@@ -327,7 +327,7 @@ export default {
           let para = Object.assign({}, this.addActivity)
           // para.content = this.editor.getContent()
           if (this.addActivity.activityId) {
-            api.activityEdit(para).then(res => {
+            api.openCalzzEdit(para).then(res => {
               this.addLoading = false
               this.$notify({
                 message: '修改公开课成功',
@@ -338,7 +338,7 @@ export default {
               this.getActivityList()
             })
           } else {
-            api.activityAdd(para).then(res => {
+            api.openCalzzAdd(para).then(res => {
               this.addLoading = false
               this.$notify({
                 message: '添加公开课成功',

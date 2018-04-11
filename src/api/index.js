@@ -179,5 +179,40 @@ export default {
   },
   teacherClazz (params) {
     return service(`/api/teacher/clazz`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+
+  openCalzzAdd (params) {
+    return service(`/api/show/clazz/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  openCalzzLinkAdd (params) {
+    return service(`/api/show/clazz/link/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  openCalzzDel (params) {
+    return service(`/api/show/clazz/del`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  openCalzzEdit (params) {
+    return service(`/api/show/clazz/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  openCalzzLinkEdit (params) {
+    return service(`/api/show/clazz/link/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  openCalzzList (params) {
+    return service(`/api/show/clazz/list`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  openCalzzDetail (params) {
+    return service(`/api/show/clazz/detail`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+
+  openCourseAdd (params) {
+    return service(`/api/show/course/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  openCourseDel (params) {
+    return service(`/api/show/course/del`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  openCourseEdit (params) {
+    return service(`/api/show/course/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  openCourseList (params) {
+    return service(`/api/show/course/list`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   }
 }

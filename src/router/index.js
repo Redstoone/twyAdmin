@@ -7,6 +7,7 @@ import SchoolList from '@/views/admin/schoolList'
 import ActivityList from '@/views/admin/activityList'
 import NewsList from '@/views/admin/newsList'
 import OpenList from '@/views/admin/OpenList'
+import CourseList from '@/views/admin/CourseList'
 import OrgSetting from '@/views/org/orgSetting'
 import Course from '@/views/org/orgCourse'
 import Teacher from '@/views/org/orgTeacher'
@@ -69,7 +70,7 @@ const router = new Router({
       type: 'superadmin',
       children: [
         { path: '/course/open', component: OpenList, name: '公开课内容编辑' },
-        { path: '/course/intro', component: Login, name: '课程介绍编辑' }
+        { path: '/course/intro', component: CourseList, name: '课程介绍编辑' }
       ]
     },
 

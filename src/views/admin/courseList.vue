@@ -2,8 +2,8 @@
   <section>
     <!--工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px" v-if="activityType == 'list'">
-      <el-button size="small" type="primary" @click="handleAddActivity">添加公开课</el-button>
-      <el-button size="small" type="primary" @click="handleAddActivityLink">添加公开课链接</el-button>
+      <el-button size="small" type="primary" @click="handleAddActivity">课程添加</el-button>
+      <!-- <el-button size="small" type="primary" @click="handleAddActivityLink">添加课程链接</el-button> -->
     </el-col>
     <el-col :span="24" class="toolbar txt-right" style="padding-bottom: 0px" v-else>
       <el-button size="small" type="primary" @click="goBack">取消返回</el-button>
@@ -41,7 +41,7 @@
         <el-form-item label="课程名称" prop="name">
           <el-input v-model="addActivity.name" auto-complete="off" placeholder="请输入名称"></el-input>
         </el-form-item>
-        <el-form-item label="封面图" prop="imgUrl">
+        <el-form-item label="课程封面" prop="imgUrl">
           <el-upload
             class="avatar-uploader cover-uploader"
             :action="uploadUrl"
@@ -52,21 +52,33 @@
             <i v-else class="el-icon-plus avatar-uploader-icon cover-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <el-form-item label="时间" prop="time">
-          <el-input v-model="addActivity.time" auto-complete="off" placeholder="请输入时间"></el-input>
+        <el-form-item label="适合年龄" prop="age">
+          <el-input v-model="addActivity.age" auto-complete="off" placeholder="请输入时间"></el-input>
         </el-form-item>
-        <el-form-item label="地点" prop="address">
-          <el-input v-model="addActivity.address" auto-complete="off" placeholder="请输入地点"></el-input>
+        <el-form-item label="课时安排" prop="num">
+          <el-col :span="8">
+            <span style="float: left;"> 每学期周次：</span>
+            <el-col :span="17">
+              <el-input  v-model="addActivity.zc" auto-complete="off" placeholder="请输入课时安排"></el-input>
+            </el-col>
+          </el-col>
+          <el-col :span="8">
+             <span style="float: left;"> 每次课时量：</span>
+            <el-col :span="17">
+              <el-input v-model="addActivity.ksl" auto-complete="off" placeholder="请输入课时安排"></el-input>
+            </el-col>
+          </el-col>
+          <el-col :span="8">
+            <span style="float: left;"> 时长：</span>
+            <el-col :span="14">
+              <el-input v-model="addActivity.sc" auto-complete="off" placeholder="请输入课时安排"></el-input>
+            </el-col>
+          </el-col>
         </el-form-item>
         <el-form-item label="内容" prop="content">
           <!-- <el-input v-model="addActivity.content" auto-complete="off" placeholder="请输入内容"></el-input> -->
           <script id="ueditor" name="ueditor" type="text/plain" class="ue-content"></script>
         </el-form-item>
-        <el-form-item label="视频" prop="videoUrl">
-          <el-input v-model="addActivity.videoUrl" auto-complete="off" placeholder="请输入视频"></el-input>
-        </el-form-item>
-        <p class="add-tip">提示：视频请先上传到优酷等平台，然后把通用代码复制拷贝到上方</p>
-        <img src="../../assets/imgs/url_help.jpg" style="width:213px;height:241px;margin-left: 100px;"/>
       </el-form>
     </el-col>
 
@@ -128,17 +140,19 @@ export default {
       activityType: 'list',
       addActivity: {
         name: null,
-        time: null,
-        address: null,
-        content: null,
-        videoUrl: null,
-        remark: null
+        age: null,
+        zc: null,
+        ksl: null,
+        sc: null,
+        intro: null
       },
       addActivityRules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-        time: [{ required: true, message: '请输入时间', trigger: 'blur' }],
-        address: [{ required: true, message: '请输入地点', trigger: 'blur' }],
-        content: [{ required: true, message: '请输入内容', trigger: 'blur' }]
+        age: [{ required: true, message: '请输入适合年龄', trigger: 'blur' }],
+        zc: [{ required: true, message: '请输入地点', trigger: 'blur' }],
+        ksl: [{ required: true, message: '请输入内容', trigger: 'blur' }],
+        sc: [{ required: true, message: '请输入内容', trigger: 'blur' }],
+        intro: [{ required: true, message: '请输入内容', trigger: 'blur' }]
       },
       uploadUrl: global.UPLOADURL
     }
@@ -152,7 +166,7 @@ export default {
   methods: {
     getActivityList () {
       this.listLoading = true
-      api.openCalzzList().then(res => {
+      api.openCourseList().then(res => {
         this.activityList = res.data.array
         this.listLoading = false
       })
@@ -188,12 +202,12 @@ export default {
         if (valid) {
           this.addLoading = true
           let para = Object.assign({}, this.addActivityLink)
-          if (this.addActivityLink.showId) {
+          if (this.addActivityLink.activityId) {
             api.openCalzzLinkEdit(para).then(res => {
               if (res.status === 'succ') {
                 this.addLoading = false
                 this.$notify({
-                  message: '修改公开课链接成功',
+                  message: '修改课程链接成功',
                   type: 'success'
                 })
                 this.$refs['activityLink'].resetFields()
@@ -212,7 +226,7 @@ export default {
               if (res.status === 'succ') {
                 this.addLoading = false
                 this.$notify({
-                  message: '添加公开课链接成功',
+                  message: '添加课程链接成功',
                   type: 'success'
                 })
                 this.$refs['activityLink'].resetFields()
@@ -231,12 +245,12 @@ export default {
       })
     },
 
-    delActivity (showId) {
+    delActivity (activityId) {
       this.$confirm('确认删除该记录吗?', '提示', {
         type: 'warning'
       }).then(() => {
         this.listLoading = true
-        api.openCalzzDel({showId: showId}).then((res) => {
+        api.openCalzzDel({activityId: activityId}).then((res) => {
           this.listLoading = false
           this.getActivityList()
         })
@@ -244,7 +258,7 @@ export default {
     },
     editActivityLink (activity) {
       this.addActivityLink = {
-        showId: activity.id,
+        activityId: activity.id,
         name: activity.name,
         link: activity.link,
         imgUrl: activity.imgUrl,
@@ -257,10 +271,10 @@ export default {
     },
 
     editActivity (activity) {
-      api.openCalzzDetail({showId: activity.id}).then(res => {
+      api.openCalzzDetail({activityId: activity.id}).then(res => {
         if (res.status === 'succ') {
           this.addActivity = {
-            showId: res.data.id,
+            activityId: res.data.id,
             name: res.data.name,
             time: res.data.time,
             address: res.data.address,
@@ -318,9 +332,9 @@ export default {
       return isLt2M
     },
     createActivity () {
-      this.addActivity.content = this.editor.getContent()
+      this.addActivity.intro = this.editor.getContent()
       this.addActivity.remark = this.editor.getContentTxt()
-      this.addActivity.imgUrl = this.imgUrl
+      this.addActivity.coverUrl = this.imgUrl
       this.$refs.addActivity.validate(valid => {
         if (valid) {
           this.addLoading = true
@@ -330,7 +344,7 @@ export default {
             api.openCalzzEdit(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '修改公开课成功',
+                message: '修改课程成功',
                 type: 'success'
               })
               this.$refs['addActivity'].resetFields()
@@ -341,7 +355,7 @@ export default {
             api.openCalzzAdd(para).then(res => {
               this.addLoading = false
               this.$notify({
-                message: '添加公开课成功',
+                message: '添加课程成功',
                 type: 'success'
               })
               this.$refs['addActivity'].resetFields()

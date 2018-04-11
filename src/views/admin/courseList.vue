@@ -27,9 +27,9 @@
               <span @click="editActivity(item)">编辑查看</span>
             </div>
             <p class="name">{{item.name}}</p>
-            <p>发布时间：{{item.time}}</p>
-            <!-- <p>地点：{{item.address}}</p> -->
-            <p class="desc">内容：{{item.remark}}</p>
+            <p>适合年龄：{{item.age}}</p>
+            <p>课时安排：每学期{{item.zc}}周次，每次{{item.ksl}}课时，共{{item.sc}}分钟</p>
+            <p class="desc">介绍：{{item.intro}}</p>
           </div>
         </li>
       </ul>
@@ -75,9 +75,9 @@
             </el-col>
           </el-col>
         </el-form-item>
-        <el-form-item label="内容" prop="content">
-          <!-- <el-input v-model="addActivity.content" auto-complete="off" placeholder="请输入内容"></el-input> -->
-          <script id="ueditor" name="ueditor" type="text/plain" class="ue-content"></script>
+        <el-form-item label="内容" prop="intro">
+          <el-input type="textarea" :rows="6" v-model="addActivity.intro" auto-complete="off" placeholder="请输入内容"></el-input>
+          <!-- <script id="ueditor" name="ueditor" type="text/plain" class="ue-content"></script> -->
         </el-form-item>
       </el-form>
     </el-col>
@@ -173,15 +173,15 @@ export default {
     },
     handleAddActivity () {
       this.activityType = 'add'
-      if (!this.editor) {
-        this.editor = window.UE.getEditor('ueditor')
-      } else {
-        let that = this
-        this.editor = window.UE.getEditor('ueditor')
-        this.editor.ready(() => {
-          that.editor.setContent('')
-        })
-      }
+      // if (!this.editor) {
+      //   // this.editor = window.UE.getEditor('ueditor')
+      // } else {
+      //   let that = this
+      //   // this.editor = window.UE.getEditor('ueditor')
+      //   this.editor.ready(() => {
+      //     that.editor.setContent('')
+      //   })
+      // }
       this.$refs['addActivity'].resetFields()
       this.getActivityList()
     },
@@ -250,7 +250,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.listLoading = true
-        api.openCalzzDel({activityId: activityId}).then((res) => {
+        api.openCourseDel({showId: activityId}).then((res) => {
           this.listLoading = false
           this.getActivityList()
         })
@@ -258,7 +258,7 @@ export default {
     },
     editActivityLink (activity) {
       this.addActivityLink = {
-        activityId: activity.id,
+        showId: activity.id,
         name: activity.name,
         link: activity.link,
         imgUrl: activity.imgUrl,
@@ -271,42 +271,19 @@ export default {
     },
 
     editActivity (activity) {
-      api.openCalzzDetail({activityId: activity.id}).then(res => {
-        if (res.status === 'succ') {
-          this.addActivity = {
-            activityId: res.data.id,
-            name: res.data.name,
-            time: res.data.time,
-            address: res.data.address,
-            content: res.data.content,
-            videoUrl: res.data.videoUrl,
-            remark: res.data.remark
-          }
-          this.imgUrl = activity.imgUrl
-          this.addActivityLink.imgUrl = activity.imgUrl
-          this.addActivity.imgUrl = activity.imgUrl
-          this.activityType = 'edit'
-          if (!this.editor) {
-            let that = this
-            this.editor = window.UE.getEditor('ueditor')
-            this.editor.ready(() => {
-              that.editor.setContent(res.data.content)
-            })
-          } else {
-            let that = this
-            this.editor = window.UE.getEditor('ueditor')
-            this.editor.ready(() => {
-              that.editor.setContent(res.data.content)
-            })
-          }
-        } else {
-          this.$notify({
-            message: res.message,
-            type: 'error',
-            duration: 0
-          })
-        }
-      })
+      this.addActivity = {
+        showId: activity.id,
+        name: activity.name,
+        age: activity.age,
+        ksl: activity.ksl,
+        sc: activity.sc,
+        zc: activity.zc,
+        intro: activity.intro
+      }
+      this.imgUrl = activity.coverUrl
+      this.addActivityLink.imgUrl = activity.coverUrl
+      this.addActivity.imgUrl = activity.coverUrl
+      this.activityType = 'edit'
     },
 
     goBack () {
@@ -332,16 +309,13 @@ export default {
       return isLt2M
     },
     createActivity () {
-      this.addActivity.intro = this.editor.getContent()
-      this.addActivity.remark = this.editor.getContentTxt()
       this.addActivity.coverUrl = this.imgUrl
       this.$refs.addActivity.validate(valid => {
         if (valid) {
           this.addLoading = true
           let para = Object.assign({}, this.addActivity)
-          // para.content = this.editor.getContent()
           if (this.addActivity.showId) {
-            api.openCalzzEdit(para).then(res => {
+            api.openCourseEdit(para).then(res => {
               this.addLoading = false
               this.$notify({
                 message: '修改课程成功',
@@ -352,7 +326,7 @@ export default {
               this.getActivityList()
             })
           } else {
-            api.openCalzzAdd(para).then(res => {
+            api.openCourseAdd(para).then(res => {
               this.addLoading = false
               this.$notify({
                 message: '添加课程成功',
@@ -422,6 +396,6 @@ export default {
   display:-webkit-box;
   -webkit-box-orient:vertical;
   -webkit-line-clamp:2;
-  height: 52px;
+  max-height: 52px;
 }
 </style>

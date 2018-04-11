@@ -56,7 +56,7 @@
       </el-form> -->
     <!-- </el-col> -->
 
-    <el-dialog title="编辑网点" :visible.sync="courseVisible" :close-on-click-modal="false" width="480px">
+    <el-dialog title="添加/编辑课程" :visible.sync="courseVisible" :close-on-click-modal="false" width="480px">
       <el-form :model="addCourse" label-width="100px" :rules="addCourseRules" ref="addCourse">
         <el-form-item label="课程名称" prop="name">
           <el-input v-model="addCourse.name" auto-complete="off" placeholder="请输入课程名称"></el-input>

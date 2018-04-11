@@ -30,7 +30,7 @@
               {{scope.row.studentNum}}人&nbsp;<a hrefr="javascript:;" class="btn-option" @click="viewStudent(scope.row.id)">查看点到/成绩</a>
             </template>
           </el-table-column>
-          <el-table-column prop="cellphone" label="上课时间" sortable>
+          <el-table-column label="上课时间" sortable>
             <template slot-scope="scope">
               {{scope.row.time}},&nbsp;{{scope.row.duration}}
             </template>
@@ -231,7 +231,7 @@ export default {
       listLoading: false,
       addClass: {},
       addClassRules: {
-        name: [{ required: true, message: '请输入教师姓名', trigger: 'blur' }],
+        name: [{ required: true, message: '请输入班级姓名', trigger: 'blur' }],
         courseId: [{ required: true, message: '请选择课程', trigger: 'blur' }],
         teacherAId: [{ required: true, message: '请选择教师', trigger: 'blur' }],
         num: [{ required: true, message: '请输入次数', trigger: 'blur' }]
@@ -281,6 +281,15 @@ export default {
     },
     handleAddClass () {
       this.classType = 'add'
+      this.addClass = {
+        name: null,
+        courseId: null,
+        teacherAId: null,
+        teacherBId: null,
+        num: null,
+        time: null,
+        duration: null
+      }
     },
     handleEdit (item) {
       this.classType = 'edit'

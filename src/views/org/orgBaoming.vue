@@ -31,9 +31,9 @@
 
     <el-col>
       <el-table class="ctable" :data="studentList" stripe border highlight-current-row v-loading="listLoading" style="width: 100%">
-        <el-table-column prop="name" label="孩子姓名"></el-table-column>
-        <el-table-column prop="courseName" label="课程名"></el-table-column>
-        <el-table-column label="年龄/性别">
+        <el-table-column prop="name" label="孩子姓名" width="120"></el-table-column>
+        <el-table-column prop="courseName" label="课程名" width="120"></el-table-column>
+        <el-table-column label="年龄/性别" width="120">
           <template slot-scope="scope">
             {{scope.row.age}} / {{scope.row.sex}}
           </template>
@@ -45,10 +45,14 @@
         </el-table-column>
         <el-table-column label="状态">
           <template slot-scope="scope">
-            {{scope.row.payMethod}}-{{scope.row.payStatus}}
+            <div class="paymethod-wrap" @click="studentPay(scope.row)">
+              <div class="paymethod">{{scope.row.payMethod}}-{{scope.row.payStatus}} </div> <br />
+              {{scope.row.payMethod == '微信' ? scope.row.payStatus == '已支付' ? '流水: ' : '' : '对账码: '}}
+              <span style="color: #f00;">{{scope.row.payMethod == '微信' && scope.row.payStatus == '未支付' ? '' : scope.row.orderNum}}</span>
+            </div>
           </template>
         </el-table-column>
-          <el-table-column prop="cellphone" label="提交时间/备注查看">
+          <el-table-column prop="cellphone" label="提交时间/备注查看" width="150">
           <template slot-scope="scope">
             {{scope.row.createTime}}
             <a hrefr="javascript:;" class="btn-option" size="mini" @click="viewRemark(scope.row)">查看</a>
@@ -57,7 +61,7 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <a href="javascript:;" class="btn-option" size="mini" @click="handleDel(scope.$index, scope.row)">删除</a>
-            <!-- <a href="javascript:;" class="btn-option" size="mini" @click="handleClazz(scope.row)">分配到班</a> -->
+            <a href="javascript:;" class="btn-option" size="mini" @click="handleClazz(scope.row)">分配到班</a>
           </template>
         </el-table-column>
       </el-table>
@@ -211,12 +215,39 @@ export default {
           this.getStudentList()
         } else {
           this.$notify({
-            message: '分配班级失败',
+            message: res.message,
             type: 'error',
             duration: 0
           })
         }
       })
+    },
+    studentPay (row) {
+      if (row.payStatus === '未支付') {
+        this.$confirm('该用户状态改为已支付?', '提示', {
+          type: 'warning'
+        }).then(() => {
+          api.studentPayStatus({id: row.id, status: '已支付'}).then(res => {
+            if (res.status === 'succ') {
+              this.$notify({
+                message: row.name + '同学支付成功',
+                type: 'success'
+              })
+              this.getStudentList()
+            } else {
+              this.$notify({
+                message: res.message,
+                type: 'error',
+                duration: 0
+              })
+            }
+          })
+        })
+      } else {
+        this.$confirm('该用户已支付', '提示', {
+          type: 'warning'
+        }).then(() => {})
+      }
     }
   }
 }
@@ -231,5 +262,22 @@ export default {
 }
 .ctable{
   margin-top: 20px;
+}
+.paymethod{
+  position: relative;
+  padding-right: 10px;
+  display: inline-block;
+  cursor: pointer;
+}
+.paymethod:after{
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: 10px solid #999;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  position: absolute;
+  right: -5px;
+  top: 5px;
 }
 </style>

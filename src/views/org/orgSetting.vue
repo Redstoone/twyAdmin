@@ -21,12 +21,12 @@
         <el-form-item label="联系电话" prop="telphone">
           <el-input v-model="editForm.telphone"></el-input>
         </el-form-item>
-        <el-form-item label="管理员账号" prop="adminname">
+        <el-form-item label="管理员账号">
           <!-- <el-input v-model="editForm.adminname" auto-complete="off"></el-input> -->
-          <span>{{editForm.adminname}}</span>
+          <span>{{editForm.adminName}}</span>
         </el-form-item>
-        <el-form-item label="管理员密码" prop="password">
-          <el-input v-model="editForm.password" auto-complete="off"></el-input>
+        <el-form-item label="管理员密码" prop="adminPwd">
+          <el-input v-model="editForm.adminPwd" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -49,8 +49,8 @@ export default {
         name: [{ required: true, message: '请输入网点名称', trigger: 'blur' }],
         address: [{ required: true, message: '请输入网点地址', trigger: 'blur' }],
         telphone: [{ required: true, message: '请输入联系电话', trigger: 'blur' }],
-        adminname: [{ required: true, message: '请输入管理员账号', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入管理员密码', trigger: 'blur' }]
+        adminName: [{ required: true, message: '请输入管理员账号', trigger: 'blur' }],
+        adminPwd: [{ required: true, message: '请输入管理员密码', trigger: 'blur' }]
       },
 
       // 编辑界面数据
@@ -58,8 +58,8 @@ export default {
         name: '',
         address: '',
         telphone: null,
-        adminname: '',
-        password: ''
+        adminName: '',
+        adminPwd: ''
       }
     }
   },
@@ -74,8 +74,8 @@ export default {
             name: res.data.name,
             address: res.data.address,
             telphone: res.data.telphone,
-            adminname: res.data.adminName,
-            password: res.data.password,
+            adminName: res.data.adminName,
+            adminPwd: res.data.adminPwd,
             groupId: res.data.groupId
           }
           sessionStorage.setItem('groupId', JSON.stringify(res.data.groupId))

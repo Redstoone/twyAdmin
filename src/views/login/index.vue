@@ -124,24 +124,15 @@ export default {
       top: 0;
       left: 0;
       z-index: 0;
-      background-image: url('../../assets/imgs/login_bg.jpg');
+      // background-image: url('../../assets/imgs/login_bg.jpg');
+      background-color: #5bbfd7;
+      background-image: url(../../assets/imgs/home_bg.png);
       background-position: center;
       background-repeat: no-repeat;
-      background-size: cover;
     }
     .bg-img img{
       width: 100%;
     }
-    // .bg-marsk{
-    //   width: 100%;
-    //   height: 100%;
-    //   position: absolute;
-    //   top: 0;
-    //   left: 0;
-    //   z-index: 1;
-    //   background: url('../../assets/imgs/bg_index.png') repeat 70% center;
-    //   background-size: contain;
-    // }
     input:-webkit-autofill {
       box-shadow: 0 0 0px 1000px #293444 inset !important;
       -webkit-text-fill-color: #fff !important;

@@ -28,7 +28,7 @@
             </div>
             <p class="name">{{item.name}}</p>
             <p>适合年龄：{{item.age}}</p>
-            <p>课时安排：每学期{{item.zc}}周次，每次{{item.ksl}}课时，共{{item.sc}}分钟</p>
+            <p>课时安排：{{parseInt(item.zc) > 0 ? '每学期'+item.zc+'周次' : item.zc}}，每次{{item.ksl}}课时，共{{item.sc}}分钟</p>
             <p class="desc">介绍：{{item.intro}}</p>
           </div>
         </li>
@@ -77,7 +77,6 @@
         </el-form-item>
         <el-form-item label="内容" prop="intro">
           <el-input type="textarea" :rows="6" v-model="addActivity.intro" auto-complete="off" placeholder="请输入内容"></el-input>
-          <!-- <script id="ueditor" name="ueditor" type="text/plain" class="ue-content"></script> -->
         </el-form-item>
       </el-form>
     </el-col>
@@ -160,9 +159,6 @@ export default {
   created () {
     this.getActivityList()
   },
-  destroyed () {
-    // this.editor.destroy()
-  },
   methods: {
     getActivityList () {
       this.listLoading = true
@@ -173,17 +169,16 @@ export default {
     },
     handleAddActivity () {
       this.activityType = 'add'
-      // if (!this.editor) {
-      //   // this.editor = window.UE.getEditor('ueditor')
-      // } else {
-      //   let that = this
-      //   // this.editor = window.UE.getEditor('ueditor')
-      //   this.editor.ready(() => {
-      //     that.editor.setContent('')
-      //   })
-      // }
+      this.addActivity = {
+        name: null,
+        age: null,
+        zc: null,
+        ksl: null,
+        sc: null,
+        intro: null
+      }
+      this.imgUrl = null
       this.$refs['addActivity'].resetFields()
-      this.getActivityList()
     },
     handleAddActivityLink () {
       this.imgUrl = null
@@ -196,7 +191,6 @@ export default {
       this.activityLinkVisible = true
     },
     addActivityLinkSubmit () {
-      // this.editor.setContent(activity.content)
       this.addActivityLink.imgUrl = this.imgUrl
       this.$refs.activityLink.validate(valid => {
         if (valid) {

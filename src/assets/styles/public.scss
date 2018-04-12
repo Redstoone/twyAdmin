@@ -331,3 +331,9 @@ html{
   text-align: center;
   margin: 60px auto;
 }
+
+.plink{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

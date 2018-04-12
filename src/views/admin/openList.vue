@@ -11,28 +11,34 @@
     </el-col>
 
     <el-col class="" :loading="listLoading" v-show="activityType == 'list'">
-      <ul class="activity-list" v-if="activityList.length > 0">
-        <li v-for="(item, index) in activityList" :key="index">
-          <div v-if="item.type == 2">
-            <div class="edit-wrap">
-              <span @click="delActivity(item.id)">删除</span>
-              <span @click="editActivityLink(item)">编辑查看</span>
+      <div v-if="activityList.length > 0">
+        <ul class="activity-list" v-if="activityList.length > 0">
+          <li v-for="(item, index) in activityList" :key="index">
+            <div v-if="item.type == 2">
+              <div class="edit-wrap">
+                <span @click="delActivity(item.id)">删除</span>
+                <span @click="editActivityLink(item)">编辑查看</span>
+              </div>
+              <p class="name">{{item.name}}</p>
+              <p class="plink">链接: <a :href="item.link" target="view_window">{{item.link}}</a></p>
             </div>
-            <p class="name">{{item.name}}</p>
-            <p>链接: <a :href="item.link" target="view_window">{{item.link}}</a></p>
-          </div>
-          <div class="" v-else>
-            <div class="edit-wrap">
-              <span @click="delActivity(item.id)">删除</span>
-              <span @click="editActivity(item)">编辑查看</span>
+            <div class="" v-else>
+              <div class="edit-wrap">
+                <span @click="delActivity(item.id)">删除</span>
+                <span @click="editActivity(item)">编辑查看</span>
+              </div>
+              <p class="name">{{item.name}}</p>
+              <p>发布时间：{{item.time}}</p>
+              <!-- <p>地点：{{item.address}}</p> -->
+              <p class="desc">内容：{{item.remark}}</p>
             </div>
-            <p class="name">{{item.name}}</p>
-            <p>发布时间：{{item.time}}</p>
-            <!-- <p>地点：{{item.address}}</p> -->
-            <p class="desc">内容：{{item.remark}}</p>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+        <div class="block">
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="pageSize" layout="total, prev, pager, next" :total="total">
+          </el-pagination>
+        </div>
+      </div>
       <div class="no-data" v-else>暂无数据</div>
     </el-col>
 
@@ -140,20 +146,21 @@ export default {
         address: [{ required: true, message: '请输入地点', trigger: 'blur' }],
         content: [{ required: true, message: '请输入内容', trigger: 'blur' }]
       },
-      uploadUrl: global.UPLOADURL
+      uploadUrl: global.UPLOADURL,
+      page: 1,
+      pageSize: 10,
+      total: 0
     }
   },
   created () {
     this.getActivityList()
   },
-  destroyed () {
-    // this.editor.destroy()
-  },
   methods: {
-    getActivityList () {
+    getActivityList (page = 1) {
       this.listLoading = true
-      api.openCalzzList().then(res => {
+      api.openCalzzList({page: this.page, pageSize: this.pageSize}).then(res => {
         this.activityList = res.data.array
+        this.total = res.data.total
         this.listLoading = false
       })
     },
@@ -198,7 +205,7 @@ export default {
                 })
                 this.$refs['activityLink'].resetFields()
                 this.activityLinkVisible = false
-                this.getActivityList()
+                this.getActivityList(this.page)
               } else {
                 this.$notify({
                   message: res.message,
@@ -217,7 +224,7 @@ export default {
                 })
                 this.$refs['activityLink'].resetFields()
                 this.activityLinkVisible = false
-                this.getActivityList()
+                this.getActivityList(this.page)
               } else {
                 this.$notify({
                   message: res.message,
@@ -238,7 +245,7 @@ export default {
         this.listLoading = true
         api.openCalzzDel({showId: showId}).then((res) => {
           this.listLoading = false
-          this.getActivityList()
+          this.getActivityList(this.page)
         })
       }).catch(() => {})
     },
@@ -335,7 +342,7 @@ export default {
               })
               this.$refs['addActivity'].resetFields()
               this.activityType = 'list'
-              this.getActivityList()
+              this.getActivityList(this.page)
             })
           } else {
             api.openCalzzAdd(para).then(res => {
@@ -351,6 +358,13 @@ export default {
           }
         }
       })
+    },
+
+    handleSizeChange(val) {
+      this.getActivityList(val)
+    },
+    handleCurrentChange(val) {
+      this.getActivityList(val)
     }
   }
 }

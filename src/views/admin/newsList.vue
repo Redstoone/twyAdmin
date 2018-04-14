@@ -337,10 +337,10 @@ export default {
       })
     },
 
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.getActivityList(val)
     },
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.getActivityList(val)
     }
   }

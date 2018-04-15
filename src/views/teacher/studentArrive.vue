@@ -16,7 +16,7 @@
          <el-table-column prop="name" label="点到：默认状态灰色表示未开始，点击一下是绿色表示已到，再点击一下是红色表示未到">
            <template slot-scope="scope">
               <div class="" v-for="(item, index) in scope.row.arriveList" :key="index">
-                <div @click="btnArrive(scope.row, item, index)" class="sign-item" :class="{'succ': item == '1' || item == 'true', 'err': item == '0' || item == 'false', 'curr': index == curr}">{{index+1}}</div>
+                <div @click="btnArrive(scope.row, item, index, scope.$index)" class="sign-item" :class="{'succ': item == '1' || item == 'true', 'err': item == '0' || item == 'false', 'curr': index == scope.row.arriveDetail.length}">{{index+1}}</div>
               </div>
             </template>
          </el-table-column>
@@ -61,11 +61,11 @@ export default {
         })
       })
     },
-    btnArrive (row, item, idx) {
-      if (parseInt(this.curr) === idx) {
+    btnArrive (row, item, idx, rowIdx) {
+      if (parseInt(row.arriveDetail.length) === idx) {
         let _row = row
-        this.$set(_row.arriveList, this.curr, ~parseInt(item) + 2)
-        this.$set(this.studentList, 0, _row)
+        this.$set(_row.arriveList, row.arriveDetail.length, ~parseInt(item) + 2)
+        this.$set(this.studentList, rowIdx, _row)
         api.studentArrive({id: row.id, arrive: _row.arriveList.join('')}).then(res => {
           if (res.status === 'succ') {
             this.$notify({
@@ -109,7 +109,8 @@ export default {
   text-align: center;
   color: #fff;
   margin-left: 10px;
-  cursor: not-allowed
+  cursor: not-allowed;
+  margin-bottom: 10px;
 }
 .sign-item.succ{
   background:#0e971e;

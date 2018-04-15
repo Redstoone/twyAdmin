@@ -30,7 +30,7 @@
           <el-input
             type="textarea"
             :rows="5"
-            placeholder="请老师填写孩子的评价"
+            placeholder="=形体表现+5"
             v-model="starComment">
           </el-input>
         </div>

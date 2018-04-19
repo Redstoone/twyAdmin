@@ -317,7 +317,7 @@ export default {
     handleAvatarSuccess (res, file) {
       this.imgUrl = file.response
     },
-    handleAvatarSuccess2(res, file) {
+    handleAvatarSuccess2 (res, file) {
       this.imgUrl2 = file.response
     },
     beforeAvatarUpload (file) {

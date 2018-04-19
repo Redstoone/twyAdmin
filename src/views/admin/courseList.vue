@@ -84,6 +84,17 @@
         <el-form-item label="内容" prop="intro">
           <el-input type="textarea" :rows="6" v-model="addActivity.intro" auto-complete="off" placeholder="请输入内容"></el-input>
         </el-form-item>
+        <el-form-item label="课程详情" prop="imgUrl2">
+          <el-upload
+            class="avatar-uploader cover-uploader"
+            :action="uploadUrl"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess2"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="imgUrl2" :src="imgUrl2" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon cover-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
       </el-form>
     </el-col>
 
@@ -127,6 +138,7 @@ export default {
       editor: null,
       imgUrl: null,
       activityLinkVisible: false,
+      imgUrl2: null,
       addActivityLink: {
         name: null,
         link: null,
@@ -304,6 +316,9 @@ export default {
     },
     handleAvatarSuccess (res, file) {
       this.imgUrl = file.response
+    },
+    handleAvatarSuccess2(res, file) {
+      this.imgUrl2 = file.response
     },
     beforeAvatarUpload (file) {
       const isLt2M = file.size / 1024 / 1024 < 2

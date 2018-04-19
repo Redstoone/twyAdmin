@@ -30,7 +30,7 @@
     </el-col>
 
     <el-col>
-      <el-table class="ctable" :data="studentList" stripe border highlight-current-row v-loading="listLoading" style="width: 100%">
+      <el-table class="ctable" :data="studentList" stripe border highlight-current-row style="width: 100%">
         <el-table-column prop="name" label="孩子姓名" width="120"></el-table-column>
         <el-table-column prop="courseName" label="课程名" width="120"></el-table-column>
         <el-table-column label="年龄/性别" width="120">
@@ -67,12 +67,15 @@
       </el-table>
     </el-col>
 
-    <el-dialog title="分配到班" :visible.sync="distVisible" :close-on-click-modal="false" width="480px">
-      <el-form :model="addDist" label-width="100px" :rules="addDistRules" ref="addDist">
+    <el-dialog title="分配到班" :visible.sync="distVisible" :close-on-click-modal="false" width="480px" v-loading="loading">
+      <el-form :model="addDist" :rules="addDistRules" ref="addDist">
         <el-form-item label="" prop="name">
-          <el-radio-group v-model="clazzId">
+          <el-radio-group v-model="clazzId" v-if="clazzOption.length > 0">
             <el-radio :label="item.id" v-for="(item, index) in clazzOption" :key="index">{{item.name}}</el-radio>
           </el-radio-group>
+          <p style="text-align: center;" v-else>
+            暂无可分配的班级
+          </p>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -145,7 +148,8 @@ export default {
           label: '9-12岁',
           value: '9,12'
         }
-      ]
+      ],
+      loading: false
     }
   },
   created () {
@@ -169,10 +173,12 @@ export default {
       this.distVisible = true
       this.id = row.id
       this.getCourseClazz(row.courseId)
+      this.loading = true
     },
     getCourseClazz (courseId) {
       this.clazzOption = []
       api.orgCourseClazz({courseId: courseId}).then(res => {
+        this.loading = false
         res.data.array.forEach((item, index) => {
           this.clazzOption.push({id: item.id, name: item.name})
         })

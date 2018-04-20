@@ -15,7 +15,7 @@ import Clazz from '@/views/org/orgClazz'
 import Baoming from '@/views/org/orgBaoming'
 import Yuyue from '@/views/org/orgYuyue'
 import OrgReport from '@/views/org/orgReport'
-// import TeacherClazz from '@/views/teacher/teacherClazz'
+import TeacherClazz from '@/views/teacher/teacherClazz'
 import StudentArrive from '@/views/teacher/studentArrive'
 import SchoolReport from '@/views/teacher/schoolReport'
 
@@ -145,6 +145,13 @@ const router = new Router({
       name: '班级管理',
       type: 'teacher',
       children: [
+        {
+          path: '/student/class',
+          name: '班级管理',
+          hidden: true,
+          type: 'teacher',
+          component: TeacherClazz
+        }
       ]
     },
     {

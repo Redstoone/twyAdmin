@@ -70,20 +70,21 @@ export default {
                 } else if (data.role === 'orgadmin') {
                   this.$router.push({ path: '/org/setting' })
                 } else if (data.role === 'teacher') {
-                  let _children = []
-                  if (data.clazzs.length > 0) {
-                    data.clazzs.forEach((item, index) => {
-                      _children.push({
-                        path: '/clazz/' + item.id,
-                        name: item.name,
-                        type: 'teacher',
-                        component: require('../teacher/teacherClazz.vue').default
-                      })
-                    })
-                    this.$router.options.routes[9].children = _children
-                    this.$router.addRoutes(this.$router.options.routes)
-                    this.$router.push({ path: '/clazz/' + data.clazzs[0].id })
-                  }
+                  this.$router.push({ path: '/student/class' })
+                  // let _children = []
+                  // if (data.clazzs.length > 0) {
+                  //   data.clazzs.forEach((item, index) => {
+                  //     _children.push({
+                  //       path: '/clazz/' + item.id,
+                  //       name: item.name,
+                  //       type: 'teacher',
+                  //       component: require('../teacher/teacherClazz.vue').default
+                  //     })
+                  //   })
+                  //   this.$router.options.routes[9].children = _children
+                  //   this.$router.addRoutes(this.$router.options.routes)
+                  //   this.$router.push({ path: '/clazz/' + data.clazzs[0].id })
+                  // }
                 }
               }
             } else {

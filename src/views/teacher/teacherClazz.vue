@@ -1,6 +1,14 @@
 <template>
   <section>
-    <el-col :span="24" class="toolbar txt-right">
+    <el-col :span="24" class="toolbar txt-right" style="position: relative;">
+      <el-select v-model="classId" placeholder="请选择班级" @change="changeClazz" style="position: absolute; left: 0; bottom: 0;">
+        <el-option
+          v-for="item in teacherClazzList"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id">
+        </el-option>
+      </el-select>
       <el-button size="small" type="primary" @click="pointTo">点到</el-button>
       <!-- <el-button size="small" type="primary" @click="reportSend">发布成绩单</el-button> -->
     </el-col>
@@ -52,19 +60,36 @@ export default {
       },
       name: 1,
       reportTime: null,
-      ctable: []
+      ctable: [],
+      teacherClazzList: [],
+      classId: null
     }
   },
   created () {
-    this.clazzId = this.$route.path.split('/')[2]
-    this.getStudentList(this.clazzId)
+    // this.clazzId = this.$route.path.split('/')[2]
+    // this.getStudentList(this.clazzId)
+    console.log(JSON.parse(sessionStorage.getItem('user')))
+    this.getClazzList(JSON.parse(sessionStorage.getItem('user')).id)
+  },
+  mounted  () {
+    document.querySelector('.menu-expanded').style.display = 'none'
   },
   methods: {
-    getRoute () {
-      this.clazzId = this.$route.path.split('/')[2]
-      this.getStudentList(this.clazzId)
+    getClazzList (teacherId) {
+      api.teacherClazz({teacherId: teacherId}).then(res => {
+        if (res.status === 'succ') {
+          this.teacherClazzList = res.data.array
+          this.classId = res.data.array.length > 0 ? res.data.array[0].id : null
+          if (this.classId) {
+            this.getStudentList(this.classId)
+          }
+        }
+      })
     },
 
+    changeClazz (val) {
+      this.getStudentList(this.classId)
+    },
     getStudentList (clazzId) {
       api.orgStudentList({clazzId: clazzId}).then(res => {
         this.studentList = res.data.array
@@ -79,7 +104,6 @@ export default {
         api.orgClazzDel({clazzId: row.id}).then((res) => {
           if (res.status === 'succ') {
             this.listLoading = false
-            this.getClazzList()
           } else {
             this.$notify({
               message: res.message,
@@ -117,9 +141,6 @@ export default {
         })
       })
     }
-  },
-  watch: {
-    '$route': 'getRoute'
   }
 }
 </script>

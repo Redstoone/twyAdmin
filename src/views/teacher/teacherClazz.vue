@@ -2,7 +2,7 @@
   <section>
     <el-col :span="24" class="toolbar txt-right">
       <el-button size="small" type="primary" @click="pointTo">点到</el-button>
-      <el-button size="small" type="primary" @click="reportSend">发布成绩单</el-button>
+      <!-- <el-button size="small" type="primary" @click="reportSend">发布成绩单</el-button> -->
     </el-col>
 
     <el-col>
@@ -21,7 +21,8 @@
               <span v-if="scope.row.dadname">{{scope.row.dadname}} ({{scope.row.dadphone}})</span>
             </template>
           </el-table-column>
-          <el-table-column prop="arrive" label="点到次数"></el-table-column>
+          <el-table-column prop="arrive" label="点到次数">
+          </el-table-column>
           <el-table-column label="成绩单">
             <template slot-scope="scope">
               <span>{{scope.row.reportStatus}}</span> <a hrefr="javascript:;" class="btn-option" size="mini" @click="handleReoprt(scope.row)">查看/填写</a>
@@ -59,6 +60,11 @@ export default {
     this.getStudentList(this.clazzId)
   },
   methods: {
+    getRoute () {
+      this.clazzId = this.$route.path.split('/')[2]
+      this.getStudentList(this.clazzId)
+    },
+
     getStudentList (clazzId) {
       api.orgStudentList({clazzId: clazzId}).then(res => {
         this.studentList = res.data.array
@@ -111,6 +117,9 @@ export default {
         })
       })
     }
+  },
+  watch: {
+    '$route': 'getRoute'
   }
 }
 </script>

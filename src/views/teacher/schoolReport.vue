@@ -6,7 +6,7 @@
     </div>
     <div class="report-wrap">
       <div class="report-opt">
-        <el-checkbox v-model="checked">填写完成</el-checkbox>
+        <el-checkbox v-model="checked" @change="handleCheckAllChange">填写完成</el-checkbox>
         <a href="javascript:;" class="btn-save" @click="studentReportEdit">保存</a>
       </div>
       <div class="report-cont">
@@ -170,6 +170,13 @@ export default {
         document.querySelector('.el-upload--picture-card').style.display = 'none'
       } else {
         this.fileList = fileList
+      }
+    },
+    handleCheckAllChange (val) {
+      if (val) {
+        this.$confirm('确定要发生该学生的成绩单给家长吗？', '提示', {
+          type: 'warning'
+        }).then(() => {})
       }
     }
   }

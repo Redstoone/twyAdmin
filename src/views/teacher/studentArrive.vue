@@ -54,7 +54,8 @@ export default {
         this.studentList = res.data.array.map((item, index) => {
           let _item = item
           _item.arriveList = _item.arriveDetail ? _item.arriveDetail.split('') : []
-          for (let i = this.curr; i < this.times; i++) {
+          let arrLen = _item.arriveDetail ? _item.arriveDetail.length : 0
+          for (let i = arrLen; i < this.times; i++) {
             _item.arriveList.push('')
           }
           return _item

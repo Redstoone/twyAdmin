@@ -29,7 +29,7 @@
               </div>
               <p class="name">{{item.name}}</p>
               <p>发布时间：{{item.time}}</p>
-              <p>地点：{{item.address}}</p>
+              <!-- <p>地点：{{item.address}}</p> -->
               <p class="desc">内容：{{item.remark}}</p>
             </div>
           </li>
@@ -58,12 +58,12 @@
             <i v-else class="el-icon-plus avatar-uploader-icon cover-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <el-form-item label="时间" prop="time">
+        <!-- <el-form-item label="时间" prop="time">
           <el-input v-model="addActivity.time" auto-complete="off" placeholder="请输入时间"></el-input>
         </el-form-item>
         <el-form-item label="地点" prop="address">
           <el-input v-model="addActivity.address" auto-complete="off" placeholder="请输入地点"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="内容" prop="content">
           <!-- <el-input v-model="addActivity.content" auto-complete="off" placeholder="请输入内容"></el-input> -->
           <script id="ueditor" name="ueditor" type="text/plain" class="ue-content"></script>
@@ -134,16 +134,16 @@ export default {
       activityType: 'list',
       addActivity: {
         name: null,
-        time: null,
-        address: null,
+        // time: null,
+        // address: null,
         content: null,
         videoUrl: null,
         remark: null
       },
       addActivityRules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-        time: [{ required: true, message: '请输入时间', trigger: 'blur' }],
-        address: [{ required: true, message: '请输入地点', trigger: 'blur' }],
+        // time: [{ required: true, message: '请输入时间', trigger: 'blur' }],
+        // address: [{ required: true, message: '请输入地点', trigger: 'blur' }],
         content: [{ required: true, message: '请输入内容', trigger: 'blur' }]
       },
       uploadUrl: global.UPLOADURL,

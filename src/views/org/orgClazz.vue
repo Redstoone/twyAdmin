@@ -297,7 +297,7 @@ export default {
       this.addClass = {
         clazzId: item.id,
         name: item.name,
-        courseId: item.name,
+        courseId: item.courseId,
         teacherAId: item.teacherAId,
         teacherBId: item.teacherBId,
         num: item.num,
@@ -321,7 +321,6 @@ export default {
     createClass () {
       this.$refs.addClass.validate(valid => {
         if (valid) {
-          console.log(this.addClass)
           if (this.addClass.teacherAId === this.addClass.teacherBId) {
             this.$notify({
               message: '老师A与老师B不能选择同一位老师',

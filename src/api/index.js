@@ -83,6 +83,7 @@ export default {
 
   orgInfo (params) {
     let user = JSON.parse(sessionStorage.getItem('user'))
+    console.log(user.accesstoken)
     return service(`/api/org/info`, params, 'GET', { 'accesstoken': user.accesstoken })
   },
   orgCourseAdd (params) {

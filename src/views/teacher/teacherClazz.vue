@@ -119,7 +119,7 @@ export default {
       window.open('/student/report?sid=' + row.studentId)
     },
     pointTo () {
-      window.open('/student/arrive?clazz=' + this.clazzId + '&name=' + document.querySelector('.title').innerText)
+      window.open('/student/arrive?clazz=' + this.classId + '&name=' + document.querySelector('.title').innerText)
     },
     reportSend () {
       this.$confirm('确认要发送成绩单吗?', '提示', {

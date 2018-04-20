@@ -65,12 +65,13 @@
         </el-table-column>
         <el-table-column prop="cellphone" label="父母名字/手机">
           <template slot-scope="scope">
-            {{scope.row.momname}}<br/>{{scope.row.momphone}}
+            {{scope.row.momname}} ({{scope.row.momphone}}) <br />
+            <span v-if="scope.row.dadname">{{scope.row.dadname}} ({{scope.row.dadphone}})</span>
           </template>
         </el-table-column>
-        <el-table-column prop="cellphone" label="就读学校/住址">
+        <el-table-column prop="cellphone" label="就读学校">
           <template slot-scope="scope">
-            {{scope.row.dadname}}<br/>{{scope.row.dadphone}}
+            {{scope.row.nursery}}
           </template>
         </el-table-column>
         <el-table-column prop="arrive" label="点到次数"></el-table-column>
@@ -320,6 +321,15 @@ export default {
     createClass () {
       this.$refs.addClass.validate(valid => {
         if (valid) {
+          console.log(this.addClass)
+          if (this.addClass.teacherAId === this.addClass.teacherBId) {
+            this.$notify({
+              message: '老师A与老师B不能选择同一位老师',
+              type: 'error',
+              duration: 0
+            })
+            return false
+          }
           this.addLoading = true
           let para = Object.assign({}, this.addClass)
           if (para.clazzId) {

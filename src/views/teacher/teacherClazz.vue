@@ -18,7 +18,7 @@
           <el-table-column label="父母名字/手机">
             <template slot-scope="scope">
               {{scope.row.momname}} ({{scope.row.momphone}}) <br />
-              {{scope.row.dadname}} ({{scope.row.dadphone}})
+              <span v-if="scope.row.dadname">{{scope.row.dadname}} ({{scope.row.dadphone}})</span>
             </template>
           </el-table-column>
           <el-table-column prop="arrive" label="点到次数"></el-table-column>
@@ -51,12 +51,7 @@ export default {
       },
       name: 1,
       reportTime: null,
-      ctable: [
-        {
-          name: '123',
-          number: '123456'
-        }
-      ]
+      ctable: []
     }
   },
   created () {

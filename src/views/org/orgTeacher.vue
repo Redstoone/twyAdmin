@@ -67,7 +67,7 @@
 
     <el-dialog title="上课的班级" :visible.sync="clazzViewVisible" :close-on-click-modal="false" width="521px">
       <el-table class="ctable" :data="teacherClazzList" stripe border highlight-current-row v-loading="listLoading" style="width: 100%">
-        <el-table-column prop="name" label="工号" width="120"></el-table-column>
+        <el-table-column prop="name" label="班级" width="120"></el-table-column>
         <el-table-column prop="studentNum" label="人数" width="120"></el-table-column>
         <el-table-column prop="teacherAName" label="老师A" width="120"></el-table-column>
         <el-table-column prop="teacherBName" label="老师B" width="120"></el-table-column>
@@ -229,7 +229,6 @@ export default {
       }
       this.imageUrl = row.imgUrl
       this.teacherId = row.teacherId
-      this.$refs['addCourse'].resetFields()
     },
     handleClose () {
       this.$refs['addCourse'].resetFields()

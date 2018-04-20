@@ -97,35 +97,6 @@
         </el-form-item>
       </el-form>
     </el-col>
-
-    <el-dialog title="添加链接" :visible.sync="activityLinkVisible" :close-on-click-modal="false" width="480px">
-      <el-form :model="addActivityLink" label-width="100px" :rules="addActivityLinkRules" ref="activityLink">
-        <el-form-item label="名称" prop="name">
-          <el-input v-model="addActivityLink.name" auto-complete="off" placeholder="请输入"></el-input>
-        </el-form-item>
-        <el-form-item label="封面图" prop="imgUrl">
-          <el-upload
-            class="avatar-uploader cover-uploader"
-            :action="uploadUrl"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="imgUrl" :src="imgUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon cover-uploader-icon"></i>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="链接" prop="link">
-          <el-input v-model="addActivityLink.link" auto-complete="off" placeholder="请输入链接"></el-input>
-        </el-form-item>
-        <el-form-item label="描述" prop="remark">
-          <el-input  type="textarea" :rows="3" v-model="addActivityLink.remark" auto-complete="off" placeholder="请输入描述"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click.native="activityLinkVisible = false">取消</el-button>
-        <el-button type="primary" @click.native="addActivityLinkSubmit" :loading="addLoading">保存</el-button>
-      </div>
-    </el-dialog>
   </section>
 </template>
 
@@ -311,7 +282,8 @@ export default {
         address: null,
         content: null,
         videoUrl: null,
-        remark: null
+        remark: null,
+        imgUrl: null
       }
     },
     handleAvatarSuccess (res, file) {
@@ -330,6 +302,7 @@ export default {
     },
     createActivity () {
       this.addActivity.coverUrl = this.imgUrl
+      this.addActivity.imgUrl = this.imgUrl2
       this.$refs.addActivity.validate(valid => {
         if (valid) {
           this.addLoading = true

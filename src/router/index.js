@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Login from '@/views/login'
 import Home from '@/views/home'
 import SchoolList from '@/views/admin/schoolList'
-// import TeacherList from '@/views/admin/teacherList'
+import TeacherList from '@/views/admin/teacherList'
 import ActivityList from '@/views/admin/activityList'
 import NewsList from '@/views/admin/newsList'
 import OpenList from '@/views/admin/OpenList'
@@ -37,8 +37,8 @@ const router = new Router({
       name: '学校管理',
       type: 'superadmin',
       children: [
-        { path: '/school/list', component: SchoolList, name: '学校网点管理' }
-        // { path: '/school/teacher', component: TeacherList, name: '名师团队' }
+        { path: '/school/list', component: SchoolList, name: '学校网点管理' },
+        { path: '/school/teacher', component: TeacherList, name: '名师团队' }
       ]
     },
     {

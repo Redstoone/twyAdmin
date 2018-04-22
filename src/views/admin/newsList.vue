@@ -343,6 +343,15 @@ export default {
     handleCurrentChange (val) {
       this.getActivityList(val)
     }
+  },
+  mounted () {
+    this.editor = UE.getEditor('ueditor')
+  },
+  destroyed () {
+    if (this.editor) {
+      this.editor.destroy()
+    }
+    // clearInterval(this.setcontent)
   }
 }
 </script>

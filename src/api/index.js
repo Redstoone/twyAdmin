@@ -215,5 +215,18 @@ export default {
   },
   openCourseList (params) {
     return service(`/api/show/course/list`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+
+  showTeacherList (params) {
+    return service(`/api/show/teacher/list`, params, 'GET')
+  },
+  showTeacherDel (params) {
+    return service(`/api/show/teacher/del`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  showTeacherAdd (params) {
+    return service(`/api/show/teacher/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  showTeacherEdit (params) {
+    return service(`/api/show/teacher/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   }
 }

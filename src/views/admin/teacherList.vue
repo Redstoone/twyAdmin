@@ -6,26 +6,30 @@
     </el-col>
     <el-col :span="24" class="toolbar txt-right" style="padding-bottom: 0px" v-else>
       <el-button size="small" type="primary" @click="goBack">取消返回</el-button>
-      <el-button size="small" type="primary" @click="createActivity">发布</el-button>
+      <el-button size="small" type="primary" @click="createTeacher">添加</el-button>
     </el-col>
 
     <!--列表-->
     <el-col :loading="listLoading" v-show="teacherType == 'list'">
       <el-table class="ctable" :data="teacherList" stripe border highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%">
-        <el-table-column prop="indexOrder" label="序号" width="100">
-        </el-table-column>
+        <el-table-column prop="id" label="序号" width="100"> </el-table-column>
         <el-table-column prop="name" label="名字" sortable>
           <template slot-scope="scope">
-            <span></span>
+            <img :src="scope.row.imgUrl" class="user-img" >
           </template>
         </el-table-column>
+        <el-table-column prop="name" label="名字" sortable> </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <a hrefr="javascript:;" class="btn-option"  @click="handleDel(scope.$index, scope.row)">删除</a>
-            <a hrefr="javascript:;" class="btn-option"  @click="handleEdit(scope.$index, scope.row)">信息编辑</a>
+            <a hrefr="javascript:;" class="btn-option"  @click="delTeacher(scope.row.id)">删除</a>
+            <a hrefr="javascript:;" class="btn-option"  @click="editTeacher(scope.row)">信息编辑</a>
           </template>
         </el-table-column>
       </el-table>
+      <div class="block">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="pageSize" layout="total, prev, pager, next" :total="total">
+        </el-pagination>
+        </div>
     </el-col>
 
     <el-col :loading="listLoading" v-show="teacherType != 'list'">
@@ -34,6 +38,7 @@
           <el-input v-model="addTeacher.name" auto-complete="off" placeholder="请输入活动名称"></el-input>
         </el-form-item>
         <el-form-item label="手机详情图" prop="imgUrl">
+          <p class="tip">图片尺寸 1125*2436</p>
           <el-upload
             class="avatar-uploader cover-uploader"
             :action="uploadUrl"
@@ -44,30 +49,32 @@
             <i v-else class="el-icon-plus avatar-uploader-icon cover-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <el-form-item label="手机列表图" prop="imgUrl1">
+        <el-form-item label="手机列表图" prop="listimgUrl">
+          <p class="tip">图片尺寸 230*408</p>
           <el-upload
             class="avatar-uploader cover-uploader"
             :action="uploadUrl"
             :show-file-list="false"
             :on-success="handleAvatarSuccess1"
             :before-upload="beforeAvatarUpload">
-            <img v-if="imgUrl1" :src="imgUrl1" class="avatar">
+            <img v-if="listimgUrl" :src="listimgUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon cover-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <el-form-item label="pc列表图" prop="imgUrl2">
+        <el-form-item label="pc列表图" prop="pcimgUrl">
+          <p class="tip">图片尺寸 200*200</p>
           <el-upload
             class="avatar-uploader cover-uploader"
             :action="uploadUrl"
             :show-file-list="false"
             :on-success="handleAvatarSuccess2"
             :before-upload="beforeAvatarUpload">
-            <img v-if="imgUrl2" :src="imgUrl2" class="avatar">
+            <img v-if="pcimgUrl" :src="pcimgUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon cover-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <el-form-item label="职位" prop="post">
-          <el-input type="textarea" :rows="3" v-model="addTeacher.post" auto-complete="off" placeholder="请输入职位"></el-input>
+        <el-form-item label="职位" prop="job">
+          <el-input type="textarea" :rows="3" v-model="addTeacher.job" auto-complete="off" placeholder="请输入职位"></el-input>
         </el-form-item>
         <el-form-item label="介绍" prop="intro">
           <el-input type="textarea" :rows="5" v-model="addTeacher.intro" auto-complete="off" placeholder="请输入介绍"></el-input>
@@ -89,26 +96,41 @@ export default {
       addTeacher: {
         name: null,
         imgUrl: null,
-        imgUrl1: null,
-        imgUrl2: null,
-        post: null,
+        listimgUrl: null,
+        pcimgUrl: null,
+        job: null,
         intro: null
       },
       uploadUrl: global.UPLOADURL,
       imgUrl: null,
-      imgUrl1: null,
-      imgUrl2: null,
+      listimgUrl: null,
+      pcimgUrl: null,
       addTeacherRules: {
         name: [{ required: true, message: '请输入教师名称', trigger: 'blur' }],
         imgUrl: [{ required: true, message: '请添加手机详情图', trigger: 'blur' }],
-        imgUrl1: [{ required: true, message: '请添加手机详情图', trigger: 'blur' }],
-        imgUrl2: [{ required: true, message: '请添加pc列表图', trigger: 'blur' }],
-        post: [{ required: true, message: '请输入职位', trigger: 'blur' }],
+        listimgUrl: [{ required: true, message: '请添加手机详情图', trigger: 'blur' }],
+        pcimgUrl: [{ required: true, message: '请添加pc列表图', trigger: 'blur' }],
+        job: [{ required: true, message: '请输入职位', trigger: 'blur' }],
         intro: [{ required: true, message: '请输入介绍', trigger: 'blur' }]
-      }
+      },
+      page: 1,
+      pageSize: 10,
+      total: 0
     }
   },
+  created () {
+    this.getTeacherList()
+  },
   methods: {
+    getTeacherList (page = 1) {
+      this.page = page
+      this.listLoading = true
+      api.showTeacherList({page: this.page, pageSize: this.pageSize}).then(res => {
+        this.teacherList = res.data.array
+        this.total = res.data.total
+        this.listLoading = false
+      })
+    },
     // 显示新增界面
     handleAdd () {
       this.teacherType = 'add'
@@ -121,12 +143,12 @@ export default {
       this.addTeacher.imgUrl = file.response
     },
     handleAvatarSuccess1 (res, file) {
-      this.imgUrl1 = file.response
-      this.addTeacher.imgUrl1 = file.response
+      this.listimgUrl = file.response
+      this.addTeacher.listimgUrl = file.response
     },
     handleAvatarSuccess2 (res, file) {
-      this.imgUrl2 = file.response
-      this.addTeacher.imgUrl2 = file.response
+      this.pcimgUrl = file.response
+      this.addTeacher.pcimgUrl = file.response
     },
     beforeAvatarUpload (file) {
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -135,21 +157,97 @@ export default {
       }
       return isLt2M
     },
+    createTeacher () {
+      this.$refs.addTeacher.validate(valid => {
+        if (valid) {
+          this.addLoading = true
+          let para = Object.assign({}, this.addTeacher)
+          if (this.addTeacher.showId) {
+            api.showTeacherEdit(para).then(res => {
+              this.addLoading = false
+              this.$notify({
+                message: '修改教师成功',
+                type: 'success'
+              })
+              this.$refs['addTeacher'].resetFields()
+              this.teacherType = 'list'
+              this.getTeacherList(this.page)
+            })
+          } else {
+            api.showTeacherAdd(para).then(res => {
+              this.addLoading = false
+              this.$notify({
+                message: '添加教师成功',
+                type: 'success'
+              })
+              this.$refs['addTeacher'].resetFields()
+              this.teacherType = 'list'
+              this.getTeacherList()
+            })
+          }
+        }
+      })
+    },
     goBack () {
       this.teacherType = 'list'
       this.imgUrl = null
-      this.imgUrl1 = null
-      this.imgUrl2 = null
+      this.listimgUrl = null
+      this.pcimgUrl = null
       this.addTeacher = {
+        showId: null,
         name: null,
         imgUrl: null,
-        post: null,
+        listimgUrl: null,
+        pcimgUrl: null,
+        job: null,
         intro: null
       }
     },
+    handleSizeChange (val) {
+      this.getActivityList(val)
+    },
+    handleCurrentChange (val) {
+      this.getActivityList(val)
+    },
+    delTeacher (showId) {
+      this.$confirm('确认删除该记录吗?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        this.listLoading = true
+        api.showTeacherDel({showId: showId}).then((res) => {
+          this.listLoading = false
+          this.getTeacherList(this.page)
+        })
+      }).catch(() => {})
+    },
+
+    editTeacher (item) {
+      this.teacherType = 'add'
+      this.addTeacher = {
+        showId: item.id,
+        name: item.name,
+        imgUrl: item.imgUrl,
+        listimgUrl: item.listimgUrl,
+        pcimgUrl: item.pcimgUrl,
+        job: item.job,
+        intro: item.intro
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
+.user-img{
+  width: 36px;
+  height: 36px;
+}
+.tip{
+  margin-top: 0;
+  background-color: #efefef;
+  padding: 0 15px;
+  height: 32px;
+  line-height: 32px;
+  width: 400px;
+}
 </style>

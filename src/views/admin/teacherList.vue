@@ -26,10 +26,10 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="block">
+      <!-- <div class="block">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="pageSize" layout="total, prev, pager, next" :total="total">
         </el-pagination>
-        </div>
+      </div> -->
     </el-col>
 
     <el-col :loading="listLoading" v-show="teacherType != 'list'">
@@ -134,6 +134,18 @@ export default {
     // 显示新增界面
     handleAdd () {
       this.teacherType = 'add'
+      this.imgUrl = null
+      this.listimgUrl = null
+      this.pcimgUrl = null
+      this.addTeacher = {
+        showId: null,
+        name: null,
+        imgUrl: null,
+        listimgUrl: null,
+        pcimgUrl: null,
+        job: null,
+        intro: null
+      }
     },
     selsChange (sels) {
       this.sels = sels
@@ -223,6 +235,9 @@ export default {
 
     editTeacher (item) {
       this.teacherType = 'add'
+      this.imgUrl = item.imgUrl
+      this.listimgUrl = item.listimgUrl
+      this.pcimgUrl = item.pcimgUrl
       this.addTeacher = {
         showId: item.id,
         name: item.name,

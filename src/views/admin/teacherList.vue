@@ -12,7 +12,11 @@
     <!--列表-->
     <el-col :loading="listLoading" v-show="teacherType == 'list'">
       <el-table class="ctable" :data="teacherList" stripe border highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%">
-        <el-table-column prop="id" label="序号" width="100"> </el-table-column>
+        <el-table-column prop="id" label="序号" width="100">
+          <template slot-scope="scope">
+            <el-input class="teacher-num" v-model="scope.row.num" @blur="changeTeacherNum(scope.row.id, scope.row.num)"></el-input>
+          </template>
+        </el-table-column>
         <el-table-column prop="name" label="名字" sortable>
           <template slot-scope="scope">
             <img :src="scope.row.imgUrl" class="user-img" >
@@ -247,6 +251,23 @@ export default {
         job: item.job,
         intro: item.intro
       }
+    },
+
+    changeTeacherNum (showId, num) {
+      api.showTeacherNumEdit({showId: showId, num: num}).then(res => {
+        if (res.status === 'succ') {
+          this.$notify({
+            message: '修改教师排序成功',
+            type: 'success'
+          })
+        } else {
+          this.$notify({
+            message: res.message,
+            type: 'error',
+            duration: 0
+          })
+        }
+      })
     }
   }
 }

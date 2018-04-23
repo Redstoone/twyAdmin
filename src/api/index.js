@@ -228,5 +228,8 @@ export default {
   },
   showTeacherEdit (params) {
     return service(`/api/show/teacher/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  showTeacherNumEdit (params) {
+    return service(`/api/show/teacher/num/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   }
 }

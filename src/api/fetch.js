@@ -11,12 +11,13 @@ const service = function (url, data, method = 'GET', headers = {}) {
   return new Promise((resolve, reject) => {
     let options = {
       'method': method,
-      'url': 'http://api.twyxedu.com' + process.env.BASE_API + url,
-      // 'url': process.env.BASE_API + url,
+      // 'url': 'http://api.twyxedu.com' + process.env.BASE_API + url,
+      'url': process.env.BASE_API + url,
       'headers': headers && typeof headers === 'object' ? headers : {}
     }
     options.headers['X-Requested-Page'] = 'json'
-    if (user && user.accesstoken) {
+    if (options.headers && options.headers.accesstoken) {
+    } else if (user && user.accesstoken) {
       options.headers['accesstoken'] = user.accesstoken
     }
     options[method === 'GET' ? 'params' : 'data'] = data

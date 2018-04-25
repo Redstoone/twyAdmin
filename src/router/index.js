@@ -37,8 +37,8 @@ const router = new Router({
       name: '学校管理',
       type: 'superadmin',
       children: [
-        { path: '/school/list', component: SchoolList, name: '学校网点管理' },
-        { path: '/school/teacher', component: TeacherList, name: '名师团队' }
+        { path: '/school/list', component: SchoolList, meta: { type: 'superadmin' }, name: '学校网点管理' },
+        { path: '/school/teacher', component: TeacherList, meta: { type: 'superadmin' }, name: '名师团队' }
       ]
     },
     {
@@ -50,6 +50,7 @@ const router = new Router({
         {
           path: '/news',
           component: NewsList,
+          meta: { type: 'superadmin' },
           name: '活动公告'
         }
       ]
@@ -60,7 +61,7 @@ const router = new Router({
       name: '艺星之路管理',
       type: 'superadmin',
       children: [
-        { path: '/activity', component: ActivityList, name: '艺星之路' }
+        { path: '/activity', component: ActivityList, meta: { type: 'superadmin' }, name: '艺星之路' }
       ]
     },
     {
@@ -69,8 +70,8 @@ const router = new Router({
       name: '课程设置',
       type: 'superadmin',
       children: [
-        { path: '/course/open', component: OpenList, name: '公开课内容编辑' },
-        { path: '/course/intro', component: CourseList, name: '课程介绍编辑' }
+        { path: '/course/open', component: OpenList, meta: { type: 'superadmin' }, name: '公开课内容编辑' },
+        { path: '/course/intro', component: CourseList, meta: { type: 'superadmin' }, name: '课程介绍编辑' }
       ]
     },
 
@@ -83,6 +84,7 @@ const router = new Router({
         path: '/org/setting',
         name: '网点设置',
         type: 'orgadmin',
+        meta: { type: 'orgadmin' },
         component: OrgSetting
       }]
     },
@@ -96,18 +98,21 @@ const router = new Router({
           path: '/org/course',
           name: '课程',
           type: 'orgadmin',
+          meta: { type: 'orgadmin' },
           component: Course
         },
         {
           path: '/org/teacher',
           name: '老师',
           type: 'orgadmin',
+          meta: { type: 'orgadmin' },
           component: Teacher
         },
         {
           path: '/org/class',
           name: '班级',
           type: 'orgadmin',
+          meta: { type: 'orgadmin' },
           component: Clazz
         }
       ]
@@ -117,6 +122,7 @@ const router = new Router({
       name: '成功单',
       hidden: true,
       type: 'orgadmin',
+      meta: { type: 'orgadmin' },
       component: OrgReport
     },
     {
@@ -129,12 +135,14 @@ const router = new Router({
           path: '/org/signup',
           name: '微信报名学生处理',
           type: 'orgadmin',
+          meta: { type: 'orgadmin' },
           component: Baoming
         },
         {
           path: '/org/order',
           name: '微信预约体验学生处理',
           type: 'orgadmin',
+          meta: { type: 'orgadmin' },
           component: Yuyue
         }
       ]
@@ -150,6 +158,7 @@ const router = new Router({
           name: '班级管理',
           hidden: true,
           type: 'teacher',
+          meta: { type: 'teacher' },
           component: TeacherClazz
         }
       ]
@@ -159,6 +168,7 @@ const router = new Router({
       name: '点到',
       hidden: true,
       type: 'teacher',
+      meta: { type: 'teacher' },
       component: StudentArrive
     },
     {
@@ -166,6 +176,7 @@ const router = new Router({
       name: '成绩单',
       hidden: true,
       type: 'teacher',
+      meta: { type: 'teacher' },
       component: SchoolReport
     }
   ]
@@ -173,16 +184,14 @@ const router = new Router({
 
 // let registerRouteFresh = true
 router.beforeEach((to, from, next) => {
-  // if (registerRouteFresh) {
-  //   router.addRoutes(routes)
-  //   store.commit('setRuleRoutes', _routes)
-  //   registerRouteFresh = false
-  // }
   if (to.path === '/login') {
     sessionStorage.removeItem('user')
   }
   let user = JSON.parse(sessionStorage.getItem('user'))
+  console.log(user)
   if (!user && to.path !== '/login') {
+    next({ path: '/login' })
+  } else if (user && to.meta.type !== user.role) {
     next({ path: '/login' })
   } else {
     next()

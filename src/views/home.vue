@@ -6,6 +6,7 @@
         {{collapsed?'':sysName}}
 
         <span class="role-name">{{roleName}}</span>
+        <a class="role-name" href="http://event.twyxedu.com/acp/event" style="margin-left: 20px;" target="_blank" v-if="roleType == 'superadmin'">比赛管理</a>
       </el-col>
       <el-col :span="10" class="userinfo">
         {{sysUserName}} <div @click="logout" class="logout">退出登录</div>

@@ -189,14 +189,15 @@ router.beforeEach((to, from, next) => {
     sessionStorage.removeItem('user')
   }
   let user = JSON.parse(sessionStorage.getItem('user'))
+  console.log(to.path)
   if (to.path === '/sso') {
     api.login({
       username: 'admin',
       password: '123456'
 
     }).then((res) => {
+      console.log(res)
       if (res.status === 'succ') {
-        this.loading = false
         let {
           message,
           code,
@@ -210,15 +211,15 @@ router.beforeEach((to, from, next) => {
         } else {
           sessionStorage.setItem('user', JSON.stringify(data))
           if (data.role === 'superadmin') {
-            this.$router.push({
+            next({
               path: '/school/list'
             })
           } else if (data.role === 'orgadmin') {
-            this.$router.push({
+            next({
               path: '/org/setting'
             })
           } else if (data.role === 'teacher') {
-            this.$router.push({
+            next({
               path: '/student/class'
             })
           }
@@ -232,7 +233,6 @@ router.beforeEach((to, from, next) => {
         })
       }
     })
-
   } else if (!user && to.path !== '/login') {
     next({ path: '/login' })
   } else if (user && to.meta.type !== user.role) {

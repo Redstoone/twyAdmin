@@ -84,7 +84,7 @@ export default {
       }
     }
   },
-  created() {
+  created () {
     let user = JSON.parse(sessionStorage.getItem('user'))
     this.accesstoken = user.accesstoken
   },

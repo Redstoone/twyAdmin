@@ -18,6 +18,7 @@ import OrgReport from '@/views/org/orgReport'
 import TeacherClazz from '@/views/teacher/teacherClazz'
 import StudentArrive from '@/views/teacher/studentArrive'
 import SchoolReport from '@/views/teacher/schoolReport'
+import api from '../api/index.js'
 
 Vue.use(Router)
 const router = new Router({
@@ -189,7 +190,49 @@ router.beforeEach((to, from, next) => {
   }
   let user = JSON.parse(sessionStorage.getItem('user'))
   if (to.path === '/sso') {
-    next()
+    api.login({
+      username: 'admin',
+      password: '123456'
+
+    }).then((res) => {
+      if (res.status === 'succ') {
+        this.loading = false
+        let {
+          message,
+          code,
+          data
+        } = res
+        if (code !== 20000) {
+          this.$message({
+            message: message,
+            type: 'error'
+          })
+        } else {
+          sessionStorage.setItem('user', JSON.stringify(data))
+          if (data.role === 'superadmin') {
+            this.$router.push({
+              path: '/school/list'
+            })
+          } else if (data.role === 'orgadmin') {
+            this.$router.push({
+              path: '/org/setting'
+            })
+          } else if (data.role === 'teacher') {
+            this.$router.push({
+              path: '/student/class'
+            })
+          }
+        }
+      } else {
+        this.loading = false
+        this.$notify({
+          message: res.message,
+          type: 'error',
+          duration: 0
+        })
+      }
+    })
+
   } else if (!user && to.path !== '/login') {
     next({ path: '/login' })
   } else if (user && to.meta.type !== user.role) {

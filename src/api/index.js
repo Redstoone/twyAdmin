@@ -216,6 +216,9 @@ export default {
   openCourseList (params) {
     return service(`/api/show/course/list`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   },
+  openCourseNumEdit (params) {
+    return service(`/api/show/course/num/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
 
   showTeacherList (params) {
     return service(`/api/show/teacher/list`, params, 'GET')

@@ -189,14 +189,11 @@ router.beforeEach((to, from, next) => {
     sessionStorage.removeItem('user')
   }
   let user = JSON.parse(sessionStorage.getItem('user'))
-  console.log(to.path)
   if (to.path === '/sso') {
     api.login({
       username: 'admin',
       password: '123456'
-
     }).then((res) => {
-      console.log(res)
       if (res.status === 'succ') {
         let {
           message,

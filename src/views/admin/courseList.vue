@@ -32,6 +32,10 @@
               <p>课时安排：{{parseInt(item.zc) > 0 ? '每学期'+item.zc+'周次' : item.zc}}，每次{{item.ksl}}课时，共{{item.sc}}分钟</p>
               <p class="desc">介绍：{{item.intro}}</p>
             </div>
+            <div>
+              <label class="course-lab">排序：</label>
+              <el-input class="course-num teacher-num" v-model="item.num" @blur="changeCourseNum(item.id, item.num)"></el-input>
+            </div>
           </li>
         </ul>
         <div class="block">
@@ -339,6 +343,23 @@ export default {
     },
     handleCurrentChange (val) {
       this.getActivityList(val)
+    },
+
+    changeCourseNum (showId, num) {
+      api.openCourseNumEdit({showId: showId, num: num}).then(res => {
+        if (res.status === 'succ') {
+          this.$notify({
+            message: '修改课程排序成功',
+            type: 'success'
+          })
+        } else {
+          this.$notify({
+            message: res.message,
+            type: 'error',
+            duration: 0
+          })
+        }
+      })
     }
   }
 }
@@ -397,5 +418,13 @@ export default {
   -webkit-box-orient:vertical;
   -webkit-line-clamp:2;
   max-height: 52px;
+}
+.course-num{
+  display: inline-block;
+  width: 80px;
+}
+.course-lab{
+  font-size: 14px;
+  font-weight: normal;
 }
 </style>

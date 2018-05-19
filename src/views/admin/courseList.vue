@@ -7,7 +7,7 @@
     </el-col>
     <el-col :span="24" class="toolbar txt-right" style="padding-bottom: 0px" v-else>
       <el-button size="small" type="primary" @click="goBack">取消返回</el-button>
-      <el-button size="small" type="primary" @click="createActivity">发布</el-button>
+      <el-button size="small" type="primary" @click="createActivity">保存发布</el-button>
     </el-col>
 
     <el-col class="" :loading="listLoading" v-show="activityType == 'list'">
@@ -178,6 +178,7 @@ export default {
         intro: null
       }
       this.imgUrl = null
+      this.imgUrl2 = null
       this.$refs['addActivity'].resetFields()
     },
     handleAddActivityLink () {

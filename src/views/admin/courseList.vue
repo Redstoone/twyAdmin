@@ -179,6 +179,8 @@ export default {
       }
       this.imgUrl = null
       this.imgUrl2 = null
+      this.addActivityLink.imgUrl2 = ''
+      this.addActivity.imgUrl2 = ''
       this.$refs['addActivity'].resetFields()
     },
     handleAddActivityLink () {

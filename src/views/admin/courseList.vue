@@ -98,6 +98,8 @@
             <img v-if="imgUrl2" :src="imgUrl2" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon cover-uploader-icon"></i>
           </el-upload>
+
+          <a href="javascript:;" class="btn-del-img" @click="delImg" v-if="imgUrl2">删除</a>
         </el-form-item>
       </el-form>
     </el-col>
@@ -275,7 +277,16 @@ export default {
       this.imgUrl = activity.coverUrl
       this.addActivityLink.imgUrl = activity.coverUrl
       this.addActivity.imgUrl = activity.coverUrl
+      this.imgUrl2 = activity.imgUrl
+      this.addActivityLink.imgUrl2 = activity.imgUrl
+      this.addActivity.imgUrl2 = activity.imgUrl
       this.activityType = 'edit'
+    },
+
+    delImg () {
+      this.imgUrl2 = ''
+      this.addActivityLink.imgUrl2 = ''
+      this.addActivity.imgUrl2 = ''
     },
 
     goBack () {
@@ -426,5 +437,14 @@ export default {
 .course-lab{
   font-size: 14px;
   font-weight: normal;
+}
+.btn-del-img{
+  position: absolute;
+  left: 140px;
+  top: 28px;
+  cursor: pointer;
+}
+.btn-del-img:hover{
+  color: #f00;
 }
 </style>

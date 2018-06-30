@@ -1,8 +1,20 @@
 <template>
   <section>
+    <el-col :span="24" class="toolbar course-toolbar" style="padding-bottom: 0px">
+      <div class="course-classify">课程分类</div>
+      <el-button size="small" type="primary" @click="handleAddClassify">添加分类</el-button>
+    </el-col>
+
+    <div class="classify-list">
+      <div class="classify-item" v-for="(item, index) in classifyList"  v-bind:class="{ active: item.id == currentClassifyId }" :key="index" @click="handleClassify(item.id, index)">{{item.name}}</div>
+    </div>
+
     <!--工具条-->
-    <el-col :span="24" class="toolbar" style="padding-bottom: 0px" v-if="activityType == 'list'">
-      <el-button size="small" type="primary" @click="handleAddActivity">课程添加</el-button>
+    <el-col :span="24" class="toolbar course-toolbar" style="padding-bottom: 0px" v-if="activityType == 'list'">
+      <div class="course-classify">{{currentClassifyName}} 
+        <a href="javascript:;" class="btn-classify" @click="handleDel">删除</a> / <a href="javascript:;" class="btn-classify" @click="handleEdit">重命名</a> 
+      </div>
+      <el-button size="small" type="primary" @click="handleAddActivity">添加课程</el-button>
       <!-- <el-button size="small" type="primary" @click="handleAddActivityLink">添加课程链接</el-button> -->
     </el-col>
     <el-col :span="24" class="toolbar txt-right" style="padding-bottom: 0px" v-else>
@@ -103,6 +115,32 @@
         </el-form-item>
       </el-form>
     </el-col>
+
+    <!--新增界面-->
+    <el-dialog title="添加分类" :visible.sync="addFormVisible" :close-on-click-modal="false" width="480px">
+      <el-form :model="addForm" label-width="100px" :rules="addFormRules" ref="addForm">
+        <el-form-item label="分类名称" prop="name">
+          <el-input v-model="addForm.name" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.native="addFormVisible = false">取消</el-button>
+        <el-button type="primary" @click.native="addSubmit" :loading="addLoading">保存</el-button>
+      </div>
+    </el-dialog>
+
+    <!--编辑界面-->
+    <el-dialog title="编辑分类" :visible.sync="editFormVisible" :close-on-click-modal="false" width="480px">
+      <el-form :model="editForm" label-width="100px" :rules="editFormRules" ref="editForm">
+        <el-form-item label="分类名称" prop="name">
+          <el-input v-model="editForm.name" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.native="editFormVisible = false">取消</el-button>
+        <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+      </div>
+    </el-dialog>
   </section>
 </template>
 
@@ -151,21 +189,44 @@ export default {
       uploadUrl: global.UPLOADURL,
       page: 1,
       pageSize: 10,
-      total: 0
+      total: 0,
+      addFormVisible: false, // 新增界面是否显示
+      addFormRules: {
+        name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }]
+      },
+      // 新增界面数据
+      addForm: {
+        name: ''
+      },
+      classifyList: [],
+      currentClassifyName: '',
+      currentClassifyId: 0,
+      editFormVisible: false, // 编辑界面是否显示
+      editLoading: false,
+      editFormRules: {
+        name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }]
+      },
+      // 编辑界面数据
+      editForm: {
+        name: ''
+      },
     }
   },
   created () {
-    this.getActivityList()
+    // this.getActivityList()
+    this.courseClassifyList()
   },
   methods: {
     getActivityList (page = 1) {
       this.page = page
       this.listLoading = true
-      api.openCourseList({page: this.page, pageSize: this.pageSize}).then(res => {
-        this.activityList = res.data.array
-        this.total = res.data.total
-        this.listLoading = false
-      })
+      api
+        .courseClassifyGroup({ page: this.page, pageSize: this.pageSize, classifyId: this.currentClassifyId})
+        .then(res => {
+          this.activityList = res.data.array
+          this.total = res.data.total
+          this.listLoading = false
+        })
     },
     handleAddActivity () {
       this.activityType = 'add'
@@ -247,11 +308,12 @@ export default {
         type: 'warning'
       }).then(() => {
         this.listLoading = true
-        api.openCourseDel({showId: activityId}).then((res) => {
+        api.openCourseDel({ showId: activityId }).then(res => {
           this.listLoading = false
           this.getActivityList()
         })
-      }).catch(() => {})
+      })
+      .catch(() => {})
     },
     editActivityLink (activity) {
       this.addActivityLink = {
@@ -325,6 +387,7 @@ export default {
         if (valid) {
           this.addLoading = true
           let para = Object.assign({}, this.addActivity)
+          para.classifyId = this.currentClassifyId
           if (this.addActivity.showId) {
             api.openCourseEdit(para).then(res => {
               this.addLoading = false
@@ -360,7 +423,7 @@ export default {
     },
 
     changeCourseNum (showId, num) {
-      api.openCourseNumEdit({showId: showId, num: num}).then(res => {
+      api.openCourseNumEdit({ showId: showId, num: num }).then(res => {
         if (res.status === 'succ') {
           this.$notify({
             message: '修改课程排序成功',
@@ -374,80 +437,209 @@ export default {
           })
         }
       })
+    },
+
+    handleAddClassify () {
+      this.addFormVisible = true
+    },
+
+    // 新增
+    addSubmit () {
+      this.$refs.addForm.validate(valid => {
+        if (valid) {
+          this.addLoading = true
+          let para = Object.assign({}, this.addForm)
+          api.courseClassifyAdd(para).then(res => {
+            if (res.status === 'succ') {
+              this.addLoading = false
+              this.$notify({
+                message: '添加分类成功',
+                type: 'success'
+              })
+              this.$refs['addForm'].resetFields()
+              this.addFormVisible = false
+              this.courseClassifyList()
+            } else {
+              this.$message({
+                message: res.message,
+                type: 'error',
+                duration: 0
+              })
+            }
+          })
+        }
+      })
+    },
+
+    // 编辑
+    editSubmit () {
+      this.$refs.editForm.validate(valid => {
+        if (valid) {
+          this.editLoading = true
+          let para = Object.assign({}, this.editForm)
+          api.courseClassifyEdit(para).then((res) => {
+            this.editLoading = false
+            this.$notify({
+              message: '修改分类成功',
+              type: 'success'
+            })
+            this.$refs['editForm'].resetFields()
+            this.editFormVisible = false
+            this.courseClassifyList();
+          })
+        }
+      })
+    },
+
+    courseClassifyList () {
+      api.courseClassifyList().then(res => {
+        this.currentClassifyName = res.data.array[0].name
+        this.currentClassifyId = res.data.array[0].id 
+        this.classifyList = res.data.array
+        this.getActivityList()
+      })
+    },
+
+    handleClassify (cid, idx) {
+      this.currentClassifyName = this.classifyList[idx].name
+      this.currentClassifyId = this.classifyList[idx].id
+      this.getActivityList()
+    },
+
+    handleEdit () {
+      this.editFormVisible = true
+      this.editForm = {
+        name: this.currentClassifyName,
+        classifyId: this.currentClassifyId
+      }
+    },
+
+    handleDel () {
+      let that = this
+      this.$confirm('确认删除该记录吗?', '提示', {
+        type: 'warning'
+      }).then(() => {
+        this.listLoading = true
+        api.courseClassifyDel({ classifyId: this.currentClassifyId }).then(res => {
+          that.listLoading = false
+          that.courseClassifyList();
+        })
+      })
+      .catch(() => {})
     }
   }
 }
 </script>
 
 <style scoped>
-.activity-list{
+.activity-list {
   margin: 0;
   list-style: none;
   padding-left: 0;
 }
-.activity-list li{
-  border:1px solid #e1e1e1;
+.activity-list li {
+  border: 1px solid #e1e1e1;
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
   position: relative;
   margin-bottom: 15px;
 }
-.activity-list p{
+.activity-list p {
   margin: 8px 0;
   font-size: 14px;
 }
-.activity-list .name{
+.activity-list .name {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
 }
-.activity-list a{
-  color:#0086e4;;
+.activity-list a {
+  color: #0086e4;
   text-decoration: underline;
 }
-.edit-wrap{
+.edit-wrap {
   position: absolute;
   right: 15px;
   font-size: 14px;
   color: #0086e4;
 }
-.edit-wrap span{
+.edit-wrap span {
   text-decoration: underline;
   cursor: pointer;
 }
-.add-tip{
-  font-size:14px;
-  color:#8a8a8f;
+.add-tip {
+  font-size: 14px;
+  color: #8a8a8f;
   margin: -10px 5px 15px 100px;
 }
-.txt-right{
+.txt-right {
   text-align: right;
 }
-.desc{
+.desc {
   line-height: 26px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   max-height: 52px;
 }
-.course-num{
+.course-num {
   display: inline-block;
   width: 80px;
 }
-.course-lab{
+.course-lab {
   font-size: 14px;
   font-weight: normal;
 }
-.btn-del-img{
+.btn-del-img {
   position: absolute;
   left: 140px;
   top: 28px;
   cursor: pointer;
 }
-.btn-del-img:hover{
+.btn-del-img:hover {
   color: #f00;
+}
+.course-toolbar {
+  position: relative;
+  height: 32px;
+}
+.course-classify {
+  font-weight: bold;
+  line-height: 32px;
+}
+.course-toolbar .el-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.classify-list {
+  padding-bottom: 20px;
+  margin-bottom: 5px;
+  border-bottom: 2px solid #e1e1e1;
+}
+.classify-list .classify-item{
+  border-radius: 5px;
+  border: 1px solid #222;
+  color: #222;
+  display: inline-block;
+  padding: 5px 12px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.classify-list .classify-item.active{
+  color: #fff !important;
+  background-color: #5BBFD7 !important;
+  border-color: #5BBFD7 !important; 
+}
+.btn-classify{
+  color: #0086e4;
+  font-size: 14px;
+  font-weight: 400;
+}
+.btn-classify:hover{
+  text-decoration: underline;
 }
 </style>

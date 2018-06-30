@@ -234,5 +234,21 @@ export default {
   },
   showTeacherNumEdit (params) {
     return service(`/api/show/teacher/num/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+
+  courseClassifyAdd (params) {
+    return service(`/api/show/course/classify/add`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  courseClassifyEdit (params) {
+    return service(`/api/show/course/classify/edit`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  courseClassifyDel (params) {
+    return service(`/api/show/course/classify/del`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  courseClassifyList (params) {
+    return service(`/api/show/course/classify/list`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+  },
+  courseClassifyGroup (params) {
+    return service(`/api/show/course/group`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   }
 }

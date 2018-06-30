@@ -72,7 +72,7 @@ const router = new Router({
       type: 'superadmin',
       children: [
         { path: '/course/open', component: OpenList, meta: { type: 'superadmin' }, name: '公开课内容编辑' },
-        { path: '/course/intro', component: CourseList, meta: { type: 'superadmin' }, name: '课程介绍编辑' }
+        { path: '/course/intro', component: CourseList, meta: { type: 'superadmin' }, name: '课程编辑管理' }
       ]
     },
 

@@ -17,7 +17,7 @@
             <el-input class="teacher-num" v-model="scope.row.num" @blur="changeTeacherNum(scope.row.id, scope.row.num)"></el-input>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="名字" sortable>
+        <el-table-column prop="name" label="照片">
           <template slot-scope="scope">
             <img :src="scope.row.imgUrl" class="user-img" >
           </template>

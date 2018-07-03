@@ -246,7 +246,7 @@ export default {
     return service(`/api/show/course/classify/del`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
   },
   courseClassifyList (params) {
-    return service(`/api/show/course/classify/list`, qs.stringify(params), 'POST', { 'Content-Type': typewww })
+    return service(`/api/show/course/classify/list`, qs.stringify(params), 'GET')
   },
   courseClassifyGroup (params) {
     return service(`/api/show/course/group`, qs.stringify(params), 'POST', { 'Content-Type': typewww })

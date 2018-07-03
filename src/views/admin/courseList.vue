@@ -11,8 +11,9 @@
 
     <!--工具条-->
     <el-col :span="24" class="toolbar course-toolbar" style="padding-bottom: 0px" v-if="activityType == 'list'">
-      <div class="course-classify">{{currentClassifyName}} 
-        <a href="javascript:;" class="btn-classify" @click="handleDel">删除</a> / <a href="javascript:;" class="btn-classify" @click="handleEdit">重命名</a> 
+      <div class="course-classify">{{currentClassifyName}}
+        <a href="javascript:;" class="btn-classify" @click="handleDel">删除</a> /
+        <a href="javascript:;" class="btn-classify" @click="handleEdit">重命名</a>
       </div>
       <el-button size="small" type="primary" @click="handleAddActivity">添加课程</el-button>
       <!-- <el-button size="small" type="primary" @click="handleAddActivityLink">添加课程链接</el-button> -->
@@ -209,7 +210,7 @@ export default {
       // 编辑界面数据
       editForm: {
         name: ''
-      },
+      }
     }
   },
   created () {
@@ -221,7 +222,7 @@ export default {
       this.page = page
       this.listLoading = true
       api
-        .courseClassifyGroup({ page: this.page, pageSize: this.pageSize, classifyId: this.currentClassifyId})
+        .courseClassifyGroup({page: this.page, pageSize: this.pageSize, classifyId: this.currentClassifyId})
         .then(res => {
           this.activityList = res.data.array
           this.total = res.data.total
@@ -312,8 +313,7 @@ export default {
           this.listLoading = false
           this.getActivityList()
         })
-      })
-      .catch(() => {})
+      }).catch(() => {})
     },
     editActivityLink (activity) {
       this.addActivityLink = {
@@ -485,7 +485,7 @@ export default {
             })
             this.$refs['editForm'].resetFields()
             this.editFormVisible = false
-            this.courseClassifyList();
+            this.courseClassifyList()
           })
         }
       })
@@ -494,7 +494,7 @@ export default {
     courseClassifyList () {
       api.courseClassifyList().then(res => {
         this.currentClassifyName = res.data.array[0].name
-        this.currentClassifyId = res.data.array[0].id 
+        this.currentClassifyId = res.data.array[0].id
         this.classifyList = res.data.array
         this.getActivityList()
       })
@@ -522,10 +522,9 @@ export default {
         this.listLoading = true
         api.courseClassifyDel({ classifyId: this.currentClassifyId }).then(res => {
           that.listLoading = false
-          that.courseClassifyList();
+          that.courseClassifyList()
         })
-      })
-      .catch(() => {})
+      }).catch(() => {})
     }
   }
 }
@@ -632,7 +631,7 @@ export default {
 .classify-list .classify-item.active{
   color: #fff !important;
   background-color: #5BBFD7 !important;
-  border-color: #5BBFD7 !important; 
+  border-color: #5BBFD7 !important;
 }
 .btn-classify{
   color: #0086e4;

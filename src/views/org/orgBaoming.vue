@@ -1,16 +1,17 @@
 <template>
   <section>
     <el-col style="text-align: right;">
-      <el-select v-model="course" placeholder="请选择课程">
+      <el-select v-model="course" placeholder="请选择课程" @change="courseChange">
         <el-option
           v-for="item in courseOptions"
           :key="item.value"
           :label="item.label"
-          :value="item.value">
+          :value="item.value"
+          >
         </el-option>
       </el-select>
 
-      <el-select v-model="payment" placeholder="请选择支付状态">
+      <el-select v-model="payment" placeholder="请选择支付状态" @change="paymentChange">
         <el-option
           v-for="item in payOptions"
           :key="item.value"
@@ -19,7 +20,7 @@
         </el-option>
       </el-select>
 
-      <el-select v-model="age" placeholder="请选择年龄">
+      <el-select v-model="age" placeholder="请选择年龄" @change="ageChange">
         <el-option
           v-for="item in ageOptions"
           :key="item.value"
@@ -117,9 +118,16 @@ export default {
       clazzOption: [],
       clazzId: null,
       id: null,
-      courseOptions: [],
+      courseOptions: [{
+        label: '全部',
+        value: null
+      }],
       course: null,
       payOptions: [
+        {
+          label: '全部',
+          value: null
+        },
         {
           label: '未支付',
           value: '未支付'
@@ -132,6 +140,10 @@ export default {
       payment: null,
       age: null,
       ageOptions: [
+        {
+          label: '全部',
+          value: null
+        },
         {
           label: '3-5岁',
           value: '3,5'
@@ -149,7 +161,9 @@ export default {
           value: '9,12'
         }
       ],
-      loading: false
+      loading: false,
+      courseId: null,
+      payStatus: null
     }
   },
   created () {
@@ -158,7 +172,7 @@ export default {
   },
   methods: {
     getStudentList (type = 1) {
-      api.orgCourseStudentList({ groupId: JSON.parse(sessionStorage.getItem('groupId')), type: type }).then(res => {
+      api.orgCourseStudentList({groupId: JSON.parse(sessionStorage.getItem('groupId')), type: type, courseId: this.courseId, payStatus: this.payStatus, age: this.age}).then(res => {
         this.studentList = res.data.array
       })
     },
@@ -254,6 +268,18 @@ export default {
           type: 'warning'
         }).then(() => {})
       }
+    },
+    courseChange (val) {
+      this.courseId = val
+      this.getStudentList()
+    },
+    paymentChange (val) {
+      this.payStatus = val
+      this.getStudentList()
+    },
+    ageChange (val) {
+      this.age = val
+      this.getStudentList()
     }
   }
 }

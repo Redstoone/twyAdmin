@@ -44,7 +44,7 @@
         <el-form-item label="头像" prop="name">
           <el-upload
             class="avatar-uploader"
-            action="http://api.twyxedu.com//api/upload"
+            action="http://t.api.twyxedu.com//api/upload"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">

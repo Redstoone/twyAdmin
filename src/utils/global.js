@@ -1,1 +1,1 @@
-global.UPLOADURL = 'http://api.twyxedu.com//api/upload'
+global.UPLOADURL = 'http://t.api.twyxedu.com//api/upload'

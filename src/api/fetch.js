@@ -11,7 +11,7 @@ const service = function (url, data, method = 'GET', headers = {}) {
   return new Promise((resolve, reject) => {
     let options = {
       'method': method,
-      'url': process.env.NODE_ENV === 'production' ? 'http://api.twyxedu.com' + process.env.BASE_API + url : process.env.BASE_API + url,
+      'url': process.env.NODE_ENV === 'production' ? 'http://t.api.twyxedu.com' + process.env.BASE_API + url : process.env.BASE_API + url,
       // 'url': process.env.BASE_API + url,
       'headers': headers && typeof headers === 'object' ? headers : {}
     }

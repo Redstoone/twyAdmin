@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/localapi': {
-        target: 'http://api.twyxedu.com/',
+        target: 'http://t.api.twyxedu.com/',
         changeOrigin: true,
         pathRewrite: {
           '^/localapi': ''

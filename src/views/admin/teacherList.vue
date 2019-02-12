@@ -46,6 +46,7 @@
           <el-upload
             class="avatar-uploader cover-uploader"
             :action="uploadUrl"
+            :data="uploadForm"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
@@ -58,6 +59,7 @@
           <el-upload
             class="avatar-uploader cover-uploader"
             :action="uploadUrl"
+            :data="uploadForm"
             :show-file-list="false"
             :on-success="handleAvatarSuccess1"
             :before-upload="beforeAvatarUpload">
@@ -70,6 +72,7 @@
           <el-upload
             class="avatar-uploader cover-uploader"
             :action="uploadUrl"
+            :data="uploadForm"
             :show-file-list="false"
             :on-success="handleAvatarSuccess2"
             :before-upload="beforeAvatarUpload">
@@ -106,6 +109,7 @@ export default {
         intro: null
       },
       uploadUrl: global.UPLOADURL,
+      uploadForm: global.UPLOAD_FORM,
       imgUrl: null,
       listimgUrl: null,
       pcimgUrl: null,
@@ -155,16 +159,16 @@ export default {
       this.sels = sels
     },
     handleAvatarSuccess (res, file) {
-      this.imgUrl = file.response
-      this.addTeacher.imgUrl = file.response
+      this.imgUrl = file.response.data.url
+      this.addTeacher.imgUrl = file.response.data.url
     },
     handleAvatarSuccess1 (res, file) {
-      this.listimgUrl = file.response
-      this.addTeacher.listimgUrl = file.response
+      this.listimgUrl = file.response.data.url
+      this.addTeacher.listimgUrl = file.response.data.url
     },
     handleAvatarSuccess2 (res, file) {
-      this.pcimgUrl = file.response
-      this.addTeacher.pcimgUrl = file.response
+      this.pcimgUrl = file.response.data.url
+      this.addTeacher.pcimgUrl = file.response.data.url
     },
     beforeAvatarUpload (file) {
       const isLt2M = file.size / 1024 / 1024 < 2

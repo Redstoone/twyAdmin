@@ -151,7 +151,7 @@ const router = new Router({
     {
       path: '/',
       component: Home,
-      name: '班级管理',
+      name: '班级管理 ',
       type: 'teacher',
       children: [
         {

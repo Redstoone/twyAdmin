@@ -354,13 +354,13 @@
                 imageMaxSize = editor.getOpt('imageMaxSize'),
                 imageCompressBorder = editor.getOpt('imageCompressBorder');
 
-            if (!WebUploader.Uploader.support()) {
-                $('#filePickerReady').after($('<div>').html(lang.errorNotSupport)).hide();
-                return;
-            } else if (!editor.getOpt('imageActionName')) {
-                $('#filePickerReady').after($('<div>').html(lang.errorLoadConfig)).hide();
-                return;
-            }
+            // if (!WebUploader.Uploader.support()) {
+            //     $('#filePickerReady').after($('<div>').html(lang.errorNotSupport)).hide();
+            //     return;
+            // } else if (!editor.getOpt('imageActionName')) {
+            //     $('#filePickerReady').after($('<div>').html(lang.errorLoadConfig)).hide();
+            //     return;
+            // }
 
             uploader = _this.uploader = WebUploader.create({
                 pick: {
@@ -417,6 +417,7 @@
                     $info = $('<p class="error"></p>').hide().appendTo($li),
 
                     showError = function (code) {
+                        console.log(code)
                         switch (code) {
                             case 'exceed_size':
                                 text = lang.errorExceedSize;
@@ -460,6 +461,7 @@
                     file.rotation = 0;
 
                     /* 检查文件格式 */
+                    // console.log(acceptExtensions)
                     if (!file.ext || acceptExtensions.indexOf(file.ext.toLowerCase()) == -1) {
                         showError('not_allow_type');
                         uploader.removeFile(file);
@@ -716,15 +718,23 @@
             });
 
             uploader.on('uploadSuccess', function (file, ret) {
+                // console.log(file, ret)
                 var $file = $('#' + file.id);
                 try {
-                    var responseText = (ret._raw || ret),
-                        json = utils.str2json(responseText);
-                    if (json.state == 'SUCCESS') {
-                        _this.imageList.push(json);
+                    // var responseText = (ret._raw || ret),
+                    //     json = utils.str2json(responseText);
+
+                    // console.log(json.vo.data)
+                    if (ret.code == 2000) {
+                        let _img = {
+                            url: ret.data.url,
+                            title: '',
+                            original: ''
+                        }
+                        _this.imageList.push(_img);
                         $file.append('<span class="success"></span>');
                     } else {
-                        $file.find('.error').text(json.state).show();
+                        $file.find('.error').text(json.msg).show();
                     }
                 } catch (e) {
                     $file.find('.error').text(lang.errorServerUpload).show();
@@ -776,8 +786,8 @@
             for (i = 0; i < this.imageList.length; i++) {
                 data = this.imageList[i];
                 list.push({
-                    src: prefix + data.url,
-                    _src: prefix + data.url,
+                    src: data.url,
+                    _src: data.url,
                     title: data.title,
                     alt: data.original,
                     floatStyle: align

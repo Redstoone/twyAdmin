@@ -37,7 +37,8 @@
         <p class="p2">成长足迹</p>
         <div class="report-img">
           <el-upload
-            action="http://api.twyxedu.com//api/upload"
+            :action="uploadUrl"
+            :data="uploadForm"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
@@ -78,7 +79,9 @@ export default {
       checked: false,
       imgList: [],
       imageList: [],
-      fileList: []
+      fileList: [],
+      uploadUrl: global.UPLOADURL,
+      uploadForm: global.UPLOAD_FORM
     }
   },
   created () {
@@ -158,7 +161,7 @@ export default {
       }
     },
     handlePictureSuccess (res, file) {
-      this.imageList.push(file.response)
+      this.imageList.push(file.response.data.url)
       this.fileList.push(file)
     },
     handlePictureCardPreview (file) {

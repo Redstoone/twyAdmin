@@ -68,6 +68,7 @@
           <el-upload
             class="avatar-uploader cover-uploader"
             :action="uploadUrl"
+            :data="uploadForm"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
@@ -105,6 +106,7 @@
           <el-upload
             class="avatar-uploader cover-uploader"
             :action="uploadUrl"
+            :data="uploadForm"
             :show-file-list="false"
             :on-success="handleAvatarSuccess2"
             :before-upload="beforeAvatarUpload">
@@ -188,6 +190,7 @@ export default {
         intro: [{ required: true, message: '请输入内容', trigger: 'blur' }]
       },
       uploadUrl: global.UPLOADURL,
+      uploadForm: global.UPLOAD_FORM,
       page: 1,
       pageSize: 10,
       total: 0,
@@ -367,10 +370,10 @@ export default {
       }
     },
     handleAvatarSuccess (res, file) {
-      this.imgUrl = file.response
+      this.imgUrl = file.response.data.url
     },
     handleAvatarSuccess2 (res, file) {
-      this.imgUrl2 = file.response
+      this.imgUrl2 = file.response.data.url
     },
     beforeAvatarUpload (file) {
       const isLt2M = file.size / 1024 / 1024 < 2

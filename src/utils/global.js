@@ -1,1 +1,4 @@
-global.UPLOADURL = 'http://api.twyxedu.com//api/upload'
+global.UPLOADURL = 'https://oss.twyxedu.com/simple/upload'
+global.UPLOAD_FORM = {
+  bucketName: 'twyk'
+}

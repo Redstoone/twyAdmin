@@ -44,7 +44,8 @@
         <el-form-item label="头像" prop="name">
           <el-upload
             class="avatar-uploader"
-            action="http://api.twyxedu.com//api/upload"
+            :action="uploadUrl"
+            :data="uploadForm"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
@@ -102,7 +103,9 @@ export default {
       courseLoading: false,
       teacherId: null,
       teacherClazzList: [],
-      clazzViewVisible: false
+      clazzViewVisible: false,
+      uploadUrl: global.UPLOADURL,
+      uploadForm: global.UPLOAD_FORM
     }
   },
   created () {
@@ -137,7 +140,7 @@ export default {
       this.imageUrl = null
     },
     handleAvatarSuccess (res, file) {
-      this.imageUrl = file.response
+      this.imageUrl = file.response.data.url
     },
     beforeAvatarUpload (file) {
       const isLt2M = file.size / 1024 / 1024 < 2

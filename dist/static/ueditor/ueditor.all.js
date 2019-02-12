@@ -6920,7 +6920,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
                     '.view{padding:0;word-wrap:break-word;cursor:text;height:90%;}\n' +
                     //设置默认字体和字号
                     //font-family不能呢随便改，在safari下fillchar会有解析问题
-                    'body{margin:8px;font-family:sans-serif;font-size:16px;}' +
+                    'body{margin:8px;font-family:sans-serif;font-size:14px;color:#555;}' +
                     //设置段落间距
                     'p{margin:5px 0;}</style>' +
                     ( options.iframeCssUrl ? '<link rel=\'stylesheet\' type=\'text/css\' href=\'' + utils.unhtml(options.iframeCssUrl) + '\'/>' : '' ) +
@@ -8080,16 +8080,14 @@ UE.Editor.defaultOptions = function(editor){
                 me.options.imageUrl && me.setOpt('serverUrl', me.options.imageUrl.replace(/^(.*[\/]).+([\.].+)$/, '$1controller$2'));
 
                 var configUrl = me.getActionUrl('config'),
-                    // isJsonp = utils.isCrossDomainUrl(configUrl);
-                    isJsonp = false;
+                    isJsonp = utils.isCrossDomainUrl(configUrl);
 
                 /* 发出ajax请求 */
                 me._serverConfigLoaded = false;
 
                 configUrl && UE.ajax.request(configUrl,{
                     'method': 'GET',
-                    // 'dataType': isJsonp ? 'jsonp':'',
-                    'dataType': '',
+                    'dataType': isJsonp ? 'jsonp':'',
                     'onsuccess':function(r){
                         try {
                             var config = isJsonp ? r:eval("("+r.responseText+")");
@@ -8293,15 +8291,15 @@ UE.ajax = function() {
         if( timeOut ){
             timer = setTimeout(getCallBack(1), timeOut);
         }
-        createScriptTag(scr, url, charset);
+        // createScriptTag(scr, url, charset);
 
-        function createScriptTag(scr, url, charset) {
-            scr.setAttribute('type', 'text/javascript');
-            scr.setAttribute('defer', 'defer');
-            charset && scr.setAttribute('charset', charset);
-            scr.setAttribute('src', url);
-            document.getElementsByTagName('head')[0].appendChild(scr);
-        }
+        // function createScriptTag(scr, url, charset) {
+        //     scr.setAttribute('type', 'text/javascript');
+        //     scr.setAttribute('defer', 'defer');
+        //     charset && scr.setAttribute('charset', charset);
+        //     scr.setAttribute('src', url);
+        //     document.getElementsByTagName('head')[0].appendChild(scr);
+        // }
 
         function getCallBack(onTimeOut){
             return function(){
@@ -11167,7 +11165,7 @@ UE.commands['insertimage'] = {
                 unhtmlData(ci);
 
                 str = '<img src="' + ci.src + '" ' + (ci._src ? ' _src="' + ci._src + '" ' : '') +
-                    (ci.width ? 'style="max-width:100%;"' : 'style="max-width:100%;"') +
+                    (ci.width ? 'width="' + ci.width + '" ' : '') +
                     (ci.height ? ' height="' + ci.height + '" ' : '') +
                     (ci['floatStyle'] == 'left' || ci['floatStyle'] == 'right' ? ' style="float:' + ci['floatStyle'] + ';"' : '') +
                     (ci.title && ci.title != "" ? ' title="' + ci.title + '"' : '') +
@@ -17474,7 +17472,7 @@ UE.plugins['autoheight'] = function () {
         window.onscroll = function(){
             if(lastScrollY === null){
                 lastScrollY = this.scrollY
-            }else if(this.scrollY == 0 && lastScrollY != 0){
+            }else if(this.scrollY == 0 && lastScrollY != 0 && !me){
                 me.window.scrollTo(0,0);
                 lastScrollY = null;
             }
@@ -23799,10 +23797,10 @@ UE.plugin.register('autoupload', function (){
         me.execCommand('inserthtml', loadingHtml);
 
         /* 判断后端配置是否没有加载成功 */
-        if (!me.getOpt(filetype + 'ActionName')) {
-            errorHandler(me.getLang('autoupload.errorLoadConfig'));
-            return;
-        }
+        // if (!me.getOpt(filetype + 'ActionName')) {
+        //     errorHandler(me.getLang('autoupload.errorLoadConfig'));
+        //     return;
+        // }
         /* 判断文件大小是否超出限制 */
         if(file.size > maxSize) {
             errorHandler(me.getLang('autoupload.exceedSizeError'));
@@ -24506,70 +24504,77 @@ UE.plugin.register('simpleupload', function (){
             var input = btnIframeDoc.getElementById('edui_input_' + timestrap);
             var iframe = btnIframeDoc.getElementById('edui_iframe_' + timestrap);
 
-            domUtils.on(input, 'change', function(){
-                if(!input.value) return;
-                var loadingId = 'loading_' + (+new Date()).toString(36);
-                var params = utils.serializeParam(me.queryCommandValue('serverparam')) || '';
+            domUtils.on(input, 'change', function() {
+              if(!input.value) return;
+              var loadingId = 'loading_' + (+new Date()).toString(36);
+              var imageActionUrl = me.getActionUrl(me.getOpt('imageActionName'));
+              var allowFiles = me.getOpt('imageAllowFiles');
 
-                var imageActionUrl = me.getActionUrl(me.getOpt('imageActionName'));
-                var allowFiles = me.getOpt('imageAllowFiles');
+              me.focus();
+              me.execCommand('inserthtml', '<img class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme +'/images/spacer.gif" title="' + (me.getLang('simpleupload.loading') || '') + '" >');
 
-                me.focus();
-                me.execCommand('inserthtml', '<img style="max-width:100%;" class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme +'/images/spacer.gif" title="' + (me.getLang('simpleupload.loading') || '') + '" >');
+            //   /!* 判断后端配置是否没有加载成功 *!/
+            //   if (!me.getOpt('imageActionName')) {
+            //     errorHandler(me.getLang('autoupload.errorLoadConfig'));
+            //     return;
+            //   }
+              // 判断文件格式是否错误
+              var filename = input.value,
+                fileext = filename ? filename.substr(filename.lastIndexOf('.')):'';
+              if (!fileext || (allowFiles && (allowFiles.join('') + '.').indexOf(fileext.toLowerCase() + '.') == -1)) {
+                showErrorLoader(me.getLang('simpleupload.exceedTypeError'));
+                return;
+              }
 
-                function callback(){
-                    try{
-                        var link, json, loader,
-                            body = (iframe.contentDocument || iframe.contentWindow.document).body,
-                            result = body.innerText || body.textContent || '';
-                        json = (new Function("return " + result))();
-                        link = me.options.imageUrlPrefix + json.url;
-                        if(json.state == 'SUCCESS' && json.url) {
-                            loader = me.document.getElementById(loadingId);
-                            loader.setAttribute('src', link);
-                            loader.setAttribute('_src', link);
-                            loader.setAttribute('title', json.title || '');
-                            loader.setAttribute('alt', json.original || '');
-                            loader.removeAttribute('id');
-                            domUtils.removeClasses(loader, 'loadingclass');
-                        } else {
-                            showErrorLoader && showErrorLoader(json.state);
-                        }
-                    }catch(er){
-                        showErrorLoader && showErrorLoader(me.getLang('simpleupload.loadError'));
-                    }
-                    form.reset();
-                    domUtils.un(iframe, 'load', callback);
+              var params = utils.serializeParam(me.queryCommandValue('serverparam')) || '';
+              var action = utils.formatUrl(imageActionUrl + (imageActionUrl.indexOf('?') == -1 ? '?' : '&') + params);
+              var formData = new FormData();
+              formData.append("upfile", form[0].files[0] );
+
+            //   $.ajax({
+            //     url: action,
+            //     type: 'POST',
+            //     cache: false,
+            //     data: formData,
+            //     processData: false,
+            //     contentType: false,
+            //     success: function (data) {
+            //         console.log(data)
+            //       data = JSON.parse(data);
+
+            //       var link, loader,
+            //         body = (iframe.contentDocument || iframe.contentWindow.document).body,
+            //         result = body.innerText || body.textContent || '';
+
+            //       link = data.vo.data;
+
+            //       if(data.state == 'SUCCESS' && data.url) {
+            //         loader = me.document.getElementById(loadingId);
+            //         loader.setAttribute('src', link);
+            //         loader.setAttribute('_src', link);
+            //         loader.setAttribute('title', data.title || '');
+            //         loader.setAttribute('alt', data.original || '');
+            //         loader.removeAttribute('id');
+            //         domUtils.removeClasses(loader, 'loadingclass');
+            //       } else {
+            //         showErrorLoader && showErrorLoader(data.state);
+            //       }
+            //       form.reset();
+            //     }
+            //   });
+
+              function showErrorLoader(title){
+                if(loadingId) {
+                  var loader = me.document.getElementById(loadingId);
+                  loader && domUtils.remove(loader);
+                  me.fireEvent('showmessage', {
+                    'id': loadingId,
+                    'content': title,
+                    'type': 'error',
+                    'timeout': 4000
+                  });
                 }
-                function showErrorLoader(title){
-                    if(loadingId) {
-                        var loader = me.document.getElementById(loadingId);
-                        loader && domUtils.remove(loader);
-                        me.fireEvent('showmessage', {
-                            'id': loadingId,
-                            'content': title,
-                            'type': 'error',
-                            'timeout': 4000
-                        });
-                    }
-                }
-
-                /* 判断后端配置是否没有加载成功 */
-                if (!me.getOpt('imageActionName')) {
-                    errorHandler(me.getLang('autoupload.errorLoadConfig'));
-                    return;
-                }
-                // 判断文件格式是否错误
-                var filename = input.value,
-                    fileext = filename ? filename.substr(filename.lastIndexOf('.')):'';
-                if (!fileext || (allowFiles && (allowFiles.join('') + '.').indexOf(fileext.toLowerCase() + '.') == -1)) {
-                    showErrorLoader(me.getLang('simpleupload.exceedTypeError'));
-                    return;
-                }
-
-                domUtils.on(iframe, 'load', callback);
-                form.action = utils.formatUrl(imageActionUrl + (imageActionUrl.indexOf('?') == -1 ? '?':'&') + params);
-                form.submit();
+              }
             });
 
             var stateTimer;
@@ -29454,11 +29459,15 @@ UE.ui = baidu.editor.ui = {};
      *
      */
     UE.getEditor = function (id, opt) {
-        var editor = instances[id];
-        if (!editor) {
-            editor = instances[id] = new UE.ui.Editor(opt);
-            editor.render(id);
-        }
+        // var editor = instances[id];
+        // if (!editor) {
+        //     console.log(id)
+        //     editor = instances[id] = new UE.ui.Editor(opt);
+        //     editor.render(id);
+        // }
+        // return editor;
+        var editor = instances[id] = new UE.ui.Editor(opt);
+        editor.render(id);
         return editor;
     };
 
@@ -29466,6 +29475,7 @@ UE.ui = baidu.editor.ui = {};
     UE.delEditor = function (id) {
         var editor;
         if (editor = instances[id]) {
+            // console.log(editor.key)
             editor.key && editor.destroy();
             delete instances[id]
         }

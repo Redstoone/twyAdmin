@@ -3683,6 +3683,7 @@
                     name: file.name,
                     type: file.type,
                     lastModifiedDate: file.lastModifiedDate,
+                    bucketName: 'twyk',
                     size: file.size
                 });
     

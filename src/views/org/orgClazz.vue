@@ -63,7 +63,7 @@
             {{scope.row.clothsize}}/{{scope.row.shoessize}}
           </template>
         </el-table-column>
-        <el-table-column prop="cellphone" label="父母名字/手机">
+        <el-table-column prop="cellphone" label="父母名字/手机" width="180">
           <template slot-scope="scope">
             {{scope.row.momname}} ({{scope.row.momphone}}) <br />
             <span v-if="scope.row.dadname">{{scope.row.dadname}} ({{scope.row.dadphone}})</span>

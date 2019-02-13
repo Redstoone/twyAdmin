@@ -171,15 +171,18 @@ export default {
     handleAddActivity () {
       this.activityType = 'add'
       if (!this.editor) {
+        document.querySelector('#ueditor').innerHTML = ''
         this.editor = window.UE.getEditor('ueditor')
       } else {
         let that = this
+        document.querySelector('#ueditor').innerHTML = ''
         this.editor = window.UE.getEditor('ueditor')
         this.editor.ready(() => {
           that.editor.setContent('')
         })
       }
       this.$refs['addActivity'].resetFields()
+      this.imgUrl = ''
     },
     handleAddActivityLink () {
       this.imgUrl = null
@@ -284,12 +287,14 @@ export default {
           this.activityType = 'edit'
           if (!this.editor) {
             let that = this
+            document.querySelector('#ueditor').innerHTML = ''
             this.editor = window.UE.getEditor('ueditor')
             this.editor.ready(() => {
               that.editor.setContent(res.data.content)
             })
           } else {
             let that = this
+            document.querySelector('#ueditor').innerHTML = ''
             this.editor = window.UE.getEditor('ueditor')
             this.editor.ready(() => {
               that.editor.setContent(res.data.content)
@@ -370,12 +375,13 @@ export default {
       this.getActivityList(val)
     }
   },
-  mounted () {
-    this.editor = window.UE.getEditor('ueditor')
-  },
+  // mounted () {
+  //   this.editor = window.UE.getEditor('ueditor')
+  // },
   destroyed () {
     if (this.editor) {
-      this.editor.destroy()
+    //   this.editor.destroy()
+      document.querySelector('#ueditor').innerHTML = ''
     }
     // clearInterval(this.setcontent)
   }

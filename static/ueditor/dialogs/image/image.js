@@ -725,9 +725,21 @@
                     //     json = utils.str2json(responseText);
 
                     // console.log(json.vo.data)
-                    if (ret.code == 2000) {
+                    // if (ret.code == 2000) {
+                    //     let _img = {
+                    //         url: ret.data.url,
+                    //         title: '',
+                    //         original: ''
+                    //     }
+                    //     _this.imageList.push(_img);
+                    //     $file.append('<span class="success"></span>');
+                    // } else {
+                    //     $file.find('.error').text(json.msg).show();
+                    // }
+
+                    if (ret) {
                         let _img = {
-                            url: ret.data.url,
+                            url: ret,
                             title: '',
                             original: ''
                         }

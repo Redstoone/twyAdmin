@@ -370,10 +370,10 @@ export default {
       }
     },
     handleAvatarSuccess (res, file) {
-      this.imgUrl = file.response.data.url
+      this.imgUrl = file.response
     },
     handleAvatarSuccess2 (res, file) {
-      this.imgUrl2 = file.response.data.url
+      this.imgUrl2 = file.response
     },
     beforeAvatarUpload (file) {
       const isLt2M = file.size / 1024 / 1024 < 2

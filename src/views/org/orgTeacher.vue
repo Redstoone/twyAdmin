@@ -140,7 +140,7 @@ export default {
       this.imageUrl = null
     },
     handleAvatarSuccess (res, file) {
-      this.imageUrl = file.response.data.url
+      this.imageUrl = file.response
     },
     beforeAvatarUpload (file) {
       const isLt2M = file.size / 1024 / 1024 < 2

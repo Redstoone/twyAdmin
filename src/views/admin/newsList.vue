@@ -187,9 +187,9 @@ export default {
       this.activityLinkVisible = true
     },
     handleAvatarSuccess (res, file) {
-      this.imgUrl = file.response.data.url
-      this.addActivity.imgUrl = file.response.data.url
-      this.addActivityLink.imgUrl = file.response.data.url
+      this.imgUrl = file.response
+      this.addActivity.imgUrl = file.response
+      this.addActivityLink.imgUrl = file.response
     },
     beforeAvatarUpload (file) {
       const isLt2M = file.size / 1024 / 1024 < 2

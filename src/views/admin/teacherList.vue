@@ -159,16 +159,16 @@ export default {
       this.sels = sels
     },
     handleAvatarSuccess (res, file) {
-      this.imgUrl = file.response.data.url
-      this.addTeacher.imgUrl = file.response.data.url
+      this.imgUrl = file.response
+      this.addTeacher.imgUrl = file.response
     },
     handleAvatarSuccess1 (res, file) {
-      this.listimgUrl = file.response.data.url
-      this.addTeacher.listimgUrl = file.response.data.url
+      this.listimgUrl = file.response
+      this.addTeacher.listimgUrl = file.response
     },
     handleAvatarSuccess2 (res, file) {
-      this.pcimgUrl = file.response.data.url
-      this.addTeacher.pcimgUrl = file.response.data.url
+      this.pcimgUrl = file.response
+      this.addTeacher.pcimgUrl = file.response
     },
     beforeAvatarUpload (file) {
       const isLt2M = file.size / 1024 / 1024 < 2

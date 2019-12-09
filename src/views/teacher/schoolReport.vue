@@ -161,7 +161,7 @@ export default {
       }
     },
     handlePictureSuccess (res, file) {
-      this.imageList.push(file.response.data.url)
+      this.imageList.push(file.response)
       this.fileList.push(file)
     },
     handlePictureCardPreview (file) {
